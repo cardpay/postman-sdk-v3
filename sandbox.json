@@ -1,0 +1,33 @@
+{
+  "environment": {
+    "id": "5f48449f-786b-41f8-9cf1-530516923060",
+    "name": "sandbox",
+    "values": [
+      {
+        "key": "CARDPAY_API_URL",
+        "value": "https://sandbox.cardpay.com",
+        "enabled": true
+      },
+      {
+        "key": "PAYMENTPAGE_TERMINAL_CODE",
+        "value": "18397",
+        "enabled": true
+      },
+      {
+        "key": "PAYMENTPAGE_PASSWORD",
+        "value": "FpK2cy143POj",
+        "enabled": true
+      },
+      {
+        "key": "GATEWAY_TERMINAL_CODE",
+        "value": "18833",
+        "enabled": true
+      },
+      {
+        "key": "GATEWAY_PASSWORD",
+        "value": "pzQf529Wa0AV",
+        "enabled": true
+      }
+    ]
+  }
+}
