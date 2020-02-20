@@ -3,7 +3,7 @@
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "name": "cardpay-api",
-      "description": "Direct link to [collection](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\nDirect link to [environment](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)",
+      "description": "[Documentation site](https://integration.cardpay.com)\n\nDirect link to [collection](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\nDirect link to [environment](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
