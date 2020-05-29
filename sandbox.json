@@ -27,6 +27,46 @@
         "key": "GATEWAY_PASSWORD",
         "value": "pzQf529Wa0AV",
         "enabled": true
+      },
+      {
+        "key": "GATEWAY_POSTPONED_TERMINAL_CODE",
+        "value": "18399",
+        "enabled": true
+      },
+      {
+        "key": "GATEWAY_POSTPONED_PASSWORD",
+        "value": "jehE149L7bHU",
+        "enabled": true
+      },
+      {
+        "key": "AVS_PAYMENTPAGE_TERMINAL_CODE",
+        "value": "23029",
+        "enabled": true
+      },
+      {
+        "key": "AVS_PAYMENTPAGE_PASSWORD",
+        "value": "0UT41J9avFch",
+        "enabled": true
+      },
+      {
+        "key": "CARD_3DS_CONFIRMED",
+        "value": "4000000000000002",
+        "enabled": true
+      },
+      {
+        "key": "CARD_NON3DS_CONFIRMED",
+        "value": "4000000000000077",
+        "enabled": true
+      },
+      {
+        "key": "TERMINAL_CURRENCY",
+        "value": "USD",
+        "enabled": true
+      },
+      {
+        "key": "CUSTOMER_EMAIL",
+        "value": "customer@email.com",
+        "enabled": true
       }
     ]
   }
