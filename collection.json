@@ -2,7 +2,7 @@
   "collection": {
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
-      "name": "cardpay-api",
+      "name": "Cardpay REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 7.18+\n\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n\n\n## API usage\n\nExecute any section from Postman collection.  \nFor more information about API v3 please visit [documentation web-site](https://integration.cardpay.com).\n\n\n## Notes\n\n* constants ('CARDPAY_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n* following variables are defined for collection scope *(click 'Edit' button on 'cardpay-api' collection and see 'Pre-request Script' section)*:\n    * request_name &mdash; name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    * expiration &mdash; customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    * tokens &mdash; variable with 'obtain' function which is calling in order to get API authorization tokens\n* other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
