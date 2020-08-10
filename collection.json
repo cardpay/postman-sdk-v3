@@ -836,10 +836,6 @@
                         "",
                         "    var response = pm.response.json();",
                         "    pm.expect(response).to.have.property('redirect_url');",
-                        "",
-                        "    pm.sendRequest(response.redirect_url, (err, res) => {",
-                        "        pm.response.to.have.status(200);",
-                        "    });",
                         "});"
                       ],
                       "type": "text/javascript"
@@ -3303,7 +3299,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"expiration\": \"{{expiration}}\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}",
                     "options": {
                       "raw": {}
                     }
