@@ -2,8 +2,8 @@
   "collection": {
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
-      "name": "Cardpay REST API (3.0)",
-      "description": "## Installation\n\n1. Install Postman 7.18+\n\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n\n\n## API usage\n\nExecute any section from Postman collection.  \nFor more information about API v3 please visit [documentation web-site](https://integration.cardpay.com).\n\n\n## Notes\n\n* constants ('CARDPAY_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n* following variables are defined for collection scope *(click 'Edit' button on 'cardpay-api' collection and see 'Pre-request Script' section)*:\n    * request_name &mdash; name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    * expiration &mdash; customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    * tokens &mdash; variable with 'obtain' function which is calling in order to get API authorization tokens\n* other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request",
+      "name": "Unlimint REST API (3.0)",
+      "description": "## Installation\n\n1. Install Postman 7.18+\n\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n\n\n## API usage\n\nExecute any section from Postman collection.  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimint.com).\n\n\n## Notes\n\n* constants ('UNLIMINT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n* following variables are defined for collection scope *(click 'Edit' button on 'unlimint-api' collection and see 'Pre-request Script' section)*:\n    * request_name &mdash; name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    * expiration &mdash; customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    * tokens &mdash; variable with 'obtain' function which is calling in order to get API authorization tokens\n* other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -75,9 +75,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/auth/token",
+                    "raw": "{{UNLIMINT_API_URL}}/api/auth/token",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -90,7 +90,7 @@
               }
             ],
             "_postman_id": "5a911af1-67d8-4e65-84fe-3a5a2981dce3",
-            "description": "Get authorization tokens for every transaction request\n------------------------------------------------------\n\n* In order to perform any API call the access token must be obtained.\n* To do this Merchant needs to send POST request to the API token endpoint.\n* As a result Merchant will receive an [ApiTokens](https://integration.cardpay.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n* After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n* Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n\n\nGet authorization tokens for more than one request \n------------------------------------------------------\n\n* After receiving access token merchant can save access and refresh tokens in his site\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.cardpay.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
+            "description": "Get authorization tokens for every transaction request\n------------------------------------------------------\n\n* In order to perform any API call the access token must be obtained.\n* To do this Merchant needs to send POST request to the API token endpoint.\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n* After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n* Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n\n\nGet authorization tokens for more than one request \n------------------------------------------------------\n\n* After receiving access token merchant can save access and refresh tokens in his site\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
             "event": [
               {
                 "listen": "prerequest",
@@ -171,9 +171,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/auth/token",
+                    "raw": "{{UNLIMINT_API_URL}}/api/auth/token",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -186,7 +186,7 @@
               }
             ],
             "_postman_id": "c11d34db-2fae-49b7-9030-9439077cb9a0",
-            "description": "* Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n* A result of this request will receive an [ApiTokens](https://integration.cardpay.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
+            "description": "* Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n* A result of this request will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
             "event": [
               {
                 "listen": "prerequest",
@@ -307,9 +307,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -387,9 +387,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_to_complete}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -483,9 +483,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_to_complete}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -562,9 +562,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_to_complete}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -577,7 +577,7 @@
               }
             ],
             "_postman_id": "8e28010f-1876-480b-a41d-cb286c358b5d",
-            "description": "* After receiving access token merchant can save access and refresh tokens on his side\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.cardpay.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* See 'Pre-request Scripts' section for 'reusable_tokens' function",
+            "description": "* After receiving access token merchant can save access and refresh tokens on his side\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* See 'Pre-request Scripts' section for 'reusable_tokens' function",
             "event": [
               {
                 "listen": "prerequest",
@@ -590,7 +590,7 @@
                     "        obtain: function (terminal_code, password) {",
                     "            var moment = require('moment');",
                     "            var TOKEN_MIN_VALIDITY = 100;",
-                    "            var cardpay_api_url = pm.environment.get('CARDPAY_API_URL');",
+                    "            var unlimint_api_url = pm.environment.get('UNLIMINT_API_URL');",
                     "",
                     "            function unsetVar(name) {",
                     "                pm.collectionVariables.unset(`${name}_${terminal_code}`);",
@@ -625,7 +625,7 @@
                     "                unsetVar('refresh_expires_in');",
                     "",
                     "                pm.sendRequest({",
-                    "                    url: `${cardpay_api_url}/api/auth/token`,",
+                    "                    url: `${unlimint_api_url}/api/auth/token`,",
                     "                    method: 'POST',",
                     "                    header: 'Content-Type:application/x-www-form-urlencoded',",
                     "                    body: {",
@@ -766,9 +766,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -780,7 +780,7 @@
               }
             ],
             "_postman_id": "81c3e32e-c1a2-4da8-848d-d464f30e450f",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.cardpay.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
@@ -883,9 +883,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -897,7 +897,7 @@
               }
             ],
             "_postman_id": "81c5b360-c274-4dbd-a8b6-b287a3536c49",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.cardpay.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format",
             "event": [
               {
                 "listen": "prerequest",
@@ -1007,9 +1007,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1021,7 +1021,7 @@
               }
             ],
             "_postman_id": "cbfd235c-25da-4841-b435-0eb426a7c9f0",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.cardpay.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 1 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 1 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
@@ -1121,9 +1121,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1241,9 +1241,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1255,7 +1255,7 @@
               }
             ],
             "_postman_id": "91cff8c6-c7f5-4d60-9df4-cf7cbb89d870",
-            "description": "* AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Cardpay support\n* Merchant makes POST request in JSON format to api/payments endpoint  to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.cardpay.com/#payments)' section\n* AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n* Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n* Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n* In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n* To get full information about created AVS request merchant receives callback",
+            "description": "* AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimint support\n* Merchant makes POST request in JSON format to api/payments endpoint  to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimint.com/#payments)' section\n* AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n* Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n* Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n* In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n* To get full information about created AVS request merchant receives callback",
             "event": [
               {
                 "listen": "prerequest",
@@ -1367,9 +1367,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1459,9 +1459,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_to_reverse}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_reverse}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1474,7 +1474,7 @@
               }
             ],
             "_postman_id": "c7aa89c6-a56e-4351-b258-5b076bf5f86b",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.cardpay.com/#createPayment).\n* Merchant receives callback with transaction result information (with payment id)\n* Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.cardpay.com/#updatePayment).",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Merchant receives callback with transaction result information (with payment id)\n* Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.unlimint.com/#updatePayment).",
             "event": [
               {
                 "listen": "prerequest",
@@ -1593,9 +1593,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1685,9 +1685,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_to_complete}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1700,7 +1700,7 @@
               }
             ],
             "_postman_id": "baff63e4-9602-4c8d-b3c9-36698f34b58e",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.cardpay.com/#createPayment)\n* Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n* Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n* If merchant doesn't send complete or reverse request ([see more](https://integration.cardpay.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less or more than preauthorized amount in first request   ",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createPayment)\n* Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n* Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less or more than preauthorized amount in first request   ",
             "event": [
               {
                 "listen": "prerequest",
@@ -1808,9 +1808,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1883,9 +1883,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{payment_id_for_card_token}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_for_card_token}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1977,9 +1977,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -1991,7 +1991,7 @@
               }
             ],
             "_postman_id": "e078af7b-e4e7-4bff-9842-36bf0d4cb4e8",
-            "description": "* Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Cardpay or Merchant site) with provided URL\n* After successful transaction merchant can use card token (from callback) in the next transactions",
+            "description": "* Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* After successful transaction merchant can use card token (from callback) in the next transactions",
             "event": [
               {
                 "listen": "prerequest",
@@ -2089,9 +2089,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2175,9 +2175,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2204,7 +2204,7 @@
               }
             ],
             "_postman_id": "1322dcfc-c7ca-4861-b62c-f211b2c19fbb",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.cardpay.com/#getPayments)\n* Merchant receives GET response about transactions (payments list)",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.unlimint.com/#getPayments)\n* Merchant receives GET response about transactions (payments list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -2298,9 +2298,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments/{{last_payment_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{last_payment_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2313,7 +2313,7 @@
               }
             ],
             "_postman_id": "d042ed02-637e-4004-b228-41a200cd768c",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.cardpay.com/#getPayment)\n* Merchant receives GET response about transaction (payment) result information",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.unlimint.com/#getPayment)\n* Merchant receives GET response about transaction (payment) result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -2455,9 +2455,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2548,9 +2548,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2562,7 +2562,7 @@
               }
             ],
             "_postman_id": "46fe3f2c-a60c-4fbc-bcf0-9b2544c6727c",
-            "description": "* Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.cardpay.com/#createRefund)\n* Merchant can create new refund only after successfully creation of payment or recurring payment\n* Merchant must have payment id (or recurring id) and send it in refund request\n* Merchant receives response with created transaction result information",
+            "description": "* Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant can create new refund only after successfully creation of payment or recurring payment\n* Merchant must have payment id (or recurring id) and send it in refund request\n* Merchant receives response with created transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -2650,9 +2650,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2732,9 +2732,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2761,7 +2761,7 @@
               }
             ],
             "_postman_id": "95fa518c-87ba-4609-b44a-f2e49b919d64",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.cardpay.com/#getRefunds)\n* Merchant receives GET response about transactions (refunds list)",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.unlimint.com/#getRefunds)\n* Merchant receives GET response about transactions (refunds list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -2849,9 +2849,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds/{{last_refund_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds/{{last_refund_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -2864,7 +2864,7 @@
               }
             ],
             "_postman_id": "2b83303d-9c8b-4ebf-9e96-37a90ef1e5d1",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.cardpay.com/#getRefund)\n* Merchant receives GET response about transaction result information",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.unlimint.com/#getRefund)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -2971,9 +2971,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payments",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3058,9 +3058,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3144,9 +3144,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/refunds/{{refund_id_to_reverse}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/refunds/{{refund_id_to_reverse}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3159,7 +3159,7 @@
               }
             ],
             "_postman_id": "fc319423-b2cb-43ff-a08d-d004dab7e408",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.cardpay.com/#createRefund)\n* Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Cardpay manager, [see more](https://integration.cardpay.com/#updateRefund)\n* Merchant receives response with update result information (status='VOIDED')",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updateRefund)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
@@ -3305,9 +3305,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3319,7 +3319,7 @@
               }
             ],
             "_postman_id": "09c4d343-cd62-4188-9c92-e6f24294b620",
-            "description": "* Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.cardpay.com/#createPayout)\n* Merchant receives response with transaction (payout) result information",
+            "description": "* Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives response with transaction (payout) result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -3406,9 +3406,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3488,9 +3488,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3517,7 +3517,7 @@
               }
             ],
             "_postman_id": "5aa59ff6-df38-4445-b970-5ecfe969062b",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.cardpay.com/#getPayout)\n* Merchant receives GET response about transactions (payouts list)",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transactions (payouts list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -3605,9 +3605,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts/{{last_payout_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts/{{last_payout_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3620,7 +3620,7 @@
               }
             ],
             "_postman_id": "dd96727b-e510-4332-a294-9b5951739dce",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.cardpay.com/#getPayout)\n* Merchant receives GET response about transaction result information",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -3726,9 +3726,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3812,9 +3812,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/payouts/{{payout_id_to_reverse}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/payouts/{{payout_id_to_reverse}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3827,7 +3827,7 @@
               }
             ],
             "_postman_id": "ea479a49-d8b6-4a49-af5b-2a7feb8c1899",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.cardpay.com/#createPayout)\n* Merchant receives callback with transaction result information (with payout id)\n* Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Cardpay manager, [see more](https://integration.cardpay.com/#updatePayout)\n* Merchant receives response with update result information (status='VOIDED')",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives callback with transaction result information (with payout id)\n* Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updatePayout)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
@@ -3977,9 +3977,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -3991,7 +3991,7 @@
               }
             ],
             "_postman_id": "7da31a5f-208f-4037-9912-7300a29c56b8",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.cardpay.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n* One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Cardpay or Merchant site) with provided URL\n* Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.unlimint.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n* One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
             "event": [
               {
                 "listen": "prerequest",
@@ -4086,9 +4086,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/{{last_recurring_one_click_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{last_recurring_one_click_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4192,9 +4192,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4293,9 +4293,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/?request_id={{$guid}}&merchant_order_id={{last_merchant_order_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4375,9 +4375,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4404,7 +4404,7 @@
               }
             ],
             "_postman_id": "70a52bfd-cadd-4729-ad91-38273010f99a",
-            "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.cardpay.com/#getRecurrings)\n* Merchant receives GET response about transactions (recurrings list)",
+            "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.unlimint.com/#getRecurrings)\n* Merchant receives GET response about transactions (recurrings list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -4492,9 +4492,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/{{last_recurring_one_click_id}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{last_recurring_one_click_id}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4507,7 +4507,7 @@
               }
             ],
             "_postman_id": "7389a13f-730c-4c25-b9fb-606d584d1a60",
-            "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.cardpay.com/#getRecurring)\n* Merchant receives GET response about transaction result information",
+            "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.unlimint.com/#getRecurring)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -4624,9 +4624,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4716,9 +4716,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/{{recurring_one_click_id_to_complete}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{recurring_one_click_id_to_complete}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4731,7 +4731,7 @@
               }
             ],
             "_postman_id": "150e367f-0993-4f64-9f30-0e661b2f4115",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.cardpay.com/#createRecurring)\n* Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n* Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n* If merchant doesn't send complete or reverse request ([see more](https://integration.cardpay.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less, equal or more than preauthorized amount in first request",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createRecurring)\n* Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n* Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less, equal or more than preauthorized amount in first request",
             "event": [
               {
                 "listen": "prerequest",
@@ -4848,9 +4848,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4940,9 +4940,9 @@
                     }
                   },
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/recurrings/{{recurring_one_click_id_to_reverse}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{recurring_one_click_id_to_reverse}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -4955,7 +4955,7 @@
               }
             ],
             "_postman_id": "8f43724e-d371-4f9d-9ac3-4a7bbfeb65f1",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.cardpay.com/#createRecurring)\n* Merchant receives callback with transaction result information (with recurring id)\n* Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.cardpay.com/#updateRecurring)",
+            "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.unlimint.com/#createRecurring)\n* Merchant receives callback with transaction result information (with recurring id)\n* Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.unlimint.com/#updateRecurring)",
             "event": [
               {
                 "listen": "prerequest",
@@ -5077,9 +5077,9 @@
                   "method": "GET",
                   "header": [],
                   "url": {
-                    "raw": "{{CARDPAY_API_URL}}/api/limits/?request_id={{$guid}}",
+                    "raw": "{{UNLIMINT_API_URL}}/api/limits/?request_id={{$guid}}",
                     "host": [
-                      "{{CARDPAY_API_URL}}"
+                      "{{UNLIMINT_API_URL}}"
                     ],
                     "path": [
                       "api",
@@ -5098,7 +5098,7 @@
               }
             ],
             "_postman_id": "dce2a6ef-22a2-45b0-8f93-13423f07e4ac",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.cardpay.com/#limits)\n* Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n* When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n* When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n* Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
+            "description": "* Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.unlimint.com/#limits)\n* Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n* When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n* When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n* Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
             "event": [
               {
                 "listen": "prerequest",
@@ -5168,10 +5168,10 @@
             "pm.collectionVariables.set('tokens', '(' + function () {",
             "    return {",
             "        obtain: function (terminal_code, password) {",
-            "            var cardpay_api_url = pm.environment.get('CARDPAY_API_URL');",
+            "            var unlimint_api_url = pm.environment.get('UNLIMINT_API_URL');",
             "",
             "            pm.sendRequest({",
-            "                url: `${cardpay_api_url}/api/auth/token`,",
+            "                url: `${unlimint_api_url}/api/auth/token`,",
             "                method: 'POST',",
             "                header: 'Content-Type:application/x-www-form-urlencoded',",
             "                body: {",

@@ -4,7 +4,7 @@
     "name": "sandbox",
     "values": [
       {
-        "key": "CARDPAY_API_URL",
+        "key": "UNLIMINT_API_URL",
         "value": "https://sandbox.cardpay.com",
         "enabled": true
       },
