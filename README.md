@@ -1,6 +1,6 @@
-# Cardpay REST API (3.0) Postman Collection
+# Unlimint REST API (3.0) Postman Collection
 
-You can sign up for a Cardpay account at https://www.cardpay.com.
+You can sign up for a Unlimint account at https://www.unlimint.com
 
 # Getting Started
 
@@ -16,13 +16,13 @@ You can sign up for a Cardpay account at https://www.cardpay.com.
 ## API usage
 
 Execute any section from Postman collection.  
-For more information about API v3 please visit [documentation web-site](https://integration.cardpay.com).
+For more information about API v3 please visit [documentation web-site](https://integration.unlimint.com).
 
 
 ## Notes
 
-* constants ('CARDPAY_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.
-* following variables are defined for collection scope *(click 'Edit' button on 'cardpay-api' collection and see 'Pre-request Script' section)*:
+* constants ('UNLIMINT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.
+* following variables are defined for collection scope *(click 'Edit' button on 'unlimint-api' collection and see 'Pre-request Script' section)*:
     * request_name &mdash; name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section
     * expiration &mdash; customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy
     * tokens &mdash; variable with 'obtain' function which is calling in order to get API authorization tokens
