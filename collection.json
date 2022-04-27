@@ -3,7 +3,7 @@
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "name": "Unlimint REST API (3.0)",
-      "description": "## Installation\n\n1. Install Postman 7.18+\n\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n\n\n## API usage\n\nExecute any section from Postman collection.  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimint.com).\n\n\n## Notes\n\n* constants ('UNLIMINT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n* following variables are defined for collection scope *(click 'Edit' button on 'unlimint-api' collection and see 'Pre-request Script' section)*:\n    * request_name &mdash; name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    * expiration &mdash; customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    * tokens &mdash; variable with 'obtain' function which is calling in order to get API authorization tokens\n* other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
+      "description": "## Installation\n\n1.  Install Postman 8.5+\n2.  Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3.  Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimint.com).\n\n## Notes\n\n*   constants ('UNLIMINT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n*   following variables are defined for collection scope *(click 'Edit' button on 'unlimint-api' collection and see 'Pre-request Script' section)*:\n    *   request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    *   expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    *   tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n*   other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
     },
     "item": [
@@ -39,7 +39,7 @@
                     }
                   }
                 ],
-                "_postman_id": "3b68b374-66af-428b-ab8e-460995fdadda",
+                "id": "3b68b374-66af-428b-ab8e-460995fdadda",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -69,10 +69,7 @@
                         "type": "text",
                         "value": "{{PAYMENTPAGE_PASSWORD}}"
                       }
-                    ],
-                    "options": {
-                      "urlencoded": {}
-                    }
+                    ]
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/auth/token",
@@ -89,7 +86,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "5a911af1-67d8-4e65-84fe-3a5a2981dce3",
+            "id": "5a911af1-67d8-4e65-84fe-3a5a2981dce3",
             "description": "Get authorization tokens for every transaction request\n------------------------------------------------------\n\n* In order to perform any API call the access token must be obtained.\n* To do this Merchant needs to send POST request to the API token endpoint.\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n* After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n* Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n\n\nGet authorization tokens for more than one request \n------------------------------------------------------\n\n* After receiving access token merchant can save access and refresh tokens in his site\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
             "event": [
               {
@@ -112,8 +109,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Refresh token",
@@ -140,7 +136,7 @@
                     }
                   }
                 ],
-                "_postman_id": "069f13dd-0cff-4933-aebc-84bc78c21d94",
+                "id": "069f13dd-0cff-4933-aebc-84bc78c21d94",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -165,10 +161,7 @@
                         "value": "{{refresh_token}}",
                         "type": "text"
                       }
-                    ],
-                    "options": {
-                      "urlencoded": {}
-                    }
+                    ]
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/auth/token",
@@ -185,7 +178,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "c11d34db-2fae-49b7-9030-9439077cb9a0",
+            "id": "c11d34db-2fae-49b7-9030-9439077cb9a0",
             "description": "* Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n* A result of this request will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
             "event": [
               {
@@ -208,8 +201,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get authorization tokens for more than one request",
@@ -266,7 +258,7 @@
                     }
                   }
                 ],
-                "_postman_id": "c2d5e886-ee54-4082-ba6a-96f900bf82df",
+                "id": "c2d5e886-ee54-4082-ba6a-96f900bf82df",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -301,10 +293,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -360,7 +349,7 @@
                     }
                   }
                 ],
-                "_postman_id": "8282175e-95a1-4230-bbf6-de753cd9c78e",
+                "id": "8282175e-95a1-4230-bbf6-de753cd9c78e",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -442,7 +431,7 @@
                     }
                   }
                 ],
-                "_postman_id": "986121c2-35b5-44d9-a7b5-98002854c737",
+                "id": "986121c2-35b5-44d9-a7b5-98002854c737",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -477,10 +466,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
@@ -535,7 +521,7 @@
                     }
                   }
                 ],
-                "_postman_id": "aaa816f3-293c-4292-aff9-cd51045827fb",
+                "id": "aaa816f3-293c-4292-aff9-cd51045827fb",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -576,7 +562,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "8e28010f-1876-480b-a41d-cb286c358b5d",
+            "id": "8e28010f-1876-480b-a41d-cb286c358b5d",
             "description": "* After receiving access token merchant can save access and refresh tokens on his side\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* See 'Pre-request Scripts' section for 'reusable_tokens' function",
             "event": [
               {
@@ -661,11 +647,10 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           }
         ],
-        "_postman_id": "64d20de6-aa14-47d8-afed-7fb6a081ed64",
+        "id": "64d20de6-aa14-47d8-afed-7fb6a081ed64",
         "event": [
           {
             "listen": "prerequest",
@@ -725,7 +710,7 @@
                     }
                   }
                 ],
-                "_postman_id": "29f69290-ec01-4d4a-9e23-668a504cd943",
+                "id": "29f69290-ec01-4d4a-9e23-668a504cd943",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -760,10 +745,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -779,7 +761,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "81c3e32e-c1a2-4da8-848d-d464f30e450f",
+            "id": "81c3e32e-c1a2-4da8-848d-d464f30e450f",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
@@ -802,8 +784,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create payment without 3-D Secure 1",
@@ -842,7 +823,7 @@
                     }
                   }
                 ],
-                "_postman_id": "bc1b323e-2348-4f7a-bbc9-2bcd88ed5cfd",
+                "id": "bc1b323e-2348-4f7a-bbc9-2bcd88ed5cfd",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -877,10 +858,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -896,7 +874,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "81c5b360-c274-4dbd-a8b6-b287a3536c49",
+            "id": "81c5b360-c274-4dbd-a8b6-b287a3536c49",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format",
             "event": [
               {
@@ -919,8 +897,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create payment with 3-D Secure 1",
@@ -966,7 +943,7 @@
                     }
                   }
                 ],
-                "_postman_id": "bf1356b2-cfe6-43ab-9684-cc7ddaf9d3f9",
+                "id": "bf1356b2-cfe6-43ab-9684-cc7ddaf9d3f9",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1001,10 +978,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"USD\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1020,7 +994,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "cbfd235c-25da-4841-b435-0eb426a7c9f0",
+            "id": "cbfd235c-25da-4841-b435-0eb426a7c9f0",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 1 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
@@ -1043,8 +1017,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create payment with 3-D Secure 2",
@@ -1080,7 +1053,7 @@
                     }
                   }
                 ],
-                "_postman_id": "b906990a-475b-4e04-b259-6e908c3de51a",
+                "id": "b906990a-475b-4e04-b259-6e908c3de51a",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1115,10 +1088,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"trans_type\": \"01\"\n    },\n    \"card_account\": {\n        \"acct_type\": \"01\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"+1 123456789\",\n        \"work_phone\": \"+1 987654321\",\n        \"home_phone\": \"+1 462526747\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"trans_type\": \"01\"\n    },\n    \"card_account\": {\n        \"acct_type\": \"01\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"+1 123456789\",\n        \"work_phone\": \"+1 987654321\",\n        \"home_phone\": \"+1 462526747\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1134,7 +1104,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "097c5249-db40-4f21-9cdc-4c726d86ebcf",
+            "id": "097c5249-db40-4f21-9cdc-4c726d86ebcf",
             "description": "* Merchant makes POST request in JSON format (with list of special 3-D Secure 2 parameters in request) to endpoint **/api/payments** to create new payment \n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 2 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
@@ -1157,8 +1127,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create AVS payment",
@@ -1200,7 +1169,7 @@
                     }
                   }
                 ],
-                "_postman_id": "81adffc1-1831-4570-aae6-612446c8098d",
+                "id": "81adffc1-1831-4570-aae6-612446c8098d",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1235,10 +1204,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"authentication_request\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"authentication_request\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1254,7 +1220,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "91cff8c6-c7f5-4d60-9df4-cf7cbb89d870",
+            "id": "91cff8c6-c7f5-4d60-9df4-cf7cbb89d870",
             "description": "* AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimint support\n* Merchant makes POST request in JSON format to api/payments endpoint  to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimint.com/#payments)' section\n* AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n* Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n* Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n* In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n* To get full information about created AVS request merchant receives callback",
             "event": [
               {
@@ -1277,8 +1243,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Reverse payment (void)",
@@ -1326,7 +1291,7 @@
                     }
                   }
                 ],
-                "_postman_id": "05cd4d2f-e170-4611-8675-caf65517ab83",
+                "id": "05cd4d2f-e170-4611-8675-caf65517ab83",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1361,10 +1326,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1418,7 +1380,7 @@
                     }
                   }
                 ],
-                "_postman_id": "1de5f405-61b1-4655-b02e-f918353fd6dc",
+                "id": "1de5f405-61b1-4655-b02e-f918353fd6dc",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1453,10 +1415,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"REVERSE\"\n  }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"REVERSE\"\n  }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_reverse}}",
@@ -1473,7 +1432,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "c7aa89c6-a56e-4351-b258-5b076bf5f86b",
+            "id": "c7aa89c6-a56e-4351-b258-5b076bf5f86b",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Merchant receives callback with transaction result information (with payment id)\n* Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.unlimint.com/#updatePayment).",
             "event": [
               {
@@ -1496,8 +1455,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create pre-authorised payment",
@@ -1552,7 +1510,7 @@
                     }
                   }
                 ],
-                "_postman_id": "4684e59c-91db-4af5-b7a2-a90d99339e82",
+                "id": "4684e59c-91db-4af5-b7a2-a90d99339e82",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1587,10 +1545,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1644,7 +1599,7 @@
                     }
                   }
                 ],
-                "_postman_id": "85eae7aa-c83b-4368-86f2-3da20ab4e027",
+                "id": "85eae7aa-c83b-4368-86f2-3da20ab4e027",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1679,10 +1634,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_complete}}",
@@ -1699,7 +1651,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "baff63e4-9602-4c8d-b3c9-36698f34b58e",
+            "id": "baff63e4-9602-4c8d-b3c9-36698f34b58e",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createPayment)\n* Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n* Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less or more than preauthorized amount in first request   ",
             "event": [
               {
@@ -1722,8 +1674,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create payment with card token",
@@ -1767,7 +1718,7 @@
                     }
                   }
                 ],
-                "_postman_id": "cc9b9227-66e5-4d30-a502-771809f2e3be",
+                "id": "cc9b9227-66e5-4d30-a502-771809f2e3be",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1802,10 +1753,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"generate_token\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"generate_token\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1856,7 +1804,7 @@
                     }
                   }
                 ],
-                "_postman_id": "90b2b1ef-7ade-4524-a18f-a83f5929243c",
+                "id": "90b2b1ef-7ade-4524-a18f-a83f5929243c",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1936,7 +1884,7 @@
                     }
                   }
                 ],
-                "_postman_id": "af92f8df-9cbf-4cec-bbfe-9494bdd65775",
+                "id": "af92f8df-9cbf-4cec-bbfe-9494bdd65775",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1971,10 +1919,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"token\": \"{{card_token}}\",\n        \"card\": {\n        \t\"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"token\": \"{{card_token}}\",\n        \"card\": {\n        \t\"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -1990,7 +1935,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "e078af7b-e4e7-4bff-9842-36bf0d4cb4e8",
+            "id": "e078af7b-e4e7-4bff-9842-36bf0d4cb4e8",
             "description": "* Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* After successful transaction merchant can use card token (from callback) in the next transactions",
             "event": [
               {
@@ -2017,8 +1962,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get payments list",
@@ -2062,7 +2006,7 @@
                     }
                   }
                 ],
-                "_postman_id": "e2cbd15c-b126-431e-ba9a-883dc1718ac6",
+                "id": "e2cbd15c-b126-431e-ba9a-883dc1718ac6",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2148,7 +2092,7 @@
                     }
                   }
                 ],
-                "_postman_id": "24e00a26-466e-4ae2-af83-4241124571c7",
+                "id": "24e00a26-466e-4ae2-af83-4241124571c7",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2203,7 +2147,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "1322dcfc-c7ca-4861-b62c-f211b2c19fbb",
+            "id": "1322dcfc-c7ca-4861-b62c-f211b2c19fbb",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.unlimint.com/#getPayments)\n* Merchant receives GET response about transactions (payments list)",
             "event": [
               {
@@ -2226,8 +2170,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get payment by payment id",
@@ -2271,7 +2214,7 @@
                     }
                   }
                 ],
-                "_postman_id": "f7bfb26b-b6e0-4d73-99cc-f65911be8950",
+                "id": "f7bfb26b-b6e0-4d73-99cc-f65911be8950",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2312,7 +2255,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "d042ed02-637e-4004-b228-41a200cd768c",
+            "id": "d042ed02-637e-4004-b228-41a200cd768c",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.unlimint.com/#getPayment)\n* Merchant receives GET response about transaction (payment) result information",
             "event": [
               {
@@ -2335,11 +2278,564 @@
                   ]
                 }
               }
+            ]
+          },
+          {
+            "name": "Synchronous workflow",
+            "item": [
+              {
+                "name": "Execute payment (without 3-D Secure 1)",
+                "item": [
+                  {
+                    "name": "Create payment to execute, without 3-D Secure 1 (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "2c63adcb-bb30-4490-9564-fd2a5b4b1dc1",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "e1208eae-115c-40f8-81fa-a79417e1a9cd",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "",
+                            "    pm.expect(response.payment_data.separate_auth).to.eql(true);",
+                            "",
+                            "    pm.expect(response.payment_data.id).to.not.be.undefined;",
+                            "    pm.variables.set('payment_id_to_execute_no_3ds', response.payment_data.id);",
+                            "",
+                            "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                            "        pm.expect(response_after_redirect.code).to.equal(200);",
+                            "    });",
+                            "",
+                            "    postman.setNextRequest('Execute payment without 3-D Secure 1 (synchronous workflow)');",
+                            "});"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "895fb797-43c8-4260-8486-a576e882b641",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": []
+                  },
+                  {
+                    "name": "Execute payment without 3-D Secure 1 (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "3007ca2e-90e1-4f42-aea2-71af299570c8",
+                          "exec": [
+                            "pm.expect(pm.variables.get('payment_id_to_execute_no_3ds')).to.not.be.undefined;",
+                            "",
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "034fa464-4373-4852-b1a0-0b5006c907ee",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    ",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('status');",
+                            "    pm.expect(response.payment_data.status).to.equal('COMPLETED');",
+                            "})"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "948c0d93-814c-4f6f-a29a-cb8c8aeb0983",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "PATCH",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"EXECUTE\"\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_execute_no_3ds}}",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments",
+                          "{{payment_id_to_execute_no_3ds}}"
+                        ]
+                      }
+                    },
+                    "response": []
+                  }
+                ],
+                "id": "e2ac9fd8-6d38-4947-9c47-fbeb501d6546",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "7e88553a-3974-4420-b9d1-d45291e38f42",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "24a3460f-bd51-4d2e-94fe-5fbecd0ffa80",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "Execute payment (with 3-D Secure 1)",
+                "item": [
+                  {
+                    "name": "Create payment to execute, with 3-D Secure 1 (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "6d9143b9-c5c6-46a2-b2e1-6a1283e5f5be",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "0367adac-3a00-4aa5-ae2c-43d20b7bb125",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "",
+                            "    pm.expect(response.payment_data.separate_auth).to.eql(true);",
+                            "",
+                            "    pm.expect(response.payment_data.id).to.not.be.undefined;",
+                            "    pm.variables.set('payment_id_to_execute_with_3ds', response.payment_data.id);",
+                            "",
+                            "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                            "        pm.expect(response_after_redirect.code).to.equal(200);",
+                            "    });",
+                            "});"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "32c27bdf-d1e3-4a1a-8e2f-ccd6d94ef92b",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": []
+                  }
+                ],
+                "id": "79c04f18-449f-4bef-bcd6-900730463b39",
+                "description": "* To complete payment execution with 3-D Secure 1 card need to:\n** pass 3-D Secure 1 verification in browser ('redirect_url' in response)\n** send 'EXECUTE' request with _operation = \"EXECUTE\"_ (see 'Execute payment without 3-D Secure 1 (synchronous workflow)' request as an example)",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "2fa7ec90-26c3-4471-9326-242f224ec68b",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "d14a98b5-c002-4ec4-88a0-f9843df3e90b",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "Terminate payment",
+                "item": [
+                  {
+                    "name": "Create payment to terminate (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "07b45373-57a2-42c4-ae77-30b087c2673b",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "b317d9bf-b569-4ed3-a220-159ebb3421a5",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "",
+                            "    pm.expect(response.payment_data.separate_auth).to.eql(true);",
+                            "    ",
+                            "    pm.expect(response.payment_data.id).to.not.be.undefined;",
+                            "    pm.variables.set('payment_id_to_terminate', response.payment_data.id);",
+                            "",
+                            "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                            "        pm.expect(response_after_redirect.code).to.equal(200);",
+                            "    });",
+                            "",
+                            "    postman.setNextRequest('Terminate payment (synchronous workflow)');",
+                            "});"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "a9fda1f1-c919-4493-96f4-fc993cc1d40b",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": []
+                  },
+                  {
+                    "name": "Terminate payment (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "21fdae75-9ff8-4cbd-ab11-9540ddfd54a2",
+                          "exec": [
+                            "pm.expect(pm.variables.get('payment_id_to_terminate')).to.not.be.undefined;",
+                            "",
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "ee80d62c-8b0a-42dd-a142-c4bb4174a097",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    ",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('status');",
+                            "    pm.expect(response.payment_data.status).to.equal('TERMINATED');",
+                            "})"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "6217dacd-b5a0-4df1-b672-df78a2b0753a",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "PATCH",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"CHANGE_STATUS\",\n    \"payment_data\": {\n        \"status_to\": \"TERMINATE\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_terminate}}",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments",
+                          "{{payment_id_to_terminate}}"
+                        ]
+                      }
+                    },
+                    "response": []
+                  }
+                ],
+                "id": "8b2818af-839e-4f3f-ab78-d0952bac4e29",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "1e3bf45c-4005-48c3-ba4c-7f2e86abe148",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "86fb8f74-2770-43cb-95e3-e9047ea6df72",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  }
+                ]
+              }
             ],
-            "_postman_isSubFolder": true
+            "id": "adc5614a-d73c-4128-818e-6f90406bc16e"
           }
         ],
-        "_postman_id": "c6115f17-6ffc-4e36-88b4-f8a163e39d4b",
+        "id": "c6115f17-6ffc-4e36-88b4-f8a163e39d4b",
         "event": [
           {
             "listen": "prerequest",
@@ -2414,7 +2910,7 @@
                     }
                   }
                 ],
-                "_postman_id": "efa56cbd-f81e-45e9-ab99-318a3a9491ab",
+                "id": "efa56cbd-f81e-45e9-ab99-318a3a9491ab",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2449,10 +2945,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -2507,7 +3000,7 @@
                     }
                   }
                 ],
-                "_postman_id": "a1234383-ebe4-4782-a7c0-b06405cdbcb3",
+                "id": "a1234383-ebe4-4782-a7c0-b06405cdbcb3",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2542,10 +3035,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_data\": {\n        \"id\": \"{{payment_id_for_refund}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_data\": {\n        \"id\": \"{{payment_id_for_refund}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/refunds",
@@ -2561,7 +3051,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "46fe3f2c-a60c-4fbc-bcf0-9b2544c6727c",
+            "id": "46fe3f2c-a60c-4fbc-bcf0-9b2544c6727c",
             "description": "* Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant can create new refund only after successfully creation of payment or recurring payment\n* Merchant must have payment id (or recurring id) and send it in refund request\n* Merchant receives response with created transaction result information",
             "event": [
               {
@@ -2584,8 +3074,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get refunds list",
@@ -2623,7 +3112,7 @@
                     }
                   }
                 ],
-                "_postman_id": "ae2ca3b8-5ab0-4dfd-baa8-4833661437bb",
+                "id": "ae2ca3b8-5ab0-4dfd-baa8-4833661437bb",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2705,7 +3194,7 @@
                     }
                   }
                 ],
-                "_postman_id": "5015b788-2843-47b8-9626-9e70c65ba466",
+                "id": "5015b788-2843-47b8-9626-9e70c65ba466",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2760,7 +3249,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "95fa518c-87ba-4609-b44a-f2e49b919d64",
+            "id": "95fa518c-87ba-4609-b44a-f2e49b919d64",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.unlimint.com/#getRefunds)\n* Merchant receives GET response about transactions (refunds list)",
             "event": [
               {
@@ -2783,8 +3272,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get refund by refund id",
@@ -2822,7 +3310,7 @@
                     }
                   }
                 ],
-                "_postman_id": "57ab0599-f418-47df-b62c-9845cf2f25f0",
+                "id": "57ab0599-f418-47df-b62c-9845cf2f25f0",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2863,7 +3351,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "2b83303d-9c8b-4ebf-9e96-37a90ef1e5d1",
+            "id": "2b83303d-9c8b-4ebf-9e96-37a90ef1e5d1",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.unlimint.com/#getRefund)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
@@ -2886,8 +3374,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Reverse refund (void)",
@@ -2930,7 +3417,7 @@
                     }
                   }
                 ],
-                "_postman_id": "34c33fe4-2cf3-49d3-8fb5-81434bd2581b",
+                "id": "34c33fe4-2cf3-49d3-8fb5-81434bd2581b",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2965,10 +3452,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payments",
@@ -3017,7 +3501,7 @@
                     }
                   }
                 ],
-                "_postman_id": "352fff90-4ed0-4552-a03f-7c1d31cf8849",
+                "id": "352fff90-4ed0-4552-a03f-7c1d31cf8849",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3052,10 +3536,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_data\": {\n        \"id\": \"{{payment_id_for_reversed_refund}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_data\": {\n        \"id\": \"{{payment_id_for_reversed_refund}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/refunds",
@@ -3103,7 +3584,7 @@
                     }
                   }
                 ],
-                "_postman_id": "d86c7199-4030-4372-bbf7-cc3608b422de",
+                "id": "d86c7199-4030-4372-bbf7-cc3608b422de",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3138,10 +3619,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"refund_data\": {\n        \"status_to\": \"REVERSE\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"refund_data\": {\n        \"status_to\": \"REVERSE\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/refunds/{{refund_id_to_reverse}}",
@@ -3158,7 +3636,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "fc319423-b2cb-43ff-a08d-d004dab7e408",
+            "id": "fc319423-b2cb-43ff-a08d-d004dab7e408",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updateRefund)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
@@ -3185,11 +3663,10 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           }
         ],
-        "_postman_id": "39cb182f-0d6a-4d97-98bf-21989f713b57",
+        "id": "39cb182f-0d6a-4d97-98bf-21989f713b57",
         "event": [
           {
             "listen": "prerequest",
@@ -3264,7 +3741,7 @@
                     }
                   }
                 ],
-                "_postman_id": "752d4262-3146-4a93-b685-5377c988640c",
+                "id": "752d4262-3146-4a93-b685-5377c988640c",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3299,10 +3776,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"expiration\": \"{{expiration}}\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"expiration\": \"{{expiration}}\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payouts",
@@ -3318,7 +3792,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "09c4d343-cd62-4188-9c92-e6f24294b620",
+            "id": "09c4d343-cd62-4188-9c92-e6f24294b620",
             "description": "* Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives response with transaction (payout) result information",
             "event": [
               {
@@ -3341,8 +3815,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get payouts list",
@@ -3379,7 +3852,7 @@
                     }
                   }
                 ],
-                "_postman_id": "5c40333a-b243-44ea-a13c-27c727dd5bba",
+                "id": "5c40333a-b243-44ea-a13c-27c727dd5bba",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3461,7 +3934,7 @@
                     }
                   }
                 ],
-                "_postman_id": "94383321-ea67-4d09-8c0b-6ba3b34a459d",
+                "id": "94383321-ea67-4d09-8c0b-6ba3b34a459d",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3516,7 +3989,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "5aa59ff6-df38-4445-b970-5ecfe969062b",
+            "id": "5aa59ff6-df38-4445-b970-5ecfe969062b",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transactions (payouts list)",
             "event": [
               {
@@ -3539,8 +4012,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get payout by payout id",
@@ -3578,7 +4050,7 @@
                     }
                   }
                 ],
-                "_postman_id": "2f1bcc76-f7f1-4369-9664-ad06b1c52bf8",
+                "id": "2f1bcc76-f7f1-4369-9664-ad06b1c52bf8",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3619,7 +4091,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "dd96727b-e510-4332-a294-9b5951739dce",
+            "id": "dd96727b-e510-4332-a294-9b5951739dce",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
@@ -3642,8 +4114,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Reverse payout (void)",
@@ -3685,7 +4156,7 @@
                     }
                   }
                 ],
-                "_postman_id": "c19b3fcd-e8b7-4760-b5e2-159d818292a8",
+                "id": "c19b3fcd-e8b7-4760-b5e2-159d818292a8",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3720,10 +4191,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        },\n        \"recipient_info\": \"{{$randomUUID}}\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payouts",
@@ -3771,7 +4239,7 @@
                     }
                   }
                 ],
-                "_postman_id": "8ea95a67-6271-45e5-9983-81e32084f42f",
+                "id": "8ea95a67-6271-45e5-9983-81e32084f42f",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3806,10 +4274,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payout_data\": {\n        \"status_to\": \"REVERSE\"\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payout_data\": {\n        \"status_to\": \"REVERSE\"\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/payouts/{{payout_id_to_reverse}}",
@@ -3826,7 +4291,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "ea479a49-d8b6-4a49-af5b-2a7feb8c1899",
+            "id": "ea479a49-d8b6-4a49-af5b-2a7feb8c1899",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives callback with transaction result information (with payout id)\n* Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updatePayout)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
@@ -3853,11 +4318,10 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           }
         ],
-        "_postman_id": "bdd5f0b2-b7a0-4de6-bf00-bb8e91bf77e6",
+        "id": "bdd5f0b2-b7a0-4de6-bf00-bb8e91bf77e6",
         "event": [
           {
             "listen": "prerequest",
@@ -3902,10 +4366,7 @@
                     "script": {
                       "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "var uuid = require('uuid');",
-                        "",
-                        "var customer_id = uuid.v4();",
-                        "pm.variables.set('customer_id', customer_id);"
+                        ""
                       ],
                       "type": "text/javascript"
                     }
@@ -3936,7 +4397,7 @@
                     }
                   }
                 ],
-                "_postman_id": "a5a31963-8e76-4475-be01-595c5ad3afc6",
+                "id": "a5a31963-8e76-4475-be01-595c5ad3afc6",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3971,10 +4432,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n    \t\"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"USD\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n    \t\"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
@@ -3990,7 +4448,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "7da31a5f-208f-4037-9912-7300a29c56b8",
+            "id": "7da31a5f-208f-4037-9912-7300a29c56b8",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.unlimint.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n* One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
             "event": [
               {
@@ -4013,8 +4471,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create next one-click payment",
@@ -4059,7 +4516,7 @@
                     }
                   }
                 ],
-                "_postman_id": "b4c8771c-098b-4ebb-8d5f-4057c26003da",
+                "id": "b4c8771c-098b-4ebb-8d5f-4057c26003da",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4113,10 +4570,7 @@
                         "",
                         "var merchant_order_id = uuid.v4();",
                         "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);",
-                        "",
-                        "var customer_id = uuid.v4();",
-                        "pm.variables.set('customer_id', customer_id);"
+                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
                       ],
                       "type": "text/javascript"
                     }
@@ -4151,7 +4605,7 @@
                     }
                   }
                 ],
-                "_postman_id": "1db9af6b-1662-4205-b678-863d7dd6d25a",
+                "id": "1db9af6b-1662-4205-b678-863d7dd6d25a",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4186,10 +4640,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"USD\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"filing\": {\n            \"id\": \"{{last_filing_id}}\"\n        }\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"filing\": {\n            \"id\": \"{{last_filing_id}}\"\n        }\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
@@ -4205,7 +4656,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "7742176a-442f-4a36-9125-8a683c414e9a",
+            "id": "7742176a-442f-4a36-9125-8a683c414e9a",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings**, to create new one-click payment (with 'initiator'='cit', filing.id from previous one-click in request) \n* Upon authentication completion, one-click payment is processed. Customer gets payment result page (redirect URL)",
             "event": [
               {
@@ -4228,8 +4679,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get recurring payments list",
@@ -4266,7 +4716,7 @@
                     }
                   }
                 ],
-                "_postman_id": "e0be6fad-5326-4366-a82f-7c787110d129",
+                "id": "e0be6fad-5326-4366-a82f-7c787110d129",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4348,7 +4798,7 @@
                     }
                   }
                 ],
-                "_postman_id": "4b55662b-8863-4675-9781-878d22ae2967",
+                "id": "4b55662b-8863-4675-9781-878d22ae2967",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4403,7 +4853,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "70a52bfd-cadd-4729-ad91-38273010f99a",
+            "id": "70a52bfd-cadd-4729-ad91-38273010f99a",
             "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.unlimint.com/#getRecurrings)\n* Merchant receives GET response about transactions (recurrings list)",
             "event": [
               {
@@ -4426,8 +4876,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Get recurring payment by recurring id",
@@ -4465,7 +4914,7 @@
                     }
                   }
                 ],
-                "_postman_id": "dc6746c1-31ef-477f-8ea6-91444176339d",
+                "id": "dc6746c1-31ef-477f-8ea6-91444176339d",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4506,7 +4955,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "7389a13f-730c-4c25-b9fb-606d584d1a60",
+            "id": "7389a13f-730c-4c25-b9fb-606d584d1a60",
             "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.unlimint.com/#getRecurring)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
@@ -4529,8 +4978,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Create pre-authorized one-click payment",
@@ -4543,11 +4991,6 @@
                     "script": {
                       "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "var uuid = require('uuid');",
-                        "",
-                        "var customer_id = uuid.v4();",
-                        "pm.variables.set('customer_id', customer_id);",
-                        "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
                         "",
@@ -4583,7 +5026,7 @@
                     }
                   }
                 ],
-                "_postman_id": "252d42a1-8ae9-4125-868d-1822fdcb7ec4",
+                "id": "252d42a1-8ae9-4125-868d-1822fdcb7ec4",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4618,10 +5061,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"USD\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
@@ -4675,7 +5115,7 @@
                     }
                   }
                 ],
-                "_postman_id": "e9f8fe83-b71f-4f13-b413-41545939acb5",
+                "id": "e9f8fe83-b71f-4f13-b413-41545939acb5",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4710,10 +5150,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"recurring_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"recurring_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{recurring_one_click_id_to_complete}}",
@@ -4730,7 +5167,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "150e367f-0993-4f64-9f30-0e661b2f4115",
+            "id": "150e367f-0993-4f64-9f30-0e661b2f4115",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createRecurring)\n* Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n* Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less, equal or more than preauthorized amount in first request",
             "event": [
               {
@@ -4753,8 +5190,7 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           },
           {
             "name": "Reverse one-click payment (void)",
@@ -4767,11 +5203,6 @@
                     "script": {
                       "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "var uuid = require('uuid');",
-                        "",
-                        "var customer_id = uuid.v4();",
-                        "pm.variables.set('customer_id', customer_id);",
-                        "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
                         "",
@@ -4807,7 +5238,7 @@
                     }
                   }
                 ],
-                "_postman_id": "cd5c5f87-7f60-49c6-abf9-2876a83f8a4f",
+                "id": "cd5c5f87-7f60-49c6-abf9-2876a83f8a4f",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4842,10 +5273,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"USD\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"preauth\": true\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
@@ -4899,7 +5327,7 @@
                     }
                   }
                 ],
-                "_postman_id": "cdb850d8-8313-482c-941a-09fa4112b1da",
+                "id": "cdb850d8-8313-482c-941a-09fa4112b1da",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4934,10 +5362,7 @@
                   ],
                   "body": {
                     "mode": "raw",
-                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"recurring_data\": {\n    \"status_to\": \"REVERSE\"\n  }\n}",
-                    "options": {
-                      "raw": {}
-                    }
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"recurring_data\": {\n    \"status_to\": \"REVERSE\"\n  }\n}"
                   },
                   "url": {
                     "raw": "{{UNLIMINT_API_URL}}/api/recurrings/{{recurring_one_click_id_to_reverse}}",
@@ -4954,7 +5379,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "8f43724e-d371-4f9d-9ac3-4a7bbfeb65f1",
+            "id": "8f43724e-d371-4f9d-9ac3-4a7bbfeb65f1",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.unlimint.com/#createRecurring)\n* Merchant receives callback with transaction result information (with recurring id)\n* Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.unlimint.com/#updateRecurring)",
             "event": [
               {
@@ -4977,11 +5402,1408 @@
                   ]
                 }
               }
+            ]
+          },
+          {
+            "name": "Recurring filing",
+            "item": [
+              {
+                "name": "Create filing",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "7e4fee27-094f-4baa-a2b2-f93f17e67620",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "748397e7-7ade-42ec-9a4b-00e6a25fd476",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "    pm.expect(response).to.have.property('recurring_data');",
+                        "    pm.expect(response.recurring_data).to.have.property('id');",
+                        "",
+                        "    pm.sendRequest(response.redirect_url, (err, res) => {",
+                        "        pm.response.to.have.status(200);",
+                        "    });",
+                        "    ",
+                        "    pm.variables.set('last_recurring_id', response.recurring_data.id);",
+                        "    postman.setNextRequest('Get filing order information');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "b412c2ba-f8f1-4504-8a0f-f1e7610f6124",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_filings",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_filings"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get filing order information",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "62c80d31-68bb-4600-8c9c-65ca310b62a1",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_id')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "e340127c-b1a9-435e-beff-2dedc9c0347a",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "",
+                        "    pm.expect(response).to.have.property('recurring_data');",
+                        "    pm.expect(response.recurring_data).to.have.property('id');",
+                        "    pm.expect(response.recurring_data.id).to.equal(pm.variables.get('last_recurring_id'));",
+                        "    ",
+                        "    pm.expect(response.recurring_data).to.have.property('filing');",
+                        "    pm.expect(response.recurring_data.filing).to.have.property('id');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "45d367e8-9faf-4517-ad19-063c46beeb66",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_filings/{{last_recurring_id}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_filings",
+                      "{{last_recurring_id}}"
+                    ]
+                  }
+                },
+                "response": []
+              }
             ],
-            "_postman_isSubFolder": true
+            "id": "218aa611-e9e6-4695-b590-21d2138bb63c"
+          },
+          {
+            "name": "Installment payments",
+            "item": [
+              {
+                "name": "Terminate installment payment",
+                "item": [
+                  {
+                    "name": "Create installment to terminate (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "c4ce5458-6706-4634-b80f-f0a616061a06",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "55e28f6f-e164-4286-84e7-a0d45f9193c6",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "",
+                            "    pm.expect(response.recurring_data.separate_auth).to.eql(true);",
+                            "    ",
+                            "    pm.expect(response.recurring_data.id).to.not.be.undefined;",
+                            "    pm.variables.set('installment_id_to_terminate', response.recurring_data.id);",
+                            "",
+                            "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                            "        pm.expect(response_after_redirect.code).to.equal(200);",
+                            "    });",
+                            "",
+                            "    postman.setNextRequest('Terminate installment (synchronous workflow)');",
+                            "});"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "daf2dd89-bc06-4f01-bd81-b46fb74183aa",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"installment_type\": \"IF\",\n        \"initiator\": \"cit\",\n        \"amount\": \"120.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"payments\": \"10\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/installments",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "installments"
+                        ]
+                      }
+                    },
+                    "response": []
+                  },
+                  {
+                    "name": "Terminate installment (synchronous workflow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "2ae196df-3b1f-483e-9af5-383ff1c7beae",
+                          "exec": [
+                            "pm.expect(pm.variables.get('installment_id_to_terminate')).to.not.be.undefined;",
+                            "",
+                            "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_SYNC_FLOW');",
+                            "var password = pm.environment.get('GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "5e8b5406-fe8b-4a3f-a954-b86b6880e6cd",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "",
+                            "    var response = pm.response.json();",
+                            "    ",
+                            "    pm.expect(response).to.have.property('recurring_data');",
+                            "    pm.expect(response.recurring_data).to.have.property('status');",
+                            "    pm.expect(response.recurring_data.status).to.equal('TERMINATED');",
+                            "})"
+                          ],
+                          "type": "text/javascript"
+                        }
+                      }
+                    ],
+                    "id": "c5c76512-16de-4956-8838-d456d53cbabb",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "PATCH",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"CHANGE_STATUS\",\n    \"recurring_data\": {\n        \"status_to\": \"TERMINATE\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMINT_API_URL}}/api/installments/{{installment_id_to_terminate}}",
+                        "host": [
+                          "{{UNLIMINT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "installments",
+                          "{{installment_id_to_terminate}}"
+                        ]
+                      }
+                    },
+                    "response": []
+                  }
+                ],
+                "id": "368777dd-64e7-46bd-9d4c-759d8b747b37",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "cedd9970-d94b-4014-9bfc-8fa6e12aeebf",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "c5d3d41b-85b8-4962-90c2-0d837d2f3136",
+                      "type": "text/javascript",
+                      "exec": [
+                        ""
+                      ]
+                    }
+                  }
+                ]
+              },
+              {
+                "name": "Create installment",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "2e94a458-3fc0-4d50-ae3b-a7651b166ad2",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "38e121a8-c4e3-4492-9994-a7168837a560",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "    pm.expect(response).to.have.property('recurring_data');",
+                        "    pm.expect(response.recurring_data).to.have.property('id');",
+                        "",
+                        "    pm.sendRequest(response.redirect_url, (err, res) => {",
+                        "        pm.response.to.have.status(200);",
+                        "    });",
+                        "    ",
+                        "    pm.variables.set('last_recurring_installment_id', response.recurring_data.id);",
+                        "    postman.setNextRequest('Get installment payment');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "6a4d2b56-d511-4cbc-b433-fd40efb13a0b",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"installment_type\": \"IF\",\n        \"initiator\": \"cit\",\n        \"amount\": \"120.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"payments\": \"10\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/installments",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "installments"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get installment payment",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "a8be4343-ba80-49a9-89f9-a23cad809660",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_installment_id')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "e385f684-19e1-408c-b71c-cd70038ce665",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "",
+                        "    pm.expect(response).to.have.property('recurring_data');",
+                        "    pm.expect(response.recurring_data).to.have.property('id');",
+                        "    pm.expect(response.recurring_data.id).to.equal(pm.variables.get('last_recurring_installment_id'));",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "53a4a890-0fe5-4aa0-b121-3c754d22388e",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/installments/{{last_recurring_installment_id}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "installments",
+                      "{{last_recurring_installment_id}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get installment payments",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "6856cba3-e998-497e-90a8-ab3f116efd99",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "77452cda-0034-4e70-994d-ffd6cbd57089",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "    ",
+                        "    var response = pm.response.json();",
+                        "        ",
+                        "    pm.expect(response).to.have.property('data');",
+                        "    pm.expect(response).to.have.property('has_more');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "4e8e1c00-dd25-48d6-8e3d-065301d3d290",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/installments/?request_id={{$guid}}&max_count=5&currency={{TERMINAL_CURRENCY}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "installments",
+                      ""
+                    ],
+                    "query": [
+                      {
+                        "key": "request_id",
+                        "value": "{{$guid}}"
+                      },
+                      {
+                        "key": "max_count",
+                        "value": "5"
+                      },
+                      {
+                        "key": "currency",
+                        "value": "{{TERMINAL_CURRENCY}}"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get calculation of installment payment options",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "e53dc685-93c8-4396-844e-3662d397d502",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "96264eb3-2ba3-4ef9-a85b-c5697f375d39",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "    ",
+                        "    var response = pm.response.json();",
+                        "        ",
+                        "    pm.expect(response).to.have.property('total_amount');",
+                        "    pm.expect(response).to.have.property('currency');",
+                        "    pm.expect(response).to.have.property('options');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "49476e7e-f7e0-4744-809d-90e873ee93cf",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/installments/options_calculator/?request_id={{$guid}}&currency={{TERMINAL_CURRENCY}}&total_amount=1000",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "installments",
+                      "options_calculator",
+                      ""
+                    ],
+                    "query": [
+                      {
+                        "key": "request_id",
+                        "value": "{{$guid}}"
+                      },
+                      {
+                        "key": "currency",
+                        "value": "{{TERMINAL_CURRENCY}}"
+                      },
+                      {
+                        "key": "total_amount",
+                        "value": "1000"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              }
+            ],
+            "id": "20ee6f68-c05d-4595-9193-be39c860ccc7"
+          },
+          {
+            "name": "Recurring plans",
+            "item": [
+              {
+                "name": "Create recurring plan",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "c59b3459-151c-4542-8968-7ebc8c9a85a3",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "a7e46fe9-02b5-436e-9bd5-0ebde019758d",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('plan_data');",
+                        "    pm.expect(response.plan_data).to.have.property('id');",
+                        "    pm.expect(response.plan_data.status).to.eql('ACTIVE');",
+                        "",
+                        "    pm.variables.set('last_recurring_plan_id', response.plan_data.id);",
+                        "    postman.setNextRequest('Get recurring plan by id');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "900054f7-1c86-4878-bdf8-b8643599c9c8",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"plan_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"initiator\": \"cit\",\n        \"interval\": 1,\n        \"name\": \"A{{$timestamp}}{{$randomInt}}\",\n        \"period\": \"month\",\n        \"retries\": 3\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get recurring plan by id",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "9a6130d6-c352-4d26-bd8f-3faae0543382",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_plan_id')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "a3810e57-90ac-4b4e-80a8-fac2885e3ac0",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "",
+                        "    pm.expect(response).to.have.property('plan_data');",
+                        "    pm.expect(response.plan_data).to.have.property('id');",
+                        "    pm.expect(response.plan_data.id).to.equal(pm.variables.get('last_recurring_plan_id'));",
+                        "    pm.expect(response.plan_data.status).to.equal('ACTIVE');",
+                        "",
+                        "    postman.setNextRequest('Update recurring plan');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "d5cc62f1-cb0c-45b2-b1d5-2d9957e7305c",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans/{{last_recurring_plan_id}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans",
+                      "{{last_recurring_plan_id}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Update recurring plan",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "d254bde5-16c0-4cd5-8414-6ed6ffd8916b",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_plan_id')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "ff0613e1-f249-4a0b-822c-41525c77cb01",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('plan_data');",
+                        "    pm.expect(response.plan_data).to.have.property('id');",
+                        "    pm.expect(response.plan_data.status).to.eql('INACTIVE');",
+                        "",
+                        "    postman.setNextRequest('Delete recurring plan');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "077e29eb-7f6d-4683-acaf-95521a4c726c",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "PATCH",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"CHANGE_STATUS\",\n    \"plan_data\": {\n        \"name_to\": \"B{{$timestamp}}{{$randomInt}}\",\n        \"status_to\": \"INACTIVE\"\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans/{{last_recurring_plan_id}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans",
+                      "{{last_recurring_plan_id}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Delete recurring plan",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "8c7bee37-c5bb-4fdc-b582-13bb006a2bbc",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_plan_id')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "394e458e-5aab-4752-a638-9c3d6b67c682",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "2fd6ba2b-77e7-4686-92cf-c086cf272430",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "DELETE",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": ""
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans/{{last_recurring_plan_id}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans",
+                      "{{last_recurring_plan_id}}"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get recurring plans",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "bff4d78a-85bd-40ed-b2ea-9d88abf51861",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "78897bc0-9711-4cf5-9909-710bc9f5b587",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "",
+                        "    pm.expect(response).to.have.property('data');",
+                        "    pm.expect(response).to.have.property('has_more');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "40567265-b83f-4440-934f-44273a0fed3a",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans/?request_id={{$guid}}&max_count=5",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans",
+                      ""
+                    ],
+                    "query": [
+                      {
+                        "key": "request_id",
+                        "value": "{{$guid}}"
+                      },
+                      {
+                        "key": "max_count",
+                        "value": "5"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              }
+            ],
+            "id": "aa6f5403-b557-46da-addf-0789726fed50"
+          },
+          {
+            "name": "Recurring subscriptions",
+            "item": [
+              {
+                "name": "Create recurring plan",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "23ec38f2-26dd-41dc-871d-b4a1c02cb87e",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "26452978-e4b9-4c99-970c-4f0e364cee85",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('plan_data');",
+                        "    pm.expect(response.plan_data).to.have.property('id');",
+                        "    pm.expect(response.plan_data.status).to.eql('ACTIVE');",
+                        "",
+                        "    pm.variables.set('last_recurring_plan_id_for_subscription', response.plan_data.id);",
+                        "    postman.setNextRequest('Create scheduled subscription');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "de0ba07c-dd45-4118-b371-bc526f645314",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"plan_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"initiator\": \"cit\",\n        \"interval\": 1,\n        \"name\": \"C{{$timestamp}}{{$randomInt}}\",\n        \"period\": \"month\",\n        \"retries\": 3\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_plans",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_plans"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Create scheduled subscription",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "d7733ca2-dfa6-4f62-8d8d-40707519c4d4",
+                      "exec": [
+                        "pm.expect(pm.variables.get('last_recurring_plan_id_for_subscription')).to.not.be.undefined;"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "aaf8f9c4-0b11-4cab-9fcc-f4eaaeb1ab17",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "    pm.expect(response).to.have.property('recurring_data');",
+                        "    pm.expect(response.recurring_data).to.have.property('id');",
+                        "    pm.expect(response).to.have.property('subscription');",
+                        "    pm.expect(response.subscription).to.have.property('id');",
+                        "",
+                        "    pm.sendRequest(response.redirect_url, (err, res) => {",
+                        "        pm.response.to.have.status(200);",
+                        "    });",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "6963cbb3-d044-4659-be4d-c1d294ab5e20",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"plan\": {\n            \"id\": \"{{last_recurring_plan_id_for_subscription}}\"\n        },\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurrings",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurrings"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Get recurring subscriptions",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "0dbb28e1-807a-4474-9d4a-4eb16ce47ef3",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "78084263-e837-47de-b661-4fd9a18bace7",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "",
+                        "    pm.expect(response).to.have.property('data');",
+                        "    pm.expect(response).to.have.property('has_more');",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "30cf2d8d-cc2e-4fe5-8eb4-a7fa8c752529",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/recurring_subscriptions/?request_id={{$guid}}&max_count=5",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "recurring_subscriptions",
+                      ""
+                    ],
+                    "query": [
+                      {
+                        "key": "request_id",
+                        "value": "{{$guid}}"
+                      },
+                      {
+                        "key": "max_count",
+                        "value": "5"
+                      }
+                    ]
+                  }
+                },
+                "response": []
+              }
+            ],
+            "id": "5528cef2-eccb-4233-83ad-12b6087adbca"
           }
         ],
-        "_postman_id": "6c64bcce-e848-460f-8ff6-c23392bf446d",
+        "id": "6c64bcce-e848-460f-8ff6-c23392bf446d",
         "event": [
           {
             "listen": "prerequest",
@@ -4992,8 +6814,8 @@
                 "var moment = require('moment');",
                 "pm.variables.set(\"request_time\", moment().toISOString());",
                 "",
-                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
-                "var password = pm.environment.get('GATEWAY_PASSWORD');",
+                "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
+                "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
@@ -5050,7 +6872,7 @@
                     }
                   }
                 ],
-                "_postman_id": "3f6cba63-2a2c-4dd8-b867-b8ad1a29c80c",
+                "id": "3f6cba63-2a2c-4dd8-b867-b8ad1a29c80c",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5097,7 +6919,7 @@
                 "response": []
               }
             ],
-            "_postman_id": "dce2a6ef-22a2-45b0-8f93-13423f07e4ac",
+            "id": "dce2a6ef-22a2-45b0-8f93-13423f07e4ac",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.unlimint.com/#limits)\n* Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n* When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n* When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n* Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
             "event": [
               {
@@ -5120,11 +6942,10 @@
                   ]
                 }
               }
-            ],
-            "_postman_isSubFolder": true
+            ]
           }
         ],
-        "_postman_id": "45af0b2a-2a7b-4567-93e7-d9a8e39989fa",
+        "id": "45af0b2a-2a7b-4567-93e7-d9a8e39989fa",
         "event": [
           {
             "listen": "prerequest",
@@ -5157,13 +6978,14 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "c651e6e3-84fc-4192-a0af-eb91c481b595",
+          "id": "d9b33cd4-e68f-492d-b7d6-8fdf6ac9bae9",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
             "",
             "pm.variables.set('request_name', pm.info.requestName);",
             "pm.variables.set('expiration', moment().add(1, 'year').format('MM/YYYY'));",
+            "pm.variables.set('customer_id', \"{{$randomUserName}}\");",
             "",
             "pm.collectionVariables.set('tokens', '(' + function () {",
             "    return {",
@@ -5196,7 +7018,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "8357518e-86cd-4ca3-a8c4-e15c61fc1cfa",
+          "id": "b57d6e7f-ee70-44bc-8dff-42de6646bce6",
           "type": "text/javascript",
           "exec": [
             ""
