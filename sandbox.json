@@ -4,7 +4,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2021-01-29T06:45:05.000Z",
+    "updatedAt": "2022-05-02T06:46:51.000Z",
     "values": [
       {
         "key": "UNLIMINT_API_URL",
@@ -69,16 +69,6 @@
       {
         "key": "CUSTOMER_EMAIL",
         "value": "customer@email.com",
-        "enabled": true
-      },
-      {
-        "key": "GATEWAY_TERMINAL_CODE_SYNC_FLOW",
-        "value": "32071",
-        "enabled": true
-      },
-      {
-        "key": "GATEWAY_TERMINAL_PASSWORD_SYNC_FLOW",
-        "value": "FP708uO2ralC",
         "enabled": true
       }
     ],
