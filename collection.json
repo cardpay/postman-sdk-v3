@@ -2279,6 +2279,344 @@
                 }
               }
             ]
+          },
+          {
+            "name": "Create Installment payment (one-phase)",
+            "item": [
+              {
+                "name": "Create Issuer Financed Installment payment (one-phase)",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {\r",
+                        "    pm.response.to.be.ok;\r",
+                        "    pm.response.to.have.jsonBody();\r",
+                        "    \r",
+                        "    var response = pm.response.json();\r",
+                        "    pm.expect(response).to.have.property('redirect_url');\r",
+                        "});"
+                      ],
+                      "type": "text/javascript",
+                      "id": "d2aa199d-2f42-4d0a-a3f1-c0cbabf3bf77"
+                    }
+                  },
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "exec": [
+                        "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                        "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                        "\r",
+                        "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                        "tokens.obtain(terminal_code, password);"
+                      ],
+                      "type": "text/javascript",
+                      "id": "40a6dda6-2c90-46d0-82c3-8f5895242873"
+                    }
+                  }
+                ],
+                "id": "8f45b46a-ef4f-43dd-8196-3535fa9f6a7b",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"request\": {\r\n        \"id\": \"{{$guid}}\",\r\n        \"time\": \"{{request_time}}\"\r\n    },\r\n    \"merchant_order\": {\r\n        \"id\": \"{{$randomUUID}}\",\r\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\r\n    },\r\n    \"payment_method\": \"BANKCARD\",\r\n    \"payment_data\": {\r\n        \"amount\": \"12.34\",\r\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\r\n        \"installment_type\": \"IF\",\r\n        \"installments\": \"6\" \r\n    },\r\n    \"card_account\": {\r\n        \"card\": {\r\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\r\n            \"holder\": \"{{$randomFullName}}\",\r\n            \"expiration\": \"{{expiration}}\",\r\n            \"security_code\": \"100\"\r\n        }\r\n    },\r\n    \"customer\": {\r\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\r\n        \"id\": \"DfVg56Gvx\"\r\n    }\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "payments"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Create Merchant Financed Installment payment (one-phase)",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "exec": [
+                        "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                        "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                        "\r",
+                        "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                        "tokens.obtain(terminal_code, password);"
+                      ],
+                      "type": "text/javascript",
+                      "id": "ea42525e-5344-4d9c-bacb-89d28584b536"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {\r",
+                        "    pm.response.to.be.ok;\r",
+                        "    pm.response.to.have.jsonBody();\r",
+                        "    \r",
+                        "    var response = pm.response.json();\r",
+                        "    pm.expect(response).to.have.property('redirect_url');\r",
+                        "});"
+                      ],
+                      "type": "text/javascript",
+                      "id": "7f68ec4d-7d1e-4fa7-b120-077e94618f9f"
+                    }
+                  }
+                ],
+                "id": "e279aefd-273b-4706-ac52-79e30da7d944",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"request\": {\r\n        \"id\": \"{{$guid}}\",\r\n        \"time\": \"{{request_time}}\"\r\n    },\r\n    \"merchant_order\": {\r\n        \"id\": \"{{$randomUUID}}\",\r\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\r\n    },\r\n    \"payment_method\": \"BANKCARD\",\r\n    \"payment_data\": {\r\n        \"amount\": \"12.34\",\r\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\r\n        \"installment_type\": \"MF_HOLD\",\r\n        \"installments\": \"6\" \r\n    },\r\n    \"card_account\": {\r\n        \"card\": {\r\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\r\n            \"holder\": \"{{$randomFullName}}\",\r\n            \"expiration\": \"{{expiration}}\",\r\n            \"security_code\": \"100\"\r\n        }\r\n    },\r\n    \"customer\": {\r\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\r\n        \"id\": \"DfVg56Gvx\"\r\n    }\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "payments"
+                    ]
+                  }
+                },
+                "response": []
+              }
+            ],
+            "id": "8cff055c-b742-44cf-ab99-5f3f4564d1a0",
+            "description": "Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (one-phase), [see more](https://integration.unlimint.com/#createPayment).\n\n**How to create Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n    \n\nAfter successful 3DS validation payment will be completed"
+          },
+          {
+            "name": "Create Installment payment (two-phase)",
+            "item": [
+              {
+                "name": "Create Merchant Financed Installment payment (two-phase)",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "5ec24e7d-2e2a-47fa-aa0f-8b2e70491e19",
+                      "exec": [
+                        "var uuid = require('uuid');\r",
+                        "\r",
+                        "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');\r",
+                        "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');\r",
+                        "\r",
+                        "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                        "tokens.obtain(terminal_code, password);\r",
+                        "\r",
+                        "var merchant_order_id = uuid.v4();\r",
+                        "pm.variables.set('merchant_order_id', merchant_order_id);\r",
+                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "ede38aab-d954-4f5f-b4c7-6b37d40d1192",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {\r",
+                        "    pm.response.to.be.ok;\r",
+                        "    pm.response.to.have.jsonBody();\r",
+                        "\r",
+                        "    var response = pm.response.json();\r",
+                        "    pm.expect(response).to.have.property('redirect_url');\r",
+                        "    \r",
+                        "    pm.expect(response.payment_data.id).to.not.be.undefined;\r",
+                        "    pm.collectionVariables.set('payment_id_to_update', response.payment_data.id);\r",
+                        "    \r",
+                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {\r",
+                        "        pm.expect(response_after_redirect.code).to.equal(200);\r",
+                        "    });\r",
+                        "    \r",
+                        "    postman.setNextRequest('Update Merchant Financed Installment payment (two-phase)');\r",
+                        "});"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "50436e6f-2217-4094-b751-3c3d91144e4b",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\r\n    \"request\": {\r\n        \"id\": \"{{$guid}}\",\r\n        \"time\": \"{{request_time}}\"\r\n    },\r\n    \"merchant_order\": {\r\n        \"id\": \"{{$randomUUID}}\",\r\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\r\n    },\r\n    \"payment_method\": \"BANKCARD\",\r\n    \"payment_data\": {\r\n        \"amount\": \"12.34\",\r\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\r\n        \"preauth\": true,\r\n        \"installment_type\": \"MF_HOLD\",\r\n        \"installments\": \"6\" \r\n    },\r\n    \"card_account\": {\r\n        \"card\": {\r\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\r\n            \"holder\": \"{{$randomFullName}}\",\r\n            \"expiration\": \"{{expiration}}\",\r\n            \"security_code\": \"100\"\r\n        }\r\n    },\r\n    \"customer\": {\r\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\r\n        \"id\": \"DfVg56Gvx\"\r\n    }\r\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "payments"
+                    ]
+                  }
+                },
+                "response": []
+              },
+              {
+                "name": "Update Merchant Financed Installment payment (two-phase)",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "86e54857-3e99-4e71-9075-876a834ae45b",
+                      "exec": [
+                        "pm.expect(pm.collectionVariables.get('payment_id_to_update')).to.not.be.undefined;",
+                        "",
+                        "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
+                        "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
+                        "",
+                        "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                        "tokens.obtain(terminal_code, password);"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "ed793274-46d1-46d6-9fef-2dcd102e8e15",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    ",
+                        "    pm.expect(response).to.have.property('payment_data');",
+                        "    pm.expect(response.payment_data).to.have.property('status');",
+                        "    pm.expect(response.payment_data.status).to.equal('AUTHORIZED');",
+                        "})"
+                      ],
+                      "type": "text/javascript"
+                    }
+                  }
+                ],
+                "id": "2d77ae3c-9330-48d0-886c-1d9b87bcb029",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "0",
+                        "value": {
+                          "key": "token",
+                          "type": "string",
+                          "value": "{{access_token}}"
+                        },
+                        "type": "any"
+                      },
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "PATCH",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "name": "Content-Type",
+                      "type": "text",
+                      "value": "application/json"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n  \"request\": {\n    \"id\": \"{{$guid}}\",\n    \"time\": \"{{request_time}}\"\n  },\n  \"operation\": \"CHANGE_STATUS\",\n  \"payment_data\": {\n    \"status_to\": \"COMPLETE\"\n  }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMINT_API_URL}}/api/payments/{{payment_id_to_update}}",
+                    "host": [
+                      "{{UNLIMINT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "payments",
+                      "{{payment_id_to_update}}"
+                    ]
+                  }
+                },
+                "response": []
+              }
+            ],
+            "id": "2edfae9e-e1e8-4b1c-95ac-1ab96de985d6",
+            "description": "*   Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (two-phase), [see more](https://integration.unlimint.com/#createPayment).\n    \n\n**How to create two-phase Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n*   Make PATСH-request to update (complete) Installment payment\n    \n\n**Important:** in POST-request non-3DS card is used. These settings are relevant only for the test collection (due to Sandbox features) - real Installment payments can be created only for cards with 3DS enabled"
           }
         ],
         "id": "c6115f17-6ffc-4e36-88b4-f8a163e39d4b",
@@ -5291,7 +5629,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "89dda280-c9ea-4ab2-b1d4-c74c76325045",
+          "id": "3d331a59-94fa-4ab9-b2cb-9f5ada0621f8",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -5331,7 +5669,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "432e069b-e412-42c4-a693-092cf7c6e930",
+          "id": "5f4b868d-e499-4b6b-a2f8-e10dfaaa6d55",
           "type": "text/javascript",
           "exec": [
             ""
