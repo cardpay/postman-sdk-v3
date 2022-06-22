@@ -19,7 +19,6 @@
                   {
                     "listen": "test",
                     "script": {
-                      "id": "314e8d52-3bdb-4060-89bf-372383fa3580",
                       "exec": [
                         "pm.test(\"Successful response\", function () {",
                         "    pm.response.to.have.status(200);",
@@ -35,11 +34,12 @@
                         "});",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "6cda8100-43d1-41d1-b96d-9e4c21f27d33"
                     }
                   }
                 ],
-                "id": "3b68b374-66af-428b-ab8e-460995fdadda",
+                "id": "216904b4-7bcb-4ccb-bc6c-b38c29e33d71",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -56,18 +56,18 @@
                     "urlencoded": [
                       {
                         "key": "grant_type",
-                        "type": "text",
-                        "value": "password"
+                        "value": "password",
+                        "type": "text"
                       },
                       {
                         "key": "terminal_code",
-                        "type": "text",
-                        "value": "{{PAYMENTPAGE_TERMINAL_CODE}}"
+                        "value": "{{PAYMENTPAGE_TERMINAL_CODE}}",
+                        "type": "text"
                       },
                       {
                         "key": "password",
-                        "type": "text",
-                        "value": "{{PAYMENTPAGE_PASSWORD}}"
+                        "value": "{{PAYMENTPAGE_PASSWORD}}",
+                        "type": "text"
                       }
                     ]
                   },
@@ -86,27 +86,27 @@
                 "response": []
               }
             ],
-            "id": "5a911af1-67d8-4e65-84fe-3a5a2981dce3",
+            "id": "f86c2b90-083b-4486-9174-b8094b1d50b1",
             "description": "Get authorization tokens for every transaction request\n------------------------------------------------------\n\n* In order to perform any API call the access token must be obtained.\n* To do this Merchant needs to send POST request to the API token endpoint.\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n* After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n* Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n\n\nGet authorization tokens for more than one request \n------------------------------------------------------\n\n* After receiving access token merchant can save access and refresh tokens in his site\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "f7f9958e-12d4-402d-a882-f91ae5240913",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "f324607e-3afb-4075-8447-ca4021350953"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "1acdc298-866c-4718-a368-85ace73fcaf6",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "58fed0ea-0275-47eb-a1fe-e84cbc779258"
                 }
               }
             ]
@@ -120,7 +120,6 @@
                   {
                     "listen": "test",
                     "script": {
-                      "id": "314e8d52-3bdb-4060-89bf-372383fa3580",
                       "exec": [
                         "pm.test(\"Successful response\", function () {",
                         "    pm.response.to.have.status(200);",
@@ -132,11 +131,12 @@
                         "    pm.expect(response).to.have.property('refresh_expires_in');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "2625fb80-ac36-4624-9ce0-6bfaa757648b"
                     }
                   }
                 ],
-                "id": "069f13dd-0cff-4933-aebc-84bc78c21d94",
+                "id": "117285cb-0575-469b-9b63-e76be50b4afa",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -178,27 +178,27 @@
                 "response": []
               }
             ],
-            "id": "c11d34db-2fae-49b7-9030-9439077cb9a0",
+            "id": "a43703a7-a9ef-4d94-962f-89c6435b1b4d",
             "description": "* Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n* A result of this request will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "005d34ea-e534-4469-a4df-875ae55f42d2",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "8a2b1fea-5c16-4acb-b51d-25c231eb6d1a"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "73326d37-505a-4bf3-a2be-b072beaa9d25",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "6ef2ab5d-eda3-45b6-8c3f-fba88ecac078"
                 }
               }
             ]
@@ -212,7 +212,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
@@ -225,16 +224,16 @@
                         "pm.variables.set('request_time', new Date());",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f16b6361-598a-49d0-bccd-d6ca5bee84b9"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -244,7 +243,7 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "",
                         "    pm.expect(response.payment_data.id).to.not.be.undefined;",
-                        "    pm.variables.set('payment_id_to_complete', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_to_complete', response.payment_data.id);",
                         "",
                         "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
@@ -254,11 +253,12 @@
                         "});",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "9fe0407a-8496-49ad-b697-306cf1a92c78"
                     }
                   }
                 ],
-                "id": "c2d5e886-ee54-4082-ba6a-96f900bf82df",
+                "id": "a47a7f97-4bec-4821-a050-901b170ffb22",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -314,9 +314,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_to_complete')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_to_complete')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -324,13 +323,13 @@
                         "var tokens = eval(pm.collectionVariables.get('reusable_tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "fcb91f53-a0ae-4c45-8000-d8c53e62a8a1"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -340,16 +339,17 @@
                         "",
                         "    pm.expect(response).to.have.property('payment_data');",
                         "    pm.expect(response.payment_data).to.have.property('id');",
-                        "    pm.expect(response.payment_data.id).to.equal(pm.variables.get('payment_id_to_complete'));",
+                        "    pm.expect(response.payment_data.id).to.equal(pm.collectionVariables.get('payment_id_to_complete'));",
                         "    ",
                         "    postman.setNextRequest('Complete pre-authorized payment (reusable tokens)');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "fd5a0777-fe7d-4795-b467-739b95bfac3d"
                     }
                   }
                 ],
-                "id": "8282175e-95a1-4230-bbf6-de753cd9c78e",
+                "id": "f833ddfb-dd26-4aea-be26-3700502c0073",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -395,7 +395,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "pm.expect(pm.variables.get('payment_id_to_complete')).to.not.be.undefined;",
                         "pm.variables.set(\"request_time\", new Date());",
@@ -406,13 +405,13 @@
                         "var tokens = eval(pm.collectionVariables.get('reusable_tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "55f0d1dd-0f0f-4435-83f4-2a4411849b66"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok",
@@ -427,11 +426,12 @@
                         "    postman.setNextRequest('Get payment by payment id again (reusable tokens)');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "c40004c7-d1a4-421b-876c-3e7279dbbe55"
                     }
                   }
                 ],
-                "id": "986121c2-35b5-44d9-a7b5-98002854c737",
+                "id": "8f18694d-712a-4a42-88af-5e2048bb29f3",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -488,9 +488,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_to_complete')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_to_complete')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -498,13 +497,13 @@
                         "var tokens = eval(pm.collectionVariables.get('reusable_tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "a9d4c1cb-856a-4723-90c4-bf0890152599"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -517,11 +516,12 @@
                         "    pm.expect(response.payment_data.id).to.equal(pm.variables.get('payment_id_to_complete'));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "e425d46c-4193-46ff-b455-1603e51f934a"
                     }
                   }
                 ],
-                "id": "aaa816f3-293c-4292-aff9-cd51045827fb",
+                "id": "6d0348b4-03ab-4b59-b43a-659ba72c51fc",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -562,13 +562,12 @@
                 "response": []
               }
             ],
-            "id": "8e28010f-1876-480b-a41d-cb286c358b5d",
+            "id": "cd504d36-1a4c-4617-a8f7-0b2e3a042795",
             "description": "* After receiving access token merchant can save access and refresh tokens on his side\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* See 'Pre-request Scripts' section for 'reusable_tokens' function",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "60896a63-8e79-4f8e-be7e-4592f36e79db",
                   "type": "text/javascript",
                   "exec": [
                     "pm.collectionVariables.set('reusable_tokens', '(' + function () {",
@@ -634,42 +633,43 @@
                     "        }",
                     "    }",
                     "} + ')();');"
-                  ]
+                  ],
+                  "id": "087db6d1-b65a-44a0-85ae-b024b2845727"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "8c1b10bf-cdab-48a1-9b48-a52b12b58cc8",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "01d01d50-4704-42c9-8fb8-8b93a48364e5"
                 }
               }
             ]
           }
         ],
-        "id": "64d20de6-aa14-47d8-afed-7fb6a081ed64",
+        "id": "3da51624-aea8-4449-bf9b-1980aabe59e2",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "dca43975-b22d-4c11-8cff-d6e6d1c32156",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "5f9f66f1-361c-4202-a729-71816a4f939a"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "d7f8f114-607b-495c-b2d8-7a99e1d32e60",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "e9c84fed-52da-4dee-8b7d-697a16385e64"
             }
           }
         ]
@@ -686,17 +686,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "bed6479d-a890-4ff6-8387-767713de4d17"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -706,11 +705,12 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f324adde-9c89-4573-9bc6-32973b9b41b8"
                     }
                   }
                 ],
-                "id": "29f69290-ec01-4d4a-9e23-668a504cd943",
+                "id": "e19a4c47-64c1-471d-b79f-d57f255a1540",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -761,27 +761,27 @@
                 "response": []
               }
             ],
-            "id": "81c3e32e-c1a2-4da8-848d-d464f30e450f",
+            "id": "58e60f19-bb1b-4579-ae3c-c4514ec510e5",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "20e4a197-c406-484a-9dcc-6ab892e6fd00",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "b81bd6ee-49ba-492e-a636-afffcaa6d74a"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "d6d8aab9-b803-42a5-82b2-3f4ac387c522",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "d56f1fcf-6a76-48ef-beaa-c4919729e773"
                 }
               }
             ]
@@ -795,7 +795,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "9a737f33-73ea-48bc-ba71-777ea36cfd52",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_PASSWORD');",
@@ -803,13 +802,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "41c3ce79-dc99-489b-95f2-89dc27bc4af8"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "b4a6d3d9-c006-4c18-9f98-b5d8e6f48278",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -819,11 +818,12 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "a41f6cd9-163d-4ea6-a565-f7d70e57c4cb"
                     }
                   }
                 ],
-                "id": "bc1b323e-2348-4f7a-bbc9-2bcd88ed5cfd",
+                "id": "7a1952aa-fc9f-456d-bc16-39dd9c4573ad",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -874,27 +874,27 @@
                 "response": []
               }
             ],
-            "id": "81c5b360-c274-4dbd-a8b6-b287a3536c49",
+            "id": "a976dca0-3945-4638-ae7c-a3a1ea37afe5",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "13f56bb0-9613-4614-b500-049faedefad5",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "36b91583-75e5-42c1-8591-f8e8ecb4a6f5"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "8fe7f5e4-9aa5-45f0-83f5-226d5a14878e",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "47fedb83-0b4f-4210-8cda-7b108ac5d55d"
                 }
               }
             ]
@@ -908,7 +908,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
@@ -918,13 +917,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "2ad19b4f-dc67-4ecf-8717-99f2bed6492c"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -939,11 +938,12 @@
                         "    });",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "cb63c923-87f5-4c01-a9d5-557676e848b9"
                     }
                   }
                 ],
-                "id": "bf1356b2-cfe6-43ab-9684-cc7ddaf9d3f9",
+                "id": "89a468a3-bbca-4858-8a68-6f0af2fcbeb9",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -994,27 +994,27 @@
                 "response": []
               }
             ],
-            "id": "cbfd235c-25da-4841-b435-0eb426a7c9f0",
+            "id": "522f2659-0ac6-48fd-a862-f1e3df7df432",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 1 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "91607437-55d6-4ecf-9681-f1b56da6d177",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "e362d790-64f2-4107-a6dc-1cfb5a4255be"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "26470c9d-88fe-40ce-9554-c64fab4ac08d",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "0ede3f12-f01b-4c87-b386-dc3b411cc9ec"
                 }
               }
             ]
@@ -1028,17 +1028,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "73505a4b-d55f-42d2-8dcf-d1f606d563b2"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok",
@@ -1049,11 +1048,12 @@
                         "})",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "276a4dd0-d77c-498e-b8a3-08393a096c80"
                     }
                   }
                 ],
-                "id": "b906990a-475b-4e04-b259-6e908c3de51a",
+                "id": "1024360c-bdb1-4188-9b60-f06e8b42adb5",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1104,27 +1104,27 @@
                 "response": []
               }
             ],
-            "id": "097c5249-db40-4f21-9cdc-4c726d86ebcf",
+            "id": "e98d537a-ecd7-4d34-b7f9-a51cc8a972fd",
             "description": "* Merchant makes POST request in JSON format (with list of special 3-D Secure 2 parameters in request) to endpoint **/api/payments** to create new payment \n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* The results of 3-D Secure 2 verification depend on the card provided in request and can be received only after customer redirects to redirect URL and passes 3-D Secure (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "3e605fe1-bb9e-485a-805b-5cd873d597a1",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "aa050c15-9b43-4dc5-92b6-52c273033238"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "106c57f8-f356-4435-95e4-48ece27ca261",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "32b0f395-1adb-40cb-9bfc-2394b363be9b"
                 }
               }
             ]
@@ -1138,7 +1138,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
@@ -1148,13 +1147,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "efb4458a-d2c8-410e-984f-29e346fc9b58"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1165,11 +1164,12 @@
                         "})",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "08cf66e3-7b25-4d2b-8804-4c0a5a67c82e"
                     }
                   }
                 ],
-                "id": "81adffc1-1831-4570-aae6-612446c8098d",
+                "id": "e4905ae8-aa05-4a59-9904-371b67f55f62",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1220,27 +1220,27 @@
                 "response": []
               }
             ],
-            "id": "91cff8c6-c7f5-4d60-9df4-cf7cbb89d870",
+            "id": "56503907-4a94-4b84-bd70-b29cf534d644",
             "description": "* AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimint support\n* Merchant makes POST request in JSON format to api/payments endpoint  to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimint.com/#payments)' section\n* AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n* Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n* Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n* In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n* To get full information about created AVS request merchant receives callback",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "87804382-770d-4492-83c2-81dab7291559",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "bfc8e6f7-1dce-4c3b-b410-9f6c5a22a2bd"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "cc2d746e-2eac-43ac-8e79-805c1dc72e92",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "96dd74ce-c931-4235-abe6-7999839456ad"
                 }
               }
             ]
@@ -1254,7 +1254,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -1262,13 +1261,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "af18803d-0977-448d-ae73-3ab034b3388a"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1278,7 +1277,7 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "    ",
                         "    pm.expect(response.payment_data.id).to.not.be.undefined;",
-                        "    pm.variables.set('payment_id_to_reverse', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_to_reverse', response.payment_data.id);",
                         "    ",
                         "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
@@ -1287,11 +1286,12 @@
                         "    postman.setNextRequest('Reverse pre-authorized payment');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "ee5b229e-3d38-4dcb-b5e1-736bdd9c7091"
                     }
                   }
                 ],
-                "id": "05cd4d2f-e170-4611-8675-caf65517ab83",
+                "id": "a1a2adb1-7381-445b-b943-7e3ca6db5cb9",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1347,9 +1347,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_to_reverse')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_to_reverse')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -1357,13 +1356,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "ff50a88d-1788-461a-940c-46d889a5a13c"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1376,11 +1375,12 @@
                         "    pm.expect(response.payment_data.status).to.equal('VOIDED');",
                         "})"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "5aa9a46e-63a3-4479-a890-57fa3b872ca4"
                     }
                   }
                 ],
-                "id": "1de5f405-61b1-4655-b02e-f918353fd6dc",
+                "id": "17188031-7a37-4846-ad93-aff478811db4",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1432,27 +1432,27 @@
                 "response": []
               }
             ],
-            "id": "c7aa89c6-a56e-4351-b258-5b076bf5f86b",
+            "id": "4e586676-c021-4526-86fc-6565d5f078da",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Merchant receives callback with transaction result information (with payment id)\n* Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.unlimint.com/#updatePayment).",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "a1a53af0-7d38-465b-80f0-a25419c94891",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "24b5d0c7-ddea-4ecb-88e4-a9e86df326d5"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "43b0f2b0-4064-4087-8e4c-d27030efdada",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "8850e862-fe7f-482d-bcad-efe437449ac0"
                 }
               }
             ]
@@ -1466,7 +1466,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
@@ -1480,13 +1479,13 @@
                         "pm.variables.set('merchant_order_id', merchant_order_id);",
                         "pm.variables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "986d2ea7-3ca9-45d5-9f81-da8505ff383a"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1496,7 +1495,7 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "",
                         "    pm.expect(response.payment_data.id).to.not.be.undefined;",
-                        "    pm.variables.set('payment_id_to_complete', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_to_complete', response.payment_data.id);",
                         "",
                         "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
@@ -1506,11 +1505,12 @@
                         "});",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "aa27e67c-2ab1-4561-b73b-9e3009c8bb10"
                     }
                   }
                 ],
-                "id": "4684e59c-91db-4af5-b7a2-a90d99339e82",
+                "id": "668ee06f-5c4e-4d61-bdf2-c3baadf66ddd",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1566,9 +1566,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_to_complete')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_to_complete')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -1576,13 +1575,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "19a4cc3a-2213-444f-9c96-d5927dcbfda1"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok",
@@ -1595,11 +1594,12 @@
                         "    pm.expect(response.payment_data.status).to.equal('COMPLETED');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "fed742e8-e696-446f-a316-f8c7c82be93c"
                     }
                   }
                 ],
-                "id": "85eae7aa-c83b-4368-86f2-3da20ab4e027",
+                "id": "1dd02330-6a25-4599-97ca-fb9fb1cc38e2",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1651,27 +1651,27 @@
                 "response": []
               }
             ],
-            "id": "baff63e4-9602-4c8d-b3c9-36698f34b58e",
+            "id": "ff4a1e82-b559-4b43-ab98-9e663c8e00f9",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createPayment)\n* Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n* Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less or more than preauthorized amount in first request   ",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "c536ffe9-2810-43c0-ba46-993772db7dc6",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "a3811576-3586-4eea-bdf7-ff8dc2d04950"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "2d7c5e79-37cf-4fa0-8976-73ee849956b9",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "f8585be3-5148-46ab-8d90-ea7dd0c5c8c0"
                 }
               }
             ]
@@ -1685,17 +1685,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "b97773ed-15fa-4ce2-92fa-4b12a58e9a4f"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1705,7 +1704,7 @@
                         "    pm.expect(response).to.have.property('redirect_url');",
                         "    pm.expect(response).to.have.property('payment_data');",
                         "    pm.expect(response.payment_data).to.have.property('id');",
-                        "    pm.variables.set('payment_id_for_card_token', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_for_card_token', response.payment_data.id);",
                         "    ",
                         "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
@@ -1714,11 +1713,12 @@
                         "    postman.setNextRequest('Get payment by id for card token');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "3574e484-9a0f-4074-8001-1c7df9f77b9f"
                     }
                   }
                 ],
-                "id": "cc9b9227-66e5-4d30-a502-771809f2e3be",
+                "id": "8e819f5d-dad5-4c1a-b22f-f14f8e771e69",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1774,19 +1774,18 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_for_card_token')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_for_card_token')).to.not.be.undefined;",
                         "",
                         "postman.setNextRequest('Create payment with card token');"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "8221207d-7606-45eb-ad14-1b49f40f4413"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5e6821d7-7359-445c-8f57-76dbe0793aba",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1795,16 +1794,17 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response).to.have.property('card_account');",
                         "    pm.expect(response.card_account).to.have.property('token');",
-                        "    pm.variables.set('card_token', response.card_account.token);",
+                        "    pm.collectionVariables.set('card_token', response.card_account.token);",
                         "    ",
                         "    postman.setNextRequest('Create payment with card token');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "7da8c7d3-d74e-4a29-b665-6a816f6802a5"
                     }
                   }
                 ],
-                "id": "90b2b1ef-7ade-4524-a18f-a83f5929243c",
+                "id": "8ab3fab2-7a5b-4912-8114-cb541c5a2a43",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1850,23 +1850,22 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
-                        "pm.expect(pm.variables.get('card_token')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('card_token')).to.not.be.undefined;",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "51992566-c7f1-4d75-902d-609d31dca75e"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1880,11 +1879,12 @@
                         "    postman.setNextRequest('Get payment by merchant order id');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "d45750db-bce3-4d0b-8222-34f6554545cc"
                     }
                   }
                 ],
-                "id": "af92f8df-9cbf-4cec-bbfe-9494bdd65775",
+                "id": "b204f565-9974-41a6-acae-6f72885701df",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -1935,13 +1935,12 @@
                 "response": []
               }
             ],
-            "id": "e078af7b-e4e7-4bff-9842-36bf0d4cb4e8",
+            "id": "abf9f898-580d-4dec-864e-199381d79c2b",
             "description": "* Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* After successful transaction merchant can use card token (from callback) in the next transactions",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "88499585-c829-4c9b-bea2-26e59182a1ae",
                   "type": "text/javascript",
                   "exec": [
                     "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
@@ -1949,17 +1948,18 @@
                     "",
                     "var tokens = eval(pm.collectionVariables.get('tokens'));",
                     "tokens.obtain(terminal_code, password);"
-                  ]
+                  ],
+                  "id": "e3e5429d-1eb3-4ded-acbd-f1f98e25593f"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "df65aaf2-fe32-4e6d-9040-6d7e29f50835",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "38dbb10a-59d8-4530-ad80-97ef2b5e6681"
                 }
               }
             ]
@@ -1973,9 +1973,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_merchant_order_id')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('last_merchant_order_id')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_PASSWORD');",
@@ -1983,13 +1982,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "b7f69ffa-a7f7-4de0-a13d-ba320a26453a"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "654f927d-f5c6-46fb-9754-b6375500bba7",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -1999,14 +1998,15 @@
                         "",
                         "    pm.expect(response).to.have.property('data');",
                         "    ",
-                        "    pm.variables.set('last_payment_id', response.data[0].payment_data.id);",
+                        "    pm.collectionVariables.set('last_payment_id', response.data[0].payment_data.id);",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "67f2ccd1-29c7-4327-8c54-554074681bba"
                     }
                   }
                 ],
-                "id": "e2cbd15c-b126-431e-ba9a-883dc1718ac6",
+                "id": "69426992-646b-428a-9538-cb94f4d597d4",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2062,7 +2062,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "0ee62cff-8ea2-4f65-8f5f-8d0398844f22",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_PASSWORD');",
@@ -2070,13 +2069,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "696fb910-5b14-410b-8e62-3733c9bc710a"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "922767d3-ad8a-4d08-8f8d-8f43445739d6",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2088,11 +2087,12 @@
                         "    pm.expect(response).to.have.property('has_more');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f0e0f99b-05a0-4ec0-9119-ac66358ddecb"
                     }
                   }
                 ],
-                "id": "24e00a26-466e-4ae2-af83-4241124571c7",
+                "id": "d24f2268-6faf-4176-b3b1-88fad384e47b",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2147,27 +2147,27 @@
                 "response": []
               }
             ],
-            "id": "1322dcfc-c7ca-4861-b62c-f211b2c19fbb",
+            "id": "97b81426-3dd0-44e3-a38a-425426ee603e",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.unlimint.com/#getPayments)\n* Merchant receives GET response about transactions (payments list)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "2d26a8a7-81c1-4ff2-a758-efdbc307022c",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "0fec225b-59f1-4996-8300-550f77699aa7"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "08ee680e-b574-45d8-b4b1-4fdf968e67fa",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "3b16e2fe-40ea-4874-902d-b78e88fff4c2"
                 }
               }
             ]
@@ -2181,9 +2181,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_payment_id')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('last_payment_id')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_PASSWORD');",
@@ -2191,13 +2190,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "c1edfea5-d0f5-4e78-9109-7aeda314c814"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2207,14 +2206,15 @@
                         "",
                         "    pm.expect(response).to.have.property('payment_data');",
                         "    pm.expect(response.payment_data).to.have.property('id');",
-                        "    pm.expect(response.payment_data.id).to.equal(pm.variables.get('last_payment_id'));",
+                        "    pm.expect(response.payment_data.id).to.equal(pm.collectionVariables.get('last_payment_id'));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "06268d37-0364-482d-8af3-7ee735d8ef62"
                     }
                   }
                 ],
-                "id": "f7bfb26b-b6e0-4d73-99cc-f65911be8950",
+                "id": "bc296873-a616-492b-9d24-0775740b6892",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2255,36 +2255,36 @@
                 "response": []
               }
             ],
-            "id": "d042ed02-637e-4004-b228-41a200cd768c",
+            "id": "84435173-e77d-4d78-b6d6-69e51c06a1d8",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.unlimint.com/#getPayment)\n* Merchant receives GET response about transaction (payment) result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "f9569610-1c88-4814-9111-8e11823128dc",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "d701a6db-9610-4c0a-9186-4d821e1d3b91"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "cf4ebe93-e3bb-4311-969f-c2f295400fa5",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "43db0711-9c92-4f51-8fb1-eb1fa5e5a0c8"
                 }
               }
             ]
           },
           {
-            "name": "Create Installment payment (one-phase)",
+            "name": "Create installment payment (one-phase)",
             "item": [
               {
-                "name": "Create Issuer Financed Installment payment (one-phase)",
+                "name": "Create issuer financed installment payment (one-phase)",
                 "event": [
                   {
                     "listen": "test",
@@ -2299,7 +2299,7 @@
                         "});"
                       ],
                       "type": "text/javascript",
-                      "id": "d2aa199d-2f42-4d0a-a3f1-c0cbabf3bf77"
+                      "id": "58c7c3e5-0b6f-4706-bff2-d28a2ec4ca1a"
                     }
                   },
                   {
@@ -2313,11 +2313,11 @@
                         "tokens.obtain(terminal_code, password);"
                       ],
                       "type": "text/javascript",
-                      "id": "40a6dda6-2c90-46d0-82c3-8f5895242873"
+                      "id": "d0cddd46-3e6c-4f1f-90e1-8162f04a24b0"
                     }
                   }
                 ],
-                "id": "8f45b46a-ef4f-43dd-8196-3535fa9f6a7b",
+                "id": "fb1d3720-0c28-44da-9fdb-ad6db9825e29",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2357,7 +2357,7 @@
                 "response": []
               },
               {
-                "name": "Create Merchant Financed Installment payment (one-phase)",
+                "name": "Create merchant financed installment payment (one-phase)",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -2370,7 +2370,7 @@
                         "tokens.obtain(terminal_code, password);"
                       ],
                       "type": "text/javascript",
-                      "id": "ea42525e-5344-4d9c-bacb-89d28584b536"
+                      "id": "ef421c77-bd01-4b8f-97ed-8ec7927325a2"
                     }
                   },
                   {
@@ -2386,11 +2386,11 @@
                         "});"
                       ],
                       "type": "text/javascript",
-                      "id": "7f68ec4d-7d1e-4fa7-b120-077e94618f9f"
+                      "id": "dc799e45-f58a-4c05-9b14-2a98b9bad17e"
                     }
                   }
                 ],
-                "id": "e279aefd-273b-4706-ac52-79e30da7d944",
+                "id": "ea3daed1-cd46-46d3-a279-62b647ceed68",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2430,19 +2430,18 @@
                 "response": []
               }
             ],
-            "id": "8cff055c-b742-44cf-ab99-5f3f4564d1a0",
+            "id": "4011a210-b4a8-4369-87ca-8a96ff8df628",
             "description": "Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (one-phase), [see more](https://integration.unlimint.com/#createPayment).\n\n**How to create Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n    \n\nAfter successful 3DS validation payment will be completed"
           },
           {
-            "name": "Create Installment payment (two-phase)",
+            "name": "Create installment payment (two-phase)",
             "item": [
               {
-                "name": "Create Merchant Financed Installment payment (two-phase)",
+                "name": "Create merchant financed installment payment (two-phase)",
                 "event": [
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "5ec24e7d-2e2a-47fa-aa0f-8b2e70491e19",
                       "exec": [
                         "var uuid = require('uuid');\r",
                         "\r",
@@ -2456,13 +2455,13 @@
                         "pm.variables.set('merchant_order_id', merchant_order_id);\r",
                         "pm.variables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "6f157e50-632d-4de7-b1ad-72be6d5c1868"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "ede38aab-d954-4f5f-b4c7-6b37d40d1192",
                       "exec": [
                         "pm.test(\"Successful request\", function () {\r",
                         "    pm.response.to.be.ok;\r",
@@ -2481,11 +2480,12 @@
                         "    postman.setNextRequest('Update Merchant Financed Installment payment (two-phase)');\r",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "a5006bed-8b78-4ed6-aefe-e9310a372073"
                     }
                   }
                 ],
-                "id": "50436e6f-2217-4094-b751-3c3d91144e4b",
+                "id": "40d6c66b-181b-4516-b065-3c94262253d1",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2525,12 +2525,11 @@
                 "response": []
               },
               {
-                "name": "Update Merchant Financed Installment payment (two-phase)",
+                "name": "Update merchant financed installment payment (two-phase)",
                 "event": [
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "86e54857-3e99-4e71-9075-876a834ae45b",
                       "exec": [
                         "pm.expect(pm.collectionVariables.get('payment_id_to_update')).to.not.be.undefined;",
                         "",
@@ -2540,13 +2539,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "9e4fc82a-77c4-4ab0-b1a8-4fd9107eb7d8"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "ed793274-46d1-46d6-9fef-2dcd102e8e15",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2559,11 +2558,12 @@
                         "    pm.expect(response.payment_data.status).to.equal('AUTHORIZED');",
                         "})"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "faf06132-0f44-46d9-9a14-d653fccdb276"
                     }
                   }
                 ],
-                "id": "2d77ae3c-9330-48d0-886c-1d9b87bcb029",
+                "id": "3cd82d25-6188-4545-85f3-d97d92e79ade",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2615,16 +2615,15 @@
                 "response": []
               }
             ],
-            "id": "2edfae9e-e1e8-4b1c-95ac-1ab96de985d6",
+            "id": "5d4d4507-58d2-4ccc-a0bf-babb183b38e5",
             "description": "*   Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (two-phase), [see more](https://integration.unlimint.com/#createPayment).\n    \n\n**How to create two-phase Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n*   Make PATСH-request to update (complete) Installment payment\n    \n\n**Important:** in POST-request non-3DS card is used. These settings are relevant only for the test collection (due to Sandbox features) - real Installment payments can be created only for cards with 3DS enabled"
           }
         ],
-        "id": "c6115f17-6ffc-4e36-88b4-f8a163e39d4b",
+        "id": "cb952acc-0a49-4299-b770-b07f602f5d26",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "d080d245-fa4f-4e4d-bf71-d01710bc534c",
               "type": "text/javascript",
               "exec": [
                 "var moment = require('moment');",
@@ -2635,17 +2634,18 @@
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
-              ]
+              ],
+              "id": "3cef093f-6da5-4789-ad9b-7b7e7e4ce333"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "451bbc2b-1aa5-4f36-a461-d4466e5e50e4",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "b1f50e25-b697-4f18-bcfd-9de82eef721b"
             }
           }
         ]
@@ -2662,7 +2662,6 @@
                   {
                     "listen": "test",
                     "script": {
-                      "id": "ea48a44e-3cae-4252-8ee3-98accc06f910",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2675,26 +2674,27 @@
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
                         "    });",
                         "    ",
-                        "    pm.variables.set('payment_id_for_refund', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_for_refund', response.payment_data.id);",
                         "    ",
                         "    postman.setNextRequest('Create refund');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "439967a2-eb53-4a22-96d3-803ba1188414"
                     }
                   },
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "f62dea6c-e2d8-406c-bb11-dc1954d52f2d",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "047d6fbf-5f79-418e-87cc-9f7add8223ad"
                     }
                   }
                 ],
-                "id": "efa56cbd-f81e-45e9-ab99-318a3a9491ab",
+                "id": "efa231dd-b96e-4684-a81e-cd352814bef2",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2750,23 +2750,22 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
-                        "pm.expect(pm.variables.get('payment_id_for_refund')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('payment_id_for_refund')).to.not.be.undefined;",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "652b3dda-68c6-4e69-9f04-69720fdf7507"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.have.status(201);",
@@ -2775,16 +2774,17 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response.refund_data).to.have.property('id');",
                         "    ",
-                        "    pm.variables.set('last_refund_id', response.refund_data.id);",
+                        "    pm.collectionVariables.set('last_refund_id', response.refund_data.id);",
                         "    ",
                         "    postman.setNextRequest('Get refund by merchant order id');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "22fa845c-7db7-4750-ac63-2779b355ef18"
                     }
                   }
                 ],
-                "id": "a1234383-ebe4-4782-a7c0-b06405cdbcb3",
+                "id": "305d38e9-bb7f-45b7-8061-d5bf6f289f87",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2835,27 +2835,27 @@
                 "response": []
               }
             ],
-            "id": "46fe3f2c-a60c-4fbc-bcf0-9b2544c6727c",
+            "id": "89c6c15e-16e7-4962-83d5-a9cefd77462d",
             "description": "* Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant can create new refund only after successfully creation of payment or recurring payment\n* Merchant must have payment id (or recurring id) and send it in refund request\n* Merchant receives response with created transaction result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "387eda76-f1da-46e5-bc0b-94bfdf25115b",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "736d32a9-ae1d-4a9a-bb64-178c72c67657"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "ca40a12c-3d75-4be9-9ad8-3144f72ec8fd",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "1b06ecd6-4613-489d-918d-f64ed7d3848c"
                 }
               }
             ]
@@ -2869,17 +2869,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_merchant_order_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_merchant_order_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "94036c54-21a9-43c1-9152-5b0b15c3946e"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "654f927d-f5c6-46fb-9754-b6375500bba7",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2889,14 +2888,15 @@
                         "",
                         "    pm.expect(response).to.have.property('data');",
                         "    ",
-                        "    pm.variables.set('last_refund_id', response.data[0].refund_data.id);",
+                        "    pm.collectionVariables.set('last_refund_id', response.data[0].refund_data.id);",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "d3038d06-8b79-4299-8bbc-62b102a69088"
                     }
                   }
                 ],
-                "id": "ae2ca3b8-5ab0-4dfd-baa8-4833661437bb",
+                "id": "b72b7820-d8de-497e-a112-0559105ee0a1",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -2952,17 +2952,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "0ee62cff-8ea2-4f65-8f5f-8d0398844f22",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "e13d68ad-2fbb-4de8-be72-b8707ec8fcf3"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "922767d3-ad8a-4d08-8f8d-8f43445739d6",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -2974,11 +2973,12 @@
                         "    pm.expect(response).to.have.property('has_more');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "9751bd07-007e-47aa-960c-23c68340caca"
                     }
                   }
                 ],
-                "id": "5015b788-2843-47b8-9626-9e70c65ba466",
+                "id": "81d19863-e77b-49ee-926d-e47c584db63e",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3033,27 +3033,27 @@
                 "response": []
               }
             ],
-            "id": "95fa518c-87ba-4609-b44a-f2e49b919d64",
+            "id": "20572cd4-53c7-4ead-8291-d4bfd3ba00ff",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.unlimint.com/#getRefunds)\n* Merchant receives GET response about transactions (refunds list)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "8f76ddfb-16d4-458b-b03c-bc3da5f88d54",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "f2b6c88b-ed63-4b2c-9347-1b345217a49c"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "b3d16d72-ad3a-4e94-a5ef-5f3c954e5225",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "6ffa5fc5-ca83-4836-b353-d37a2303ec72"
                 }
               }
             ]
@@ -3067,17 +3067,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_refund_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_refund_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "7fc155dc-6c6e-4c9e-a2d0-b722030e2faa"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3087,14 +3086,15 @@
                         "",
                         "    pm.expect(response).to.have.property('refund_data');",
                         "    pm.expect(response.refund_data).to.have.property('id');",
-                        "    pm.expect(response.refund_data.id).to.equal(pm.variables.get('last_refund_id'));",
+                        "    pm.expect(response.refund_data.id).to.equal(pm.collectionVariables.get('last_refund_id'));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "6f6ac27b-2b6b-43a7-b674-f17eebae63c2"
                     }
                   }
                 ],
-                "id": "57ab0599-f418-47df-b62c-9845cf2f25f0",
+                "id": "340b526a-29c9-4514-9e07-3f01acd04188",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3135,27 +3135,27 @@
                 "response": []
               }
             ],
-            "id": "2b83303d-9c8b-4ebf-9e96-37a90ef1e5d1",
+            "id": "dbb5f766-4f23-42c0-8481-37e968a3330f",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.unlimint.com/#getRefund)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "5c9290be-d8f2-445c-8553-7f3129b2c1a3",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "904fa291-9995-4633-8d24-95ba3385328d"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "d02a8b05-ee6b-4c18-8ff7-cbfd184cf40d",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "a26ce88e-5b00-4a2f-a1da-a6d4e1e07e15"
                 }
               }
             ]
@@ -3169,17 +3169,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "37d86847-67be-485e-bc1f-dc12888fecb6"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3192,16 +3191,17 @@
                         "        pm.expect(response_after_redirect.code).to.equal(200);",
                         "    });",
                         "    ",
-                        "    pm.variables.set('payment_id_for_reversed_refund', response.payment_data.id);",
+                        "    pm.collectionVariables.set('payment_id_for_reversed_refund', response.payment_data.id);",
                         "    ",
                         "    postman.setNextRequest('Create refund to reverse');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "595e0f50-890e-4a8a-b470-c68b8961c2ff"
                     }
                   }
                 ],
-                "id": "34c33fe4-2cf3-49d3-8fb5-81434bd2581b",
+                "id": "822046ba-e15a-4fc1-a9b9-4016b3dc54e2",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3257,17 +3257,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('payment_id_for_reversed_refund')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('payment_id_for_reversed_refund')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f670d238-7d95-4898-89bf-35185dfbddfe"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Request success\", function () {",
                         "    pm.response.to.have.status(201);",
@@ -3276,16 +3275,17 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response.refund_data).to.have.property('id');",
                         "    ",
-                        "    pm.variables.set('refund_id_to_reverse', response.refund_data.id);",
+                        "    pm.collectionVariables.set('refund_id_to_reverse', response.refund_data.id);",
                         "    ",
                         "    postman.setNextRequest('Reverse refund');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "9ca25b2a-a671-4c9f-8edf-7d1281be2f7e"
                     }
                   }
                 ],
-                "id": "352fff90-4ed0-4552-a03f-7c1d31cf8849",
+                "id": "dfa62066-f3c3-410d-8003-f7cd2fd2ce54",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3341,17 +3341,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('refund_id_to_reverse')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('refund_id_to_reverse')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "cd1e9e20-fb01-4105-80e0-af68670cd473"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3364,11 +3363,12 @@
                         "})",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "afed9bdc-0205-4563-8291-a88cd2c35017"
                     }
                   }
                 ],
-                "id": "d86c7199-4030-4372-bbf7-cc3608b422de",
+                "id": "f4bdbcdf-f88d-4cb0-94c2-6704de1848f0",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3420,13 +3420,12 @@
                 "response": []
               }
             ],
-            "id": "fc319423-b2cb-43ff-a08d-d004dab7e408",
+            "id": "ef56d748-1195-4ecc-97b9-9df899bce19c",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updateRefund)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "e0f94c80-8ff9-4cb6-81e7-387a14174bbc",
                   "type": "text/javascript",
                   "exec": [
                     "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
@@ -3434,28 +3433,28 @@
                     "",
                     "var tokens = eval(pm.collectionVariables.get('tokens'));",
                     "tokens.obtain(terminal_code, password);"
-                  ]
+                  ],
+                  "id": "d29f0a45-3795-47e4-8077-c5bf44e8fd8c"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "9e05531f-ed81-4f9d-8b33-817a328d7a11",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "c96a911e-2d4e-4f28-926c-6ed0c7c425fc"
                 }
               }
             ]
           }
         ],
-        "id": "39cb182f-0d6a-4d97-98bf-21989f713b57",
+        "id": "91329739-a060-432e-9aff-0e4dc692bacf",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "2adc25dc-4c14-4555-81fc-90a449e2ab7e",
               "type": "text/javascript",
               "exec": [
                 "var moment = require('moment');",
@@ -3466,17 +3465,18 @@
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
-              ]
+              ],
+              "id": "d4fdecfe-8dfb-4211-8191-7edc00289a2c"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "30a2c9c0-cf14-498b-810b-f92ff69549f3",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "4d1473a3-7182-4fc5-97c3-86461df087dd"
             }
           }
         ]
@@ -3493,21 +3493,20 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "0e121e80-1189-44b3-b403-a64500548ab7"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.have.status(201);",
@@ -3516,16 +3515,17 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response.payout_data).to.have.property('id');",
                         "    ",
-                        "    pm.variables.set('last_payout_id', response.payout_data.id);",
+                        "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
                         "    ",
                         "    postman.setNextRequest('Get payout by merchant order id');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "d1565a53-2dd4-4176-b464-fa049952b4e7"
                     }
                   }
                 ],
-                "id": "752d4262-3146-4a93-b685-5377c988640c",
+                "id": "aa03d6eb-acd4-478e-8157-f3b6a49d2c92",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3576,27 +3576,27 @@
                 "response": []
               }
             ],
-            "id": "09c4d343-cd62-4188-9c92-e6f24294b620",
+            "id": "0dbf3207-26cb-4c04-a514-f19b74bda6b1",
             "description": "* Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives response with transaction (payout) result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "48ef339d-1e15-4b4c-b454-3b79661ce793",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "96517514-af6c-4baf-bd9e-a3249eccee41"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "023b6af0-5886-4b64-b76f-f19fb466522f",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "3202831b-8381-4d9f-9a66-68cd35fffdf1"
                 }
               }
             ]
@@ -3610,17 +3610,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_merchant_order_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_merchant_order_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "e01b29a0-b1b4-4ae8-88c5-1a7702d7a7f8"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "654f927d-f5c6-46fb-9754-b6375500bba7",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3629,14 +3628,15 @@
                         "    var response = pm.response.json();",
                         "",
                         "    pm.expect(response).to.have.property('data');",
-                        "    pm.variables.set('last_payout_id', response.data[0].payout_data.id);",
+                        "    pm.collectionVariables.set('last_payout_id', response.data[0].payout_data.id);",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "2139f70c-e245-4f20-a9fd-cc85934f8c81"
                     }
                   }
                 ],
-                "id": "5c40333a-b243-44ea-a13c-27c727dd5bba",
+                "id": "6ee4313b-0965-4922-8237-9d0d88223264",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3692,17 +3692,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "0ee62cff-8ea2-4f65-8f5f-8d0398844f22",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "41ce5e0b-ffc7-4251-9330-805b22ed7522"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "922767d3-ad8a-4d08-8f8d-8f43445739d6",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3714,11 +3713,12 @@
                         "    pm.expect(response).to.have.property('has_more');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "5fdc8259-c14c-4b64-b942-676e6f31831d"
                     }
                   }
                 ],
-                "id": "94383321-ea67-4d09-8c0b-6ba3b34a459d",
+                "id": "30ef93f3-ed16-4776-b6fc-b57f78a9877d",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3773,27 +3773,27 @@
                 "response": []
               }
             ],
-            "id": "5aa59ff6-df38-4445-b970-5ecfe969062b",
+            "id": "e1952186-3c02-45f7-8421-278af1ec9af1",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transactions (payouts list)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "a3614766-e828-4199-94da-361fd250b9ed",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "2fcd86ab-0616-4024-856c-ef7aaabffd5f"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "8aa4201d-af6e-4775-831a-1d96e3eb2958",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "8cbb76a9-5110-43d4-8c6f-3a6deb349ce6"
                 }
               }
             ]
@@ -3807,17 +3807,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_payout_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_payout_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "fd6a5a50-a090-41f7-b565-6e9b97c3af27"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -3827,14 +3826,15 @@
                         "",
                         "    pm.expect(response).to.have.property('payout_data');",
                         "    pm.expect(response.payout_data).to.have.property('id');",
-                        "    pm.expect(response.payout_data.id).to.equal(pm.variables.get('last_payout_id'));",
+                        "    pm.expect(response.payout_data.id).to.equal(pm.collectionVariables.get('last_payout_id'));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "bd314900-9f2a-47a1-afa8-d62c31219fc3"
                     }
                   }
                 ],
-                "id": "2f1bcc76-f7f1-4369-9664-ad06b1c52bf8",
+                "id": "11f5ad09-50dd-4f11-9b40-7cc073f15960",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3875,27 +3875,27 @@
                 "response": []
               }
             ],
-            "id": "dd96727b-e510-4332-a294-9b5951739dce",
+            "id": "fcb1fba4-ea04-43d6-a29f-3b1f74aaf529",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "14b124ad-8a42-4443-84fa-88bbe00e65fe",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "9a072f30-4b7b-49dc-b631-456596c15b9b"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "1ebc60c1-09ff-4232-b22a-0e0a7784c6f8",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "37ffc903-c146-4629-82e7-143101f77756"
                 }
               }
             ]
@@ -3909,20 +3909,19 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "cc46f486-eea2-4722-a36d-b8123b6b45c2"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Request success\", function () {",
                         "    pm.response.to.have.status(201);",
@@ -3931,16 +3930,17 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response.payout_data).to.have.property('id');",
                         "    ",
-                        "    pm.variables.set('payout_id_to_reverse', response.payout_data.id);",
+                        "    pm.collectionVariables.set('payout_id_to_reverse', response.payout_data.id);",
                         "    ",
                         "    postman.setNextRequest('Reverse payout');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "d86d3f7c-3c99-48bd-9957-c14d898743c1"
                     }
                   }
                 ],
-                "id": "c19b3fcd-e8b7-4760-b5e2-159d818292a8",
+                "id": "6ceb2767-dbd1-4678-b202-ed8c9d3191e0",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -3996,17 +3996,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('payout_id_to_reverse')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('payout_id_to_reverse')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "e1949a29-9cfd-474c-b631-1a53bd7a03f8"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4019,11 +4018,12 @@
                         "})",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "4d6bf636-307c-44e8-ba44-9b120263da00"
                     }
                   }
                 ],
-                "id": "8ea95a67-6271-45e5-9983-81e32084f42f",
+                "id": "28595bae-7741-45e7-9aee-e0de3d15f4f4",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4075,13 +4075,12 @@
                 "response": []
               }
             ],
-            "id": "ea479a49-d8b6-4a49-af5b-2a7feb8c1899",
+            "id": "d4d3f6d4-373c-43a6-9696-27319c808e78",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives callback with transaction result information (with payout id)\n* Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Unlimint manager, [see more](https://integration.unlimint.com/#updatePayout)\n* Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "71e0e542-ccf1-4888-9127-c5ae75fbdee3",
                   "type": "text/javascript",
                   "exec": [
                     "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
@@ -4089,28 +4088,28 @@
                     "",
                     "var tokens = eval(pm.collectionVariables.get('tokens'));",
                     "tokens.obtain(terminal_code, password);"
-                  ]
+                  ],
+                  "id": "d441654d-7ae0-40da-a4c0-48caa8f63ba5"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "29d3a2c6-28e4-4496-a551-b56ea5595333",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "57310607-cfd1-438f-b6c2-c5e9a9e585dd"
                 }
               }
             ]
           }
         ],
-        "id": "bdd5f0b2-b7a0-4de6-bf00-bb8e91bf77e6",
+        "id": "cd280bea-591d-411a-8b93-253f8cb0d581",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "718c66ea-ef27-42c9-bbd3-09af10758595",
               "type": "text/javascript",
               "exec": [
                 "var moment = require('moment');",
@@ -4121,17 +4120,18 @@
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
-              ]
+              ],
+              "id": "4cffb8ba-eaa8-4749-bcfd-521f9b5ad406"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "cc6903a0-8c48-49a2-a6cd-71325f5d0811",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "f79468ca-59f8-4e92-9863-5d319ffd1795"
             }
           }
         ]
@@ -4148,17 +4148,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "fcf99213-c7b1-421e-81d7-eb64a793bd32"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4173,15 +4172,16 @@
                         "        pm.response.to.have.status(200);",
                         "    });",
                         "    ",
-                        "    pm.variables.set('last_recurring_one_click_id', response.recurring_data.id);",
+                        "    pm.collectionVariables.set('last_recurring_one_click_id', response.recurring_data.id);",
                         "    postman.setNextRequest('Get recurring by first recurring id');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f6c88243-d355-4272-bca7-8e0886750f95"
                     }
                   }
                 ],
-                "id": "a5a31963-8e76-4475-be01-595c5ad3afc6",
+                "id": "a9a1fba0-a0bf-450a-a214-ac1d65ebbf8b",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4232,27 +4232,27 @@
                 "response": []
               }
             ],
-            "id": "7da31a5f-208f-4037-9912-7300a29c56b8",
+            "id": "749896d6-8f06-4e4d-a217-31c2d3af8a0d",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.unlimint.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n* One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page (Unlimint or Merchant site) with provided URL\n* Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "ab9a9dbd-c1a7-48c0-806c-f40e1ee32e15",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "5e842ef4-9511-487e-8523-37aa845e71f4"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "ab24fa15-583c-4eaa-acbd-de1b2b2e8bd9",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "baa4541c-7ac3-4c90-936b-9937ad31c86f"
                 }
               }
             ]
@@ -4266,17 +4266,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_recurring_one_click_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_recurring_one_click_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "11f786fc-381d-4e66-be6f-4d8fb64d5e81"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4286,21 +4285,22 @@
                         "",
                         "    pm.expect(response).to.have.property('recurring_data');",
                         "    pm.expect(response.recurring_data).to.have.property('id');",
-                        "    pm.expect(response.recurring_data.id).to.equal(pm.variables.get('last_recurring_one_click_id'));",
+                        "    pm.expect(response.recurring_data.id).to.equal(pm.collectionVariables.get('last_recurring_one_click_id'));",
                         "    ",
                         "    pm.expect(response.recurring_data).to.have.property('filing');",
                         "    pm.expect(response.recurring_data.filing).to.have.property('id');",
                         "    ",
-                        "    pm.variables.set('last_filing_id', response.recurring_data.filing.id);",
+                        "    pm.collectionVariables.set('last_filing_id', response.recurring_data.filing.id);",
                         "    ",
                         "    postman.setNextRequest('Create next one-click payment');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "1a70ddd4-3d57-4d77-a63a-a7504a4a17b2"
                     }
                   }
                 ],
-                "id": "b4c8771c-098b-4ebb-8d5f-4057c26003da",
+                "id": "48efc365-1f0f-4e22-b250-e611d82bd66f",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4346,23 +4346,22 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var uuid = require('uuid');",
                         "",
-                        "pm.expect(pm.variables.get('last_filing_id')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('last_filing_id')).to.not.be.undefined;",
                         "",
                         "var merchant_order_id = uuid.v4();",
-                        "pm.variables.set('merchant_order_id', merchant_order_id);",
-                        "pm.variables.set('last_merchant_order_id', merchant_order_id);"
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "ac460958-2ceb-48b1-98d3-624c5c17c876"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4375,7 +4374,7 @@
                         "    pm.expect(response.recurring_data).to.have.property('filing');",
                         "    pm.expect(response.recurring_data.filing).to.have.property('id');",
                         "    ",
-                        "    pm.expect(response.recurring_data.filing.id).to.equal(pm.variables.get('last_filing_id'));",
+                        "    pm.expect(response.recurring_data.filing.id).to.equal(pm.collectionVariables.get('last_filing_id'));",
                         "",
                         "    // emulate customer behaviour, performing GET request to redirect url",
                         "    pm.sendRequest(response.redirect_url, (err, res) => {",
@@ -4385,11 +4384,12 @@
                         "    postman.setNextRequest('Get recurring by merchant order id');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "11346c71-8220-4a06-8f44-4f2af3722ddc"
                     }
                   }
                 ],
-                "id": "1db9af6b-1662-4205-b678-863d7dd6d25a",
+                "id": "63332ffa-16bc-4e1f-bf56-e990daf5a738",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4440,27 +4440,27 @@
                 "response": []
               }
             ],
-            "id": "7742176a-442f-4a36-9125-8a683c414e9a",
+            "id": "8baff04a-bb1e-4e28-8e6f-74508f28fe53",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings**, to create new one-click payment (with 'initiator'='cit', filing.id from previous one-click in request) \n* Upon authentication completion, one-click payment is processed. Customer gets payment result page (redirect URL)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "121b94e4-ffdf-4f9a-9166-6d2b0506f534",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "a83c135c-01f6-4522-88ff-0a0409e91d95"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "42e58dc4-95d4-4d6e-91e7-a353ff866744",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "c41c2bc5-63db-4aa1-a3af-25c27fc2e16d"
                 }
               }
             ]
@@ -4474,17 +4474,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_merchant_order_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_merchant_order_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "8d1e1ae4-33a9-47ca-862a-e05d05e35378"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "654f927d-f5c6-46fb-9754-b6375500bba7",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4493,14 +4492,15 @@
                         "    var response = pm.response.json();",
                         "",
                         "    pm.expect(response).to.have.property('data');",
-                        "    pm.variables.set('last_recurring_id', response.data[0].recurring_data.id);",
+                        "    pm.collectionVariables.set('last_recurring_id', response.data[0].recurring_data.id);",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "caed047b-7076-44fb-b12a-2fe5d7e7de1a"
                     }
                   }
                 ],
-                "id": "e0be6fad-5326-4366-a82f-7c787110d129",
+                "id": "75d2acbf-6837-4f7d-8cf1-807917653f2f",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4556,17 +4556,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "0ee62cff-8ea2-4f65-8f5f-8d0398844f22",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "6b4031b1-03a4-40d0-8143-20e9de17dbdc"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "922767d3-ad8a-4d08-8f8d-8f43445739d6",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4578,11 +4577,12 @@
                         "    pm.expect(response).to.have.property('has_more');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "5409455c-d6be-4ec3-b254-00e26aa46ceb"
                     }
                   }
                 ],
-                "id": "4b55662b-8863-4675-9781-878d22ae2967",
+                "id": "42ee25ee-6a75-4191-b8a5-42f4db1fae0c",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4637,27 +4637,27 @@
                 "response": []
               }
             ],
-            "id": "70a52bfd-cadd-4729-ad91-38273010f99a",
+            "id": "9a8eace6-3abf-4b64-9ba9-e0476852fe94",
             "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.unlimint.com/#getRecurrings)\n* Merchant receives GET response about transactions (recurrings list)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "cf1ce099-1d51-41d6-8194-82a3e49b3cc0",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "a9df04f0-2004-4f61-b13d-38898eaef220"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "d8619f04-604a-428c-8106-acd82694a345",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "a52d809f-a866-43ef-a9af-698311aef109"
                 }
               }
             ]
@@ -4671,17 +4671,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "13f236ea-e00b-4ea1-9d57-7e2a4ae4c749",
                       "exec": [
-                        "pm.expect(pm.variables.get('last_recurring_id')).to.not.be.undefined;"
+                        "pm.expect(pm.collectionVariables.get('last_recurring_id')).to.not.be.undefined;"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "38cc9f85-9028-4f3c-8380-289e6445d78c"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "f5a7dc4b-2f7f-4d18-9122-e739bbaf6c97",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4691,14 +4690,15 @@
                         "",
                         "    pm.expect(response).to.have.property('recurring_data');",
                         "    pm.expect(response.recurring_data).to.have.property('id');",
-                        "    pm.expect(response.recurring_data.id).to.equal(pm.variables.get('last_recurring_one_click_id'));",
+                        "    pm.expect(response.recurring_data.id).to.equal(pm.collectionVariables.get('last_recurring_one_click_id'));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "672f9e5c-5fcf-4144-8a22-55874b43170b"
                     }
                   }
                 ],
-                "id": "dc6746c1-31ef-477f-8ea6-91444176339d",
+                "id": "00c1a390-447a-4557-8663-11ef242b8d56",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4739,27 +4739,27 @@
                 "response": []
               }
             ],
-            "id": "7389a13f-730c-4c25-b9fb-606d584d1a60",
+            "id": "9a007542-bd86-4a87-80e2-83acb871c441",
             "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.unlimint.com/#getRecurring)\n* Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "4e667e71-6ca8-4eff-a752-43742e10b0e5",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "942865da-244c-4b24-b162-6f4de62dc828"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "1c83c023-3678-4ce6-b965-fc698720a976",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "21e8f799-7ceb-4387-80d6-e4d92e7c9592"
                 }
               }
             ]
@@ -4773,7 +4773,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -4781,13 +4780,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "c6f302e4-f929-4c41-a1b3-d9f2edf029dd"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -4802,15 +4801,16 @@
                         "        pm.response.to.have.status(200);",
                         "    });",
                         "    ",
-                        "    pm.variables.set('recurring_one_click_id_to_complete', response.recurring_data.id);",
+                        "    pm.collectionVariables.set('recurring_one_click_id_to_complete', response.recurring_data.id);",
                         "    postman.setNextRequest('Complete pre-authorized one-click payment');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "c64b086f-127a-420b-b5ed-8887db6c9381"
                     }
                   }
                 ],
-                "id": "252d42a1-8ae9-4125-868d-1822fdcb7ec4",
+                "id": "ea8478dc-82cf-4a2b-af69-2c0215f141a1",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4866,9 +4866,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('recurring_one_click_id_to_complete')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('recurring_one_click_id_to_complete')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -4876,13 +4875,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "1b04ebd3-99e9-461c-af4c-3414972802c9"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok",
@@ -4895,11 +4894,12 @@
                         "    pm.expect(response.recurring_data.status).to.equal('COMPLETED');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "afbcfe2c-56d8-479e-89b6-cdb8d86a6da0"
                     }
                   }
                 ],
-                "id": "e9f8fe83-b71f-4f13-b413-41545939acb5",
+                "id": "6076b896-d511-408c-a303-62d9d78a6631",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -4951,27 +4951,27 @@
                 "response": []
               }
             ],
-            "id": "150e367f-0993-4f64-9f30-0e661b2f4115",
+            "id": "b0395574-4ec2-4f9a-898c-ca914fb99e1f",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createRecurring)\n* Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n* Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less, equal or more than preauthorized amount in first request",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "ab9a9dbd-c1a7-48c0-806c-f40e1ee32e15",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "8106993f-acbb-46a9-a889-955f53c65674"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "ab24fa15-583c-4eaa-acbd-de1b2b2e8bd9",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "08c3f1d1-90ba-42cd-9a06-abaaa49d8237"
                 }
               }
             ]
@@ -4985,7 +4985,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -4993,13 +4992,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "bfc9ebef-d3eb-4bc3-bdaf-37ef83512243"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -5014,15 +5013,16 @@
                         "        pm.response.to.have.status(200);",
                         "    });",
                         "    ",
-                        "    pm.variables.set('recurring_one_click_id_to_reverse', response.recurring_data.id);",
+                        "    pm.collectionVariables.set('recurring_one_click_id_to_reverse', response.recurring_data.id);",
                         "    postman.setNextRequest('Reverse pre-authorized one-click payment');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "02ca1014-67ac-4f6d-b3e1-1a6102709207"
                     }
                   }
                 ],
-                "id": "cd5c5f87-7f60-49c6-abf9-2876a83f8a4f",
+                "id": "7ba19668-081a-4764-bf6d-612827b9eccc",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5078,9 +5078,8 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "bc38486f-e062-48f3-9283-a806432da50a",
                       "exec": [
-                        "pm.expect(pm.variables.get('recurring_one_click_id_to_reverse')).to.not.be.undefined;",
+                        "pm.expect(pm.collectionVariables.get('recurring_one_click_id_to_reverse')).to.not.be.undefined;",
                         "",
                         "var terminal_code = pm.environment.get('GATEWAY_POSTPONED_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_POSTPONED_PASSWORD');",
@@ -5088,13 +5087,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "e39562bc-1e5f-42ed-bd62-e1e9fd9185b6"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "5c06618e-e4f4-4354-8481-a3a07d39895f",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok",
@@ -5107,11 +5106,12 @@
                         "    pm.expect(response.recurring_data.status).to.equal('VOIDED');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "38e373b2-ca70-49ea-98ab-2d470649f089"
                     }
                   }
                 ],
-                "id": "cdb850d8-8313-482c-941a-09fa4112b1da",
+                "id": "abd75e83-38c5-47d0-a00b-dd93b69e390a",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5163,38 +5163,37 @@
                 "response": []
               }
             ],
-            "id": "8f43724e-d371-4f9d-9ac3-4a7bbfeb65f1",
+            "id": "9fdb0e69-97e7-40a7-a979-f3daba6999e4",
             "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.unlimint.com/#createRecurring)\n* Merchant receives callback with transaction result information (with recurring id)\n* Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.unlimint.com/#updateRecurring)",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "ab9a9dbd-c1a7-48c0-806c-f40e1ee32e15",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "23fbebf3-bb1d-4c92-8ff1-c749f14d3e9a"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "ab24fa15-583c-4eaa-acbd-de1b2b2e8bd9",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "fbd66f89-0adb-436a-a4e4-f0b64981a20c"
                 }
               }
             ]
           }
         ],
-        "id": "6c64bcce-e848-460f-8ff6-c23392bf446d",
+        "id": "6d73faf0-92b3-4de4-8895-904de8408861",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "de43d5a1-399f-448f-8a0e-428b6a97c9df",
               "type": "text/javascript",
               "exec": [
                 "var moment = require('moment');",
@@ -5205,17 +5204,18 @@
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
-              ]
+              ],
+              "id": "380806e6-cf61-4810-ac28-1137fa8a370b"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "0e2d5a9f-ee42-4736-856f-67708433fd83",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "b62fc149-ae9a-4b06-b37f-e6c8f6d3c873"
             }
           }
         ]
@@ -5232,17 +5232,16 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "0ee62cff-8ea2-4f65-8f5f-8d0398844f22",
                       "exec": [
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "aedabcce-11d1-45a4-85cc-194d25a649de"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "922767d3-ad8a-4d08-8f8d-8f43445739d6",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -5254,11 +5253,12 @@
                         "    pm.expect(response.remaining_limits).to.have.property(pm.environment.get(\"TERMINAL_CURRENCY\"));",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "37d3b638-1341-4e10-9cea-ed197433e851"
                     }
                   }
                 ],
-                "id": "3f6cba63-2a2c-4dd8-b867-b8ad1a29c80c",
+                "id": "1179b036-116c-4708-9597-49539806d687",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5305,38 +5305,37 @@
                 "response": []
               }
             ],
-            "id": "dce2a6ef-22a2-45b0-8f93-13423f07e4ac",
+            "id": "a61204f1-ee95-421d-92eb-d96fd43d1c21",
             "description": "* Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.unlimint.com/#limits)\n* Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n* When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n* When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n* Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
             "event": [
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "159177ac-2419-4ebd-9ab4-649627665a7e",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "c12ab5eb-9add-40c2-a62c-f9237c3a4602"
                 }
               },
               {
                 "listen": "test",
                 "script": {
-                  "id": "b453ec72-8f2a-48ef-8f57-f6701d514f10",
                   "type": "text/javascript",
                   "exec": [
                     ""
-                  ]
+                  ],
+                  "id": "0bd9e9fa-798b-4bf8-b4fe-316bb90adcd6"
                 }
               }
             ]
           }
         ],
-        "id": "45af0b2a-2a7b-4567-93e7-d9a8e39989fa",
+        "id": "af6cbcaf-cdcb-47cc-8247-9988a5745ce3",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "11ef98db-af55-480e-b811-9f8b33209b0b",
               "type": "text/javascript",
               "exec": [
                 "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
@@ -5344,17 +5343,18 @@
                 "",
                 "var tokens = eval(pm.collectionVariables.get('tokens'));",
                 "tokens.obtain(terminal_code, password);"
-              ]
+              ],
+              "id": "6041cac0-9086-40b2-8da5-da1b092b6f36"
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "153987f3-9f2b-4350-84d4-75986eb18250",
               "type": "text/javascript",
               "exec": [
                 ""
-              ]
+              ],
+              "id": "d9c98208-8c8e-4232-a1a5-b4b278b560ce"
             }
           }
         ]
@@ -5371,7 +5371,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "236ac2c1-a1d3-49df-8a7c-6f3adf546531",
                       "exec": [
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
                         "var password = pm.environment.get('GATEWAY_PASSWORD');",
@@ -5379,13 +5378,13 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "a7025d28-923a-4a63-84f1-a97bae6797b2"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "9bde1d8b-7ffb-4902-88db-d96149244093",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.have.jsonBody();",
@@ -5395,11 +5394,12 @@
                         "    postman.setNextRequest('Get a list of reports');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "0fcd1b6d-2700-44a0-ad90-9ade88da6fc2"
                     }
                   }
                 ],
-                "id": "d536eedc-836c-4341-b733-2d2aef0376b7",
+                "id": "12c0dcac-0451-457c-ba04-719fe70de271",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5455,7 +5455,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "a1cb055d-6032-497f-8be8-0c38fca65e92",
                       "exec": [
                         "pm.expect(pm.collectionVariables.get('reports_sample_id')).to.not.be.undefined;",
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
@@ -5465,13 +5464,13 @@
                         "",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "8471460e-9ea5-4c38-9c18-56474556ac33"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "51a45eb8-0087-47a1-a1fe-ccf9b7ac8167",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
@@ -5481,11 +5480,12 @@
                         "    postman.setNextRequest('Download report file');",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "3bb3c294-0d95-43d5-ae8a-b429ab034b9b"
                     }
                   }
                 ],
-                "id": "55bd6882-512f-4592-bddb-67923e206251",
+                "id": "5682360c-5799-42a1-8f88-d51294881692",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5538,7 +5538,6 @@
                   {
                     "listen": "prerequest",
                     "script": {
-                      "id": "12076835-c415-463f-b816-8e40012708b0",
                       "exec": [
                         "pm.expect(pm.collectionVariables.get('reports_sample_id')).to.not.be.undefined;",
                         "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
@@ -5548,23 +5547,24 @@
                         "",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "849eb8c8-8715-47dd-afdc-0d2395f392dd"
                     }
                   },
                   {
                     "listen": "test",
                     "script": {
-                      "id": "4aa94cc1-c87f-4dd7-8727-b266e4e24ea4",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
                         "    pm.response.to.be.ok;",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "id": "f956c45d-fb7b-4150-8806-f72bd68beddb"
                     }
                   }
                 ],
-                "id": "e1dae955-f325-4cfa-8f52-80a1f66a772b",
+                "id": "42679f8a-d156-43c8-88fa-366e204e2147",
                 "protocolProfileBehavior": {
                   "disableBodyPruning": true
                 },
@@ -5618,18 +5618,18 @@
                 "response": []
               }
             ],
-            "id": "5a1d3044-a86e-41fe-835b-1bdc446f70f8",
+            "id": "d409c8ad-81f3-404a-b020-bafda61553d0",
             "description": "*   Merchant makes POST request in JSON format to endpoint (/api/reports) to initiate preparation of reports files\n*   Only successfully authorized merchant can make this kind of request\n*   If files of reports according to POST request's parameters are not found, then the empty array is returned in response to POST request\n*   Merchant makes GET request in JSON format to endpoint (/api/reports/{sample_id}) to get a list of reports with links to files' downloading\n*   Merchant makes GET request in JSON format to endpoint (/api/reports/download/{id}) to download files of report’s\n*   All report files (in archive) or single report file can be downloaded\n*   To download report file the request header 'Accept' must be set to 'application/octet-stream'"
           }
         ],
-        "id": "8ea2822f-8b22-4c97-bfbe-c34ddcfb6bd7"
+        "id": "fd09d877-69f4-48e5-8014-21c78281a62a"
       }
     ],
     "event": [
       {
         "listen": "prerequest",
         "script": {
-          "id": "3d331a59-94fa-4ab9-b2cb-9f5ada0621f8",
+          "id": "dbf83e27-d1f9-40a4-92f2-b8cfe39fe8fe",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -5669,7 +5669,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "5f4b868d-e499-4b6b-a2f8-e10dfaaa6d55",
+          "id": "18be3d46-3d8f-421f-9c1d-e35333d0fa84",
           "type": "text/javascript",
           "exec": [
             ""
