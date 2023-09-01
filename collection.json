@@ -3,9 +3,9 @@
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "name": "Unlimit REST API (3.0)",
-      "description": "## Installation\n\n1.  Install Postman 8.5+\n2.  Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3.  Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimint.com).\n\n## Notes\n\n*   constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n*   following variables are defined for collection scope *(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)*:\n    *   request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    *   expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    *   tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n*   other variables ('{{payment_id_to_complete}}', '{{payment_id_to_reverse}}', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
+      "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2023-06-26T10:23:33.000Z",
+      "updatedAt": "2023-09-01T10:19:51.000Z",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
     },
     "item": [
@@ -90,7 +90,7 @@
               }
             ],
             "id": "f86c2b90-083b-4486-9174-b8094b1d50b1",
-            "description": "## Get authorization tokens for every transaction request\n\n*   In order to perform any API call the access token must be obtained.\n*   To do this Merchant needs to send POST request to the API token endpoint.\n*   As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n*   After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n*   Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n    \n\n## Get authorization tokens for more than one request\n\n*   After receiving access token merchant can save access and refresh tokens in his site\n*   Merchant can use this pair of tokens for more than one transaction request\n*   After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n*   If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n*   As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
+            "description": "## Get authorization tokens for every transaction request\n\n- In order to perform any API call the access token must be obtained.\n- To do this Merchant needs to send POST request to the API token endpoint.\n- As a result Merchant will receive an [ApiTokens](https://integration.unlimit.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values.\n- After receiving access token (one from the pair) merchant should use in one create, update or get transaction information request\n- Merchant can receiving new pair of tokens (access and refresh tokens) for every transaction request and don't use refresh token for tokens pair refreshing\n    \n\n## Get authorization tokens for more than one request\n\n- After receiving access token merchant can save access and refresh tokens in his site\n- Merchant can use this pair of tokens for more than one transaction request\n- After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n- If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n- As a result Merchant will receive an [ApiTokens](https://integration.unlimit.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values",
             "event": [
               {
                 "listen": "prerequest",
@@ -184,7 +184,7 @@
               }
             ],
             "id": "a43703a7-a9ef-4d94-962f-89c6435b1b4d",
-            "description": "* Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n* A result of this request will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
+            "description": "- Merchant can send a POST request to the **/api/auth/token** endpoint and specify refresh token as a request param.\n- A result of this request will receive an [ApiTokens](https://integration.unlimit.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n- If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens (see 'Get authorization token' use case)",
             "event": [
               {
                 "listen": "prerequest",
@@ -573,7 +573,7 @@
               }
             ],
             "id": "cd504d36-1a4c-4617-a8f7-0b2e3a042795",
-            "description": "* After receiving access token merchant can save access and refresh tokens on his side\n* Merchant can use this pair of tokens for more than one transaction request\n* After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n* If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n* As a result Merchant will receive an [ApiTokens](https://integration.unlimint.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n* See 'Pre-request Scripts' section for 'reusable_tokens' function",
+            "description": "- After receiving access token merchant can save access and refresh tokens on his side\n- Merchant can use this pair of tokens for more than one transaction request\n- After lifetime of access token is ended, merchant can use refresh token for refreshing (getting new pair) tokens (see more in Refresh token case below)\n- If a lifetime of refresh token is ended merchant should send new request to the API token endpoint to get new pair of tokens\n- As a result Merchant will receive an [ApiTokens](https://integration.unlimit.com/#ApiTokens) JSON document containing a token pair and tokens lifetime values\n- See 'Pre-request Scripts' section for 'reusable_tokens' function",
             "event": [
               {
                 "listen": "prerequest",
@@ -775,7 +775,7 @@
               }
             ],
             "id": "58e60f19-bb1b-4579-ae3c-c4514ec510e5",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimit.com/#createPayment).\n- Payment is created in the system and redirect URL is returned to Merchant in JSON format\n- Card data is filled in by customer on hosted payment page (asynchronous process - out of scope of Postman collection)",
             "event": [
               {
                 "listen": "prerequest",
@@ -890,7 +890,7 @@
               }
             ],
             "id": "a976dca0-3945-4638-ae7c-a3a1ea37afe5",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Payment is created in the system and redirect URL is returned to Merchant in JSON format",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimit.com/#createPayment).\n- Payment is created in the system and redirect URL is returned to Merchant in JSON format",
             "event": [
               {
                 "listen": "prerequest",
@@ -1120,7 +1120,7 @@
               }
             ],
             "id": "56503907-4a94-4b84-bd70-b29cf534d644",
-            "description": "* AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimint support\n* Merchant makes POST request in JSON format to api/payments endpoint  to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimint.com/#payments)' section\n* AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n* Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n* Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n* In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n* To get full information about created AVS request merchant receives callback",
+            "description": "- AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimit support\n- Merchant makes POST request in JSON format to api/payments endpoint to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimit.com/#payments)' section\n- AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n- Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n- Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n- In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n- To get full information about created AVS request merchant receives callback",
             "event": [
               {
                 "listen": "prerequest",
@@ -1335,7 +1335,7 @@
               }
             ],
             "id": "4e586676-c021-4526-86fc-6565d5f078da",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimint.com/#createPayment).\n* Merchant receives callback with transaction result information (with payment id)\n* Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.unlimint.com/#updatePayment).",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment, [see more](https://integration.unlimit.com/#createPayment).\n- Merchant receives callback with transaction result information (with payment id)\n- Merchant makes PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' to **/api/payments/{payment_id}** to reverse (void) payment, [see more](https://integration.unlimit.com/#updatePayment).",
             "event": [
               {
                 "listen": "prerequest",
@@ -1557,7 +1557,7 @@
               }
             ],
             "id": "ff4a1e82-b559-4b43-ab98-9e663c8e00f9",
-            "description": "* Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createPayment)\n* Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n* Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less or more than preauthorized amount in first request   ",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new payment with parameter preauth='true', [see more](https://integration.unlimit.com/#createPayment)\n- Preauth authorization payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n- Merchant redirects Customer to the payment page with provided URL\n- Merchant can complete or reverse (void) preauthorized payment using PATCH request in JSON format with payment id and payment_data.status_to='REVERSE' or \"COMPLETE\" to **/api/payments/{payment_id}**\n- Merchant receives response with update payment result information (status='VOIDED' or 'COMPLETED')\n- If merchant doesn't send complete or reverse request ([see more](https://integration.unlimit.com/#updatePayment)) payment will be completed automatically in 7 calendar days\n- Amount in completion update request can be less or more than preauthorized amount in first request",
             "event": [
               {
                 "listen": "prerequest",
@@ -1845,7 +1845,7 @@
               }
             ],
             "id": "abf9f898-580d-4dec-864e-199381d79c2b",
-            "description": "*   Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n*   Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n*   Merchant redirects Customer to the payment page (Unlimit or Merchant site) with provided URL\n*   After successful transaction merchant can use card token (from callback) in the next transactions",
+            "description": "- Merchant makes POST request in JSON format (with payment_data.generate_token parameter in request) to endpoint **/api/payments** to create new payment with card tokenization\n- Payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n- Merchant redirects Customer to the payment page (Unlimit or Merchant site) with provided URL\n- After successful transaction merchant can use card token (from callback) in the next transactions",
             "event": [
               {
                 "listen": "prerequest",
@@ -2060,7 +2060,7 @@
               }
             ],
             "id": "97b81426-3dd0-44e3-a38a-425426ee603e",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.unlimint.com/#getPayments)\n* Merchant receives GET response about transactions (payments list)",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/payments) to get information about payments list, [see more](https://integration.unlimit.com/#getPayments)\n- Merchant receives GET response about transactions (payments list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -2170,7 +2170,7 @@
               }
             ],
             "id": "84435173-e77d-4d78-b6d6-69e51c06a1d8",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.unlimint.com/#getPayment)\n* Merchant receives GET response about transaction (payment) result information",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/payments/{payment_id}) for getting information about payment by payment id, [see more](https://integration.unlimit.com/#getPayment)\n- Merchant receives GET response about transaction (payment) result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -2348,7 +2348,7 @@
               }
             ],
             "id": "4011a210-b4a8-4369-87ca-8a96ff8df628",
-            "description": "Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (one-phase), [see more](https://integration.unlimint.com/#createPayment).\n\n**How to create Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n    \n\nAfter successful 3DS validation payment will be completed",
+            "description": "Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (one-phase), [see more](https://integration.unlimit.com/#createPayment).\n\n**How to create Installment payment:**\n\n- Make POST-request\n- Click on 3DS redirect URL from response message\n- Emulate successful 3DS validation\n    \n\nAfter successful 3DS validation payment will be completed",
             "uid": "10462328-4011a210-b4a8-4369-87ca-8a96ff8df628"
           },
           {
@@ -2536,7 +2536,7 @@
               }
             ],
             "id": "5d4d4507-58d2-4ccc-a0bf-babb183b38e5",
-            "description": "*   Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (two-phase), [see more](https://integration.unlimint.com/#createPayment).\n    \n\n**How to create two-phase Installment payment:**\n\n*   Make POST-request\n*   Click on 3DS redirect URL from response message\n*   Emulate successful 3DS validation\n*   Make PATСH-request to update (complete) Installment payment\n    \n\n**Important:** in POST-request non-3DS card is used. These settings are relevant only for the test collection (due to Sandbox features) - real Installment payments can be created only for cards with 3DS enabled",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (two-phase), [see more](https://integration.unlimit.com/#createPayment).\n    \n\n**How to create two-phase Installment payment:**\n\n- Make POST-request\n- Click on 3DS redirect URL from response message\n- Emulate successful 3DS validation\n- Make PATСH-request to update (complete) Installment payment\n    \n\n**Important:** in POST-request non-3DS card is used. These settings are relevant only for the test collection (due to Sandbox features) - real Installment payments can be created only for cards with 3DS enabled",
             "uid": "10462328-5d4d4507-58d2-4ccc-a0bf-babb183b38e5"
           }
         ],
@@ -2760,7 +2760,7 @@
               }
             ],
             "id": "89c6c15e-16e7-4962-83d5-a9cefd77462d",
-            "description": "* Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.unlimint.com/#createRefund)\n* Merchant can create new refund only after successfully creation of payment or recurring payment\n* Merchant must have payment id (or recurring id) and send it in refund request\n* Merchant receives response with created transaction result information",
+            "description": "- Merchant makes POST request in JSON format to create new refund to endpoint **/api/refunds**, [see more](https://integration.unlimit.com/#createRefund)\n- Merchant can create new refund only after successfully creation of payment or recurring payment\n- Merchant must have payment id (or recurring id) and send it in refund request\n- Merchant receives response with created transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -2961,7 +2961,7 @@
               }
             ],
             "id": "20572cd4-53c7-4ead-8291-d4bfd3ba00ff",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.unlimint.com/#getRefunds)\n* Merchant receives GET response about transactions (refunds list)",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/refunds) to get information about refunds list, [see more](https://integration.unlimit.com/#getRefunds)\n- Merchant receives GET response about transactions (refunds list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -3065,7 +3065,7 @@
               }
             ],
             "id": "dbb5f766-4f23-42c0-8481-37e968a3330f",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.unlimint.com/#getRefund)\n* Merchant receives GET response about transaction result information",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/refunds/{refund_id}) to get information about refund by refund id, [see more](https://integration.unlimit.com/#getRefund)\n- Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -3354,7 +3354,7 @@
               }
             ],
             "id": "ef56d748-1195-4ecc-97b9-9df899bce19c",
-            "description": "*   Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.unlimint.com/#createRefund)\n*   Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Unlimit manager, [see more](https://integration.unlimint.com/#updateRefund)\n*   Merchant receives response with update result information (status='VOIDED')",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/refunds** to create new refund, [see more](https://integration.unlimit.com/#createRefund)\n- Merchant makes PATCH request in JSON format with refund id and refund_data.status_to='REVERSE' to **/api/refunds/{refund_id}** for reverse (void) refund - refund void possibility must be enabled by Unlimit manager, [see more](https://integration.unlimit.com/#updateRefund)\n- Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
@@ -3513,7 +3513,7 @@
               }
             ],
             "id": "0dbf3207-26cb-4c04-a514-f19b74bda6b1",
-            "description": "* Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.unlimint.com/#createPayout)\n* Merchant receives response with transaction (payout) result information",
+            "description": "- Merchant makes POST request in JSON format to create new payout to endpoint (/api/payouts), [see more](https://integration.unlimit.com/#createPayout)\n- Merchant receives response with transaction (payout) result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -3713,7 +3713,7 @@
               }
             ],
             "id": "e1952186-3c02-45f7-8421-278af1ec9af1",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transactions (payouts list)",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/payouts) to get information about payouts, [see more](https://integration.unlimit.com/#getPayout)\n- Merchant receives GET response about transactions (payouts list)",
             "event": [
               {
                 "listen": "prerequest",
@@ -3817,7 +3817,7 @@
               }
             ],
             "id": "fcb1fba4-ea04-43d6-a29f-3b1f74aaf529",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.unlimint.com/#getPayout)\n* Merchant receives GET response about transaction result information",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/payouts/{payout_id}) to get information about payout by payout id, [see more](https://integration.unlimit.com/#getPayout)\n- Merchant receives GET response about transaction result information",
             "event": [
               {
                 "listen": "prerequest",
@@ -4020,7 +4020,7 @@
               }
             ],
             "id": "d4d3f6d4-373c-43a6-9696-27319c808e78",
-            "description": "*   Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.unlimint.com/#createPayout)\n*   Merchant receives callback with transaction result information (with payout id)\n*   Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Unlimit manager, [see more](https://integration.unlimint.com/#updatePayout)\n*   Merchant receives response with update result information (status='VOIDED')",
+            "description": "- Merchant makes POST request in JSON format to endpoint **/api/payouts** to create new payout, [see more](https://integration.unlimit.com/#createPayout)\n- Merchant receives callback with transaction result information (with payout id)\n- Merchant makes PATCH request in JSON format with payout id and payout_data.status_to='REVERSE' to **/api/payouts/{payout_id}** for reverse (void) payout - payout void possibility must be enabled by Unlimit manager, [see more](https://integration.unlimit.com/#updatePayout)\n- Merchant receives response with update result information (status='VOIDED')",
             "event": [
               {
                 "listen": "prerequest",
@@ -4183,7 +4183,7 @@
                   }
                 ],
                 "id": "749896d6-8f06-4e4d-a217-31c2d3af8a0d",
-                "description": "*   Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.unlimint.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n*   One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n*   Merchant redirects Customer to the payment page (Unlimit or Merchant site) with provided URL\n*   Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
+                "description": "- Merchant makes POST request in JSON format to endpoint **/api/recurrings** ([see more](https://integration.unlimit.com/#createRecurring)) to create new one-click payment (with 'initiator'='cit' in request) with card tokenization for recurrent payments\n- One-click payment is created in the system and redirect URL is returned to Merchant in JSON format (payment page URL)\n- Merchant redirects Customer to the payment page (Unlimit or Merchant site) with provided URL\n- Merchant can use filing.id (from the callback or get response) in the next one-click transactions using saved (tokenized) card",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -4609,7 +4609,7 @@
                   }
                 ],
                 "id": "b0395574-4ec2-4f9a-898c-ca914fb99e1f",
-                "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.unlimint.com/#createRecurring)\n* Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n* Merchant redirects Customer to the payment page with provided URL\n* Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n* Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n* If merchant doesn't send complete or reverse request ([see more](https://integration.unlimint.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n* Amount in completion update request can be less, equal or more than preauthorized amount in first request",
+                "description": "- Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment with parameter preauth='true', [see more](https://integration.unlimit.com/#createRecurring)\n- Pre-authorized one-click payment is created in the system and redirect URL is returned to Merchant in JSON format\n- Merchant redirects Customer to the payment page with provided URL\n- Merchant can complete or reverse (void) pre-authorized one-click payment using PATCH request in JSON format with payment id and recurring_data.status_to='REVERSE' or \"COMPLETE\" to **/api/recurrings/{recurring_id}**\n- Merchant receives response with update one-click payment result information (status=\"VOIDED\" or \"COMPLETED\")\n- If merchant doesn't send complete or reverse request ([see more](https://integration.unlimit.com/#updateRecurring)), one-click payment will be completed automatically in 7 calendar days\n- Amount in completion update request can be less, equal or more than preauthorized amount in first request",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -4824,7 +4824,7 @@
                   }
                 ],
                 "id": "9fdb0e69-97e7-40a7-a979-f3daba6999e4",
-                "description": "* Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.unlimint.com/#createRecurring)\n* Merchant receives callback with transaction result information (with recurring id)\n* Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.unlimint.com/#updateRecurring)",
+                "description": "- Merchant makes POST request in JSON format to endpoint **/api/recurrings** to create new one-click payment, [see more](https://integration.unlimit.com/#createRecurring)\n- Merchant receives callback with transaction result information (with recurring id)\n- Merchant makes PATCH request in JSON format with recurring id and recurring_data.status_to='REVERSE' to **/api/recurrings{recurring_id}** to reverse (void) one-click payment, [see more](https://integration.unlimit.com/#updateRecurring)",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -5024,7 +5024,7 @@
                   }
                 ],
                 "id": "9a8eace6-3abf-4b64-9ba9-e0476852fe94",
-                "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.unlimint.com/#getRecurrings)\n* Merchant receives GET response about transactions (recurrings list)",
+                "description": "- Merchant makes GET request in JSON format to endpoint **/api/recurrings** to get information about payments list, [see more](https://integration.unlimit.com/#getRecurrings)\n- Merchant receives GET response about transactions (recurrings list)",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -5128,7 +5128,7 @@
                   }
                 ],
                 "id": "9a007542-bd86-4a87-80e2-83acb871c441",
-                "description": "* Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.unlimint.com/#getRecurring)\n* Merchant receives GET response about transaction result information",
+                "description": "- Merchant makes GET request in JSON format to endpoint **/api/recurrings/{recurring_id}** to get information about one-click payment by recurring id, [see more](https://integration.unlimit.com/#getRecurring)\n- Merchant receives GET response about transaction result information",
                 "event": [
                   {
                     "listen": "prerequest",
@@ -6487,7 +6487,7 @@
               }
             ],
             "id": "a61204f1-ee95-421d-92eb-d96fd43d1c21",
-            "description": "* Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.unlimint.com/#limits)\n* Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n* When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n* When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n* Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
+            "description": "- Merchant makes GET request in JSON format to endpoint (/api/limits) to get available refunds and payouts limits, [see more](https://integration.unlimit.com/#limits)\n- Available withdrawal balance for refunds and payouts by all the currencies linked to the terminal_code from merchant authorization context.\n- When NULL for specific currency is returned - withdrawal balance for this currency is disabled\n- When 0 for specific currency is returned - remaining withdrawal balance for this currency is 0\n- Service returns previous limits value (cache value with life time - 1 second) in case when from one merchant was received more than 1 GET request per 1 second. Only successfully authorized merchant can make this kind of request.",
             "event": [
               {
                 "listen": "prerequest",
@@ -7021,7 +7021,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "0ea3d550-58af-4a72-a342-5cd75ed20c2e",
+          "id": "a4660684-08da-4c70-848b-d102ddf25e45",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -7061,7 +7061,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "e35742be-5be5-42d9-a209-5b97f4e39fed",
+          "id": "a7c85331-ed75-493a-b897-d9fb2b15bd43",
           "type": "text/javascript",
           "exec": [
             ""
