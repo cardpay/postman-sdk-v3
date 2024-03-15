@@ -5,8 +5,10 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2023-09-01T10:19:51.000Z",
-      "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
+      "updatedAt": "2024-03-15T14:55:40.000Z",
+      "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
+      "createdAt": "2020-02-20T08:17:14.000Z",
+      "lastUpdatedBy": "10462328"
     },
     "item": [
       {
@@ -1026,124 +1028,6 @@
               }
             ],
             "uid": "10462328-e98d537a-ecd7-4d34-b7f9-a51cc8a972fd"
-          },
-          {
-            "name": "Create AVS payment",
-            "item": [
-              {
-                "name": "Create payment (AVS)",
-                "event": [
-                  {
-                    "listen": "prerequest",
-                    "script": {
-                      "id": "efb4458a-d2c8-410e-984f-29e346fc9b58",
-                      "exec": [
-                        "var uuid = require('uuid');",
-                        "",
-                        "var terminal_code = pm.environment.get('AVS_PAYMENTPAGE_TERMINAL_CODE');",
-                        "var password = pm.environment.get('AVS_PAYMENTPAGE_PASSWORD');",
-                        "",
-                        "var tokens = eval(pm.collectionVariables.get('tokens'));",
-                        "tokens.obtain(terminal_code, password);"
-                      ],
-                      "type": "text/javascript"
-                    }
-                  },
-                  {
-                    "listen": "test",
-                    "script": {
-                      "id": "08cf66e3-7b25-4d2b-8804-4c0a5a67c82e",
-                      "exec": [
-                        "pm.test(\"Successful request\", function () {",
-                        "    pm.response.to.be.ok;",
-                        "    pm.response.to.have.jsonBody();",
-                        "    ",
-                        "    var response = pm.response.json();",
-                        "    pm.expect(response).to.have.property('redirect_url');",
-                        "})",
-                        ""
-                      ],
-                      "type": "text/javascript"
-                    }
-                  }
-                ],
-                "id": "e4905ae8-aa05-4a59-9904-371b67f55f62",
-                "protocolProfileBehavior": {
-                  "disableBodyPruning": true
-                },
-                "request": {
-                  "auth": {
-                    "type": "bearer",
-                    "bearer": [
-                      {
-                        "key": "0",
-                        "value": {
-                          "key": "token",
-                          "type": "string",
-                          "value": "{{access_token}}"
-                        },
-                        "type": "any"
-                      },
-                      {
-                        "key": "token",
-                        "value": "{{access_token}}",
-                        "type": "string"
-                      }
-                    ]
-                  },
-                  "method": "POST",
-                  "header": [
-                    {
-                      "key": "Content-Type",
-                      "name": "Content-Type",
-                      "type": "text",
-                      "value": "application/json"
-                    }
-                  ],
-                  "body": {
-                    "mode": "raw",
-                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"authentication_request\": true\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    }\n}"
-                  },
-                  "url": {
-                    "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                    "host": [
-                      "{{UNLIMIT_API_URL}}"
-                    ],
-                    "path": [
-                      "api",
-                      "payments"
-                    ]
-                  }
-                },
-                "response": [],
-                "uid": "10462328-e4905ae8-aa05-4a59-9904-371b67f55f62"
-              }
-            ],
-            "id": "56503907-4a94-4b84-bd70-b29cf534d644",
-            "description": "- AVS request possibility in wallet should be enabled with special custom 3-D Secure mode by Unlimit support\n- Merchant makes POST request in JSON format to api/payments endpoint to create new AVS request (address verification request - for UK and US billing addresses), see more in '[Address verification](https://integration.unlimit.com/#payments)' section\n- AVS request is created in the system and redirect URL is returned to merchant in JSON format (payment page URL)\n- Customer fill in the customer data (card data and billing address for this card) on the AVS payment page and if data is correct directs to Result page\n- Merchant also gets card.token in callback and response for card from payment page if request had a parameter \"payment_data.generate_token\"\n- In error case (case of error response of AVS service or other errors) merchant gets DECLINED status of transaction in callback in JSON format, using method POST\n- To get full information about created AVS request merchant receives callback",
-            "event": [
-              {
-                "listen": "prerequest",
-                "script": {
-                  "type": "text/javascript",
-                  "exec": [
-                    ""
-                  ],
-                  "id": "bfc8e6f7-1dce-4c3b-b410-9f6c5a22a2bd"
-                }
-              },
-              {
-                "listen": "test",
-                "script": {
-                  "type": "text/javascript",
-                  "exec": [
-                    ""
-                  ],
-                  "id": "96dd74ce-c931-4235-abe6-7999839456ad"
-                }
-              }
-            ],
-            "uid": "10462328-56503907-4a94-4b84-bd70-b29cf534d644"
           },
           {
             "name": "Reverse payment (void)",
@@ -2538,6 +2422,549 @@
             "id": "5d4d4507-58d2-4ccc-a0bf-babb183b38e5",
             "description": "- Merchant makes POST request in JSON format to endpoint **/api/payments** to create new Installment payment (two-phase), [see more](https://integration.unlimit.com/#createPayment).\n    \n\n**How to create two-phase Installment payment:**\n\n- Make POST-request\n- Click on 3DS redirect URL from response message\n- Emulate successful 3DS validation\n- Make PATСH-request to update (complete) Installment payment\n    \n\n**Important:** in POST-request non-3DS card is used. These settings are relevant only for the test collection (due to Sandbox features) - real Installment payments can be created only for cards with 3DS enabled",
             "uid": "10462328-5d4d4507-58d2-4ccc-a0bf-babb183b38e5"
+          },
+          {
+            "name": "Create payment in server-to-server mode",
+            "item": [
+              {
+                "name": "Create payment with passing 3-D Secure independently",
+                "item": [
+                  {
+                    "name": "Create payment with 3-D secure results",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "29d36774-35bf-4366-8380-1d9191161ba5",
+                          "exec": [
+                            "",
+                            "",
+                            "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE_EXMPI');",
+                            "var password = pm.environment.get('S2S_PASSWORD_EXMPI');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);",
+                            "",
+                            "",
+                            ""
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "d7108ef8-3109-46b3-9eda-2ff4419dcc8c",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            " ",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('id');",
+                            "    postman.setNextRequest('Create payment without 3-D secure results');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "354172de-22b2-42bb-88b0-59f73f583ff4",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\":\"{{$randomIP}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    },\n    \"three_d_secure\": {\n        \"card_enrollment\": \"Y\",\n        \"cavv\": \"AAABABhVGHmHFVORcFUYEGddqYo=\",\n        \"status\": \"Y\",\n        \"three_d_secure_flow\": \"3DS2C\",\n        \"xid\": \"c7c3c5d3-77a9-4106-b677-8e91b2a052bd\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-354172de-22b2-42bb-88b0-59f73f583ff4"
+                  },
+                  {
+                    "name": "Create payment without 3-D secure results",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "daeb1068-d13f-4d6c-b7ca-b97df3875882",
+                          "exec": [
+                            "",
+                            "",
+                            "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE_EXMPI_NO3DS');",
+                            "var password = pm.environment.get('S2S_PASSWORD_EXMPI_NO3DS');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);",
+                            "",
+                            "",
+                            ""
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "d72e6cb7-e2e5-4435-97b0-411f34a842a5",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "   ",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('id');",
+                            "   ",
+                            "    ",
+                            "    postman.setNextRequest('Create payment with 3-D secure (frictionless)');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "9b4c2695-3e50-487f-a3c1-a69b1d27548b",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\":\"{{$randomIP}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-9b4c2695-3e50-487f-a3c1-a69b1d27548b"
+                  }
+                ],
+                "id": "1adfbc65-bcbb-40db-903d-afec55e7d69f",
+                "description": "In case where merchant passes 3-D Secure independently, result parameters of 3-D Secure should be collected by the merchant and sent in \"Create payment\" request with additional structure three_d_secure",
+                "uid": "10462328-1adfbc65-bcbb-40db-903d-afec55e7d69f"
+              },
+              {
+                "name": "Create payment with 3-D Secure (frictionless flow)",
+                "item": [
+                  {
+                    "name": "Create payment with 3-D secure (frictionless)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "3bb41ef1-729c-4586-93c0-f3f8b4c8a015",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE');",
+                            "var password = pm.environment.get('S2S_PASSWORD');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "6634c58c-32e0-4e13-8b74-626f310499de",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('id');",
+                            "  ",
+                            "    postman.setNextRequest('Create payment with 3-D secure (challenge)');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "d3cd1bdc-02c5-45c1-b3de-326da17822b9",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\": \"{{$randomIP}}\",\n        \"locale\": \"en\",\n        \"user_agent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Mobile/15E148 Safari/604.\",\n        \"browser_info\": {\n            \"color_depth\": 48,\n            \"screen_height\": \"800\",\n            \"screen_width\": \"1440\",\n            \"java_enabled\": false,\n            \"java_script_enabled\": true,\n            \"language\": \"en-US\",\n            \"time_zone\": \"300\",\n            \"accept_header\": \"*/\"\n        }\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_FRICTIONLESS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    },\n    \"return_urls\": {\n        \"return_url\": \"https://yourwebhook.site\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-d3cd1bdc-02c5-45c1-b3de-326da17822b9"
+                  }
+                ],
+                "id": "6fb2e786-cd37-4df0-b986-143f4df011cc",
+                "description": "If card is 3-D Secure and authentication pass through Frictionless flow then merchant gets synchronous payment response in JSON format. In  \ncase of error JSON with error result will be returned.\n\n\"return_urls.return_url\" must be replaced with Merchant's webhook url",
+                "uid": "10462328-6fb2e786-cd37-4df0-b986-143f4df011cc"
+              },
+              {
+                "name": "Create payment with 3-D Secure (challenge flow)",
+                "item": [
+                  {
+                    "name": "Create payment with 3-D secure (challenge)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "afa87f03-1d4f-4b6b-98b5-8645ec343290",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE');",
+                            "var password = pm.environment.get('S2S_PASSWORD');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "f103fef2-595e-4145-b652-c9add7d1f502",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "    pm.expect(response).to.have.property('CReq');",
+                            "    pm.expect(response).to.have.property('id');",
+                            "    pm.collectionVariables.set('creq', response.CReq);",
+                            "    pm.collectionVariables.set('payment_id_to_complete_3ds', response.id);",
+                            "    postman.setNextRequest('Send CReq to ACS');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "d4e4d9df-04c7-4a8f-a7f9-16b0d0536672",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\": \"{{$randomIP}}\",\n        \"locale\": \"en\",\n        \"user_agent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Mobile/15E148 Safari/604.\",\n        \"browser_info\": {\n            \"color_depth\": 48,\n            \"screen_height\": \"800\",\n            \"screen_width\": \"1440\",\n            \"java_enabled\": false,\n            \"java_script_enabled\": true,\n            \"language\": \"en-US\",\n            \"time_zone\": \"300\",\n            \"accept_header\": \"*/\"\n        }\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    },\n    \"return_urls\": {\n        \"return_url\": \"https://yourwebhook.site\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-d4e4d9df-04c7-4a8f-a7f9-16b0d0536672"
+                  },
+                  {
+                    "name": "Send CReq to ACS",
+                    "event": [
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "a8f3d9c6-11dc-41da-9e36-9e8afcdacd34",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "        var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('challenge_result_url')})"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "933fa4cd-6bfe-4cae-94d4-c2f8d526fb8c",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "method": "POST",
+                      "header": [],
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/sandbox-emulator/3ds2/browserCReqS2S?creq={{creq}}",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "sandbox-emulator",
+                          "3ds2",
+                          "browserCReqS2S"
+                        ],
+                        "query": [
+                          {
+                            "key": "creq",
+                            "value": "{{creq}}"
+                          }
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-933fa4cd-6bfe-4cae-94d4-c2f8d526fb8c"
+                  },
+                  {
+                    "name": "Complete payment with CRes",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "8c319631-48ce-42d5-a6cf-eb1cee2f0ed1",
+                          "exec": [
+                            "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE');",
+                            "var password = pm.environment.get('S2S_PASSWORD');",
+                            "",
+                            "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                            "tokens.obtain(terminal_code, password);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "61cd3c7c-2cef-446e-877d-65af8ceebdfc",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();   ",
+                            "    pm.expect(response).to.have.property('payment_data');",
+                            "    pm.expect(response.payment_data).to.have.property('id'); ",
+                            "    postman.setNextRequest('Create payment for refund');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "dbde63bd-3be6-40c1-8aa0-a3f250628525",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "PATCH",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "type": "text",
+                          "value": "application/json"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"CONFIRM_3DS\",\n    \"CRes\": \"eyJtZXNzYWdlVHlwZSI6IkNSZXEiLCJtZXNzYWdlVmVyc2lvbiI6IjIuMS4wIiwidGhyZWVEU1NlcnZlclRyYW5zSUQiOiJiM2UzZDY4Mi0zNWNkLTRjYjQtOTVmOS01Yjg2ZmVlYzg5YjciLCJhY3NUcmFuc0lEIjoiWTFMU1NhVVVoQzROWUVKMXBhM2h2aFRWeTZ1YlE4MXU1MDBQIiwiY2hhbGxlbmdlV2luZG93U2l6ZSI6IjA1In0=\"\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payments/{{payment_id_to_complete_3ds}}",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payments",
+                          "{{payment_id_to_complete_3ds}}"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-dbde63bd-3be6-40c1-8aa0-a3f250628525"
+                  }
+                ],
+                "id": "c3b9a60f-494f-4520-8e81-17f404b27f79",
+                "description": "If card is 3-D Secure and authentication pass Challenge flow then merchant gets redirect_url, CReq and Id parameters in JSON  \nformat. In case of error JSON with error result will be returned.\n\n\"return_urls.return_url\" must be replaced with Merchant's webhook url",
+                "uid": "10462328-c3b9a60f-494f-4520-8e81-17f404b27f79"
+              }
+            ],
+            "id": "801d1423-ff47-4d57-938e-f0193ee00729",
+            "description": "In Server-to-Server Mode the Customer interacts only with the Merchant's website and all interactions between Merchant and Unlimint are server-to-server. In this case the Merchant has to collect cardholder data on his website that must be PCI DSS certified for that and then send it as a POST request to the Unlimint Endpoint. In response to Merchant's request, Unlimint server sends URL the Customer should be redirected to if 3-D Secure is required or Result JSON response if 3-D Secure is not required.",
+            "uid": "10462328-801d1423-ff47-4d57-938e-f0193ee00729"
           }
         ],
         "id": "cb952acc-0a49-4299-b770-b07f602f5d26",
@@ -5820,7 +6247,8 @@
                               "exec": [
                                 ""
                               ],
-                              "type": "text/javascript"
+                              "type": "text/javascript",
+                              "packages": {}
                             }
                           },
                           {
@@ -5845,7 +6273,8 @@
                                 "    postman.setNextRequest('Get first SM payment (Mexico)');",
                                 "});"
                               ],
-                              "type": "text/javascript"
+                              "type": "text/javascript",
+                              "packages": {}
                             }
                           }
                         ],
@@ -5884,7 +6313,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"scheduled_type\":\"SM\",\n        \"amount\": \"12.34\",\n        \"contract_number\": \"{{$randomUUID}}\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"cit\",\n        \"scheduled_type\":\"SM\",\n        \"amount\": \"12.34\",\n        \"contract_number\": \"{{$randomInt}\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_3DS_CONFIRMED}}\",\n            \"holder\": \"{{$randomFullName}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
                           },
                           "url": {
                             "raw": "{{UNLIMIT_API_URL}}/api/recurrings",
@@ -5997,7 +6426,8 @@
                                 "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
                                 "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                               ],
-                              "type": "text/javascript"
+                              "type": "text/javascript",
+                              "packages": {}
                             }
                           },
                           {
@@ -6026,7 +6456,8 @@
                                 "    postman.setNextRequest('Create first SM payment');",
                                 "});"
                               ],
-                              "type": "text/javascript"
+                              "type": "text/javascript",
+                              "packages": {}
                             }
                           }
                         ],
@@ -6065,7 +6496,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"mit\",\n        \"scheduled_type\":\"SM\",\n        \"amount\": \"12.34\",\n        \"contract_number\": \"{{$randomUUID}}\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"filing\": {\n            \"id\": \"{{last_sm_filing_id}}\"\n        }\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    }\n}"
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"recurring_data\": {\n        \"initiator\": \"mit\",\n        \"scheduled_type\":\"SM\",\n        \"amount\": \"12.34\",\n        \"contract_number\": \"{{$randomInt}}\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\",\n        \"filing\": {\n            \"id\": \"{{last_sm_filing_id}}\"\n        }\n    },\n    \"customer\": {\n        \"id\": \"{{customer_id}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    }\n}"
                           },
                           "url": {
                             "raw": "{{UNLIMIT_API_URL}}/api/recurrings",
@@ -7021,7 +7452,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "a4660684-08da-4c70-848b-d102ddf25e45",
+          "id": "f718172b-1685-4048-b273-05b4fa783a28",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -7061,7 +7492,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "a7c85331-ed75-493a-b897-d9fb2b15bd43",
+          "id": "cd81038b-21b9-4152-9902-4b655e830804",
           "type": "text/javascript",
           "exec": [
             ""

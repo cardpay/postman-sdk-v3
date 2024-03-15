@@ -4,7 +4,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2023-06-05T15:17:34.000Z",
+    "updatedAt": "2024-03-14T14:53:18.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -70,6 +70,54 @@
         "key": "CUSTOMER_EMAIL",
         "value": "customer@email.com",
         "enabled": true
+      },
+      {
+        "key": "CARD_3DS_CHALLENGE_CONFIRMED_VISA",
+        "value": "4000000000000085",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "CARD_3DS_FRICTIONLESS_CONFIRMED",
+        "value": "4000000000000093",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_TERMINAL_CODE_EXMPI",
+        "value": "63389",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_PASSWORD_EXMPI",
+        "value": "634lV1MfBtKs",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_TERMINAL_CODE",
+        "value": "63391",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_PASSWORD",
+        "value": "5z247NGeLirO",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_TERMINAL_CODE_EXMPI_NO3DS",
+        "value": "63393",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "S2S_PASSWORD_EXMPI_NO3DS",
+        "value": "Vgyq60KHlQ18",
+        "enabled": true,
+        "type": "default"
       }
     ],
     "isPublic": false
