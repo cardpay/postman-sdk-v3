@@ -4,7 +4,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2024-03-14T14:53:18.000Z",
+    "updatedAt": "2024-06-03T10:51:51.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -116,6 +116,30 @@
       {
         "key": "S2S_PASSWORD_EXMPI_NO3DS",
         "value": "Vgyq60KHlQ18",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "HOLDER",
+        "value": "John Doe",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "CUSTOMER_PHONE",
+        "value": "366-501-5612",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "SIGNATURE_API_CLIENT_ID",
+        "value": "12b75f73-953f-4421-805d-9ca54cba300e",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "SIGNATURE_API_KEY",
+        "value": "8924f2be-8b86-4c5f-9012-9eb7c8fc14dc",
         "enabled": true,
         "type": "default"
       }

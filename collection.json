@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-03-15T14:55:40.000Z",
+      "updatedAt": "2024-06-04T12:43:12.000Z",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328"
@@ -661,6 +661,104 @@
               }
             ],
             "uid": "10462328-cd504d36-1a4c-4617-a8f7-0b2e3a042795"
+          },
+          {
+            "name": "Authorization through signature",
+            "item": [
+              {
+                "name": "Create payment through signature",
+                "event": [
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "f16b6361-598a-49d0-bccd-d6ca5bee84b9",
+                      "exec": [
+                        "pm.collectionVariables.set('guid', pm.variables.replaceIn('{{$guid}}'));",
+                        "pm.collectionVariables.set('time', new Date().toISOString());",
+                        "",
+                        "let uuid = require('uuid');",
+                        "var merchant_order_id = uuid.v4();",
+                        "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                        "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);",
+                        "",
+                        "let api_client_id = pm.variables.get('SIGNATURE_API_CLIENT_ID');",
+                        "let api_key = pm.variables.get('SIGNATURE_API_KEY');",
+                        "let path = '/' + pm.request.url.path.slice(0).join('/');",
+                        "let body = pm.collectionVariables.replaceIn(pm.variables.replaceIn(pm.request.body));",
+                        "let xsign = '' + require(\"crypto-js\").SHA256((api_client_id + path + body + '' + api_key));",
+                        "pm.collectionVariables.set('signature_x_sign', xsign);",
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  },
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "9fe0407a-8496-49ad-b697-306cf1a92c78",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "",
+                        "    pm.expect(response.payment_data.id).to.not.be.undefined;",
+                        " ",
+                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                        "        pm.expect(response_after_redirect.code).to.equal(200);",
+                        "    });",
+                        "});",
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "db440bed-20cb-4c67-a029-813d1c1dbc5d",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "noauth"
+                  },
+                  "method": "POST",
+                  "header": [
+                    {
+                      "key": "Content-Type",
+                      "value": "application/json"
+                    },
+                    {
+                      "key": "Authorization",
+                      "value": "Signature {{GATEWAY_TERMINAL_CODE}},{{$guid}},{{SIGNATURE_API_CLIENT_ID}},{{signature_x_sign}}"
+                    }
+                  ],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{guid}}\",\n        \"time\": \"{{time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"User-friendly empowering standardization\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{CUSTOMER_PHONE}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"{{HOLDER}}\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        }\n    }\n}"
+                  },
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "payments"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-db440bed-20cb-4c67-a029-813d1c1dbc5d"
+              }
+            ],
+            "id": "625a9992-f187-45f2-8e29-2a210241876b",
+            "description": "In order to perform any API call, merchant can use authorization through signature. API client ID and API key allows to get access to all the merchants’ wallets available in the merchant group.  \nIn order to use this type of authorization, the merchant should contact Unlimit manager.",
+            "uid": "10462328-625a9992-f187-45f2-8e29-2a210241876b"
           }
         ],
         "id": "3da51624-aea8-4449-bf9b-1980aabe59e2",
@@ -7452,7 +7550,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "f718172b-1685-4048-b273-05b4fa783a28",
+          "id": "6d395fd1-d6fa-465f-9282-d91ea469fc77",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -7492,7 +7590,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "cd81038b-21b9-4152-9902-4b655e830804",
+          "id": "45f02c90-365f-41d3-a181-63edd6f4bd09",
           "type": "text/javascript",
           "exec": [
             ""
