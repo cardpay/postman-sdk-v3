@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-06-06T15:16:23.000Z",
+      "updatedAt": "2024-06-07T15:11:07.000Z",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328"
@@ -7597,7 +7597,7 @@
               "header": [],
               "body": {
                 "mode": "raw",
-                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{HOLDER}}\",\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{MERCHANT_ORDER_DESCRIPTION}}\",\n        \"id\": \"order00017\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
+                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremText}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
                 "options": {
                   "raw": {
                     "language": "json"
@@ -7667,7 +7667,7 @@
               "header": [],
               "body": {
                 "mode": "raw",
-                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{HOLDER}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{MERCHANT_ORDER_DESCRIPTION}}\",\n        \"id\": \"order00017\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_NPA\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
+                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremText}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_NPA\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
                 "options": {
                   "raw": {
                     "language": "json"
@@ -7853,7 +7853,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "59496b47-eaf2-4d7b-8930-1e82dcf2ac19",
+          "id": "67e8630e-2c6d-4d2d-b364-2c50b9e8e407",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -7893,7 +7893,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "b9d0ccaf-3eb5-42af-bd97-61762871e07d",
+          "id": "fee5f2a8-7a0e-4d73-b364-00b7430979b4",
           "type": "text/javascript",
           "exec": [
             ""
