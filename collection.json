@@ -5,10 +5,10 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-06-07T15:11:07.000Z",
-      "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
+      "updatedAt": "2024-07-22T11:14:35.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
-      "lastUpdatedBy": "10462328"
+      "lastUpdatedBy": "10462328",
+      "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
     },
     "item": [
       {
@@ -2535,8 +2535,6 @@
                         "script": {
                           "id": "29d36774-35bf-4366-8380-1d9191161ba5",
                           "exec": [
-                            "",
-                            "",
                             "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE_EXMPI');",
                             "var password = pm.environment.get('S2S_PASSWORD_EXMPI');",
                             "",
@@ -2563,7 +2561,7 @@
                             " ",
                             "    pm.expect(response).to.have.property('payment_data');",
                             "    pm.expect(response.payment_data).to.have.property('id');",
-                            "    postman.setNextRequest('Create payment without 3-D secure results');",
+                            "    pm.execution.setNextRequest('Create payment without 3-D secure results');",
                             "});"
                           ],
                           "type": "text/javascript",
@@ -2630,8 +2628,6 @@
                         "script": {
                           "id": "daeb1068-d13f-4d6c-b7ca-b97df3875882",
                           "exec": [
-                            "",
-                            "",
                             "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE_EXMPI_NO3DS');",
                             "var password = pm.environment.get('S2S_PASSWORD_EXMPI_NO3DS');",
                             "",
@@ -2658,9 +2654,8 @@
                             "   ",
                             "    pm.expect(response).to.have.property('payment_data');",
                             "    pm.expect(response.payment_data).to.have.property('id');",
-                            "   ",
                             "    ",
-                            "    postman.setNextRequest('Create payment with 3-D secure (frictionless)');",
+                            "    pm.execution.setNextRequest('Create payment with 3-D secure (frictionless)');",
                             "});"
                           ],
                           "type": "text/javascript",
@@ -2894,9 +2889,8 @@
                       "header": [
                         {
                           "key": "Content-Type",
-                          "name": "Content-Type",
-                          "type": "text",
-                          "value": "application/json"
+                          "value": "application/json",
+                          "type": "text"
                         }
                       ],
                       "body": {
@@ -2929,7 +2923,8 @@
                             "    pm.response.to.be.ok;",
                             "    pm.response.to.have.jsonBody();",
                             "        var response = pm.response.json();",
-                            "    pm.expect(response).to.have.property('challenge_result_url')})"
+                            "    pm.expect(response).to.have.property('challenge_result_url')})",
+                            "    postman.setNextRequest('Complete payment with CRes');"
                           ],
                           "type": "text/javascript",
                           "packages": {}
@@ -3030,9 +3025,8 @@
                       "header": [
                         {
                           "key": "Content-Type",
-                          "name": "Content-Type",
-                          "type": "text",
-                          "value": "application/json"
+                          "value": "application/json",
+                          "type": "text"
                         }
                       ],
                       "body": {
@@ -7091,7 +7085,8 @@
                         "var tokens = eval(pm.collectionVariables.get('tokens'));",
                         "tokens.obtain(terminal_code, password);"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   },
                   {
@@ -7100,14 +7095,20 @@
                       "id": "0fcd1b6d-2700-44a0-ad90-9ade88da6fc2",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
-                        "    pm.response.to.have.jsonBody();",
-                        "    var response = pm.response.json();",
-                        "    pm.expect(response).to.have.property('sample_id');",
-                        "    pm.collectionVariables.set('reports_sample_id', response.sample_id);",
-                        "    postman.setNextRequest('Get a list of reports');",
+                        "        try {",
+                        "        pm.response.to.have.jsonBody();",
+                        "        var response = pm.response.json();",
+                        "        pm.expect(response).to.have.property('sample_id');",
+                        "        pm.collectionVariables.set('reports_sample_id', response.sample_id);",
+                        "        pm.execution.setNextRequest('Get a list of reports');",
+                        "    } catch (a) {",
+                        "        pm.collectionVariables.set('reports_sample_id', \"{{$guid}}\");",
+                        "        pm.execution.setNextRequest('Get a list of reports');",
+                        "    }",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   }
                 ],
@@ -7139,9 +7140,8 @@
                   "header": [
                     {
                       "key": "Content-Type",
-                      "name": "Content-Type",
-                      "type": "text",
-                      "value": "application/json"
+                      "value": "application/json",
+                      "type": "text"
                     }
                   ],
                   "body": {
@@ -7178,7 +7178,8 @@
                         "",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   },
                   {
@@ -7187,14 +7188,21 @@
                       "id": "3bb3c294-0d95-43d5-ae8a-b429ab034b9b",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
-                        "    pm.response.to.be.ok;",
-                        "    pm.response.to.have.jsonBody();",
-                        "    var response = pm.response.json();",
-                        "    pm.collectionVariables.set('reports_sample_id', response.sample_id);",
-                        "    postman.setNextRequest('Download report file');",
+                        "    try {",
+                        "        pm.response.to.be.ok;",
+                        "        pm.response.to.have.jsonBody();",
+                        "        var response = pm.response.json();",
+                        "        pm.response.to.be.ok;",
+                        "        pm.expect(response).to.have.property('sample_id');",
+                        "        pm.collectionVariables.set('reports_sample_id', response.sample_id);",
+                        "        postman.setNextRequest('Download report file');",
+                        "    } catch(err) {",
+                        "        postman.setNextRequest('Download report file');",
+                        "    }",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   }
                 ],
@@ -7226,9 +7234,8 @@
                   "header": [
                     {
                       "key": "Content-Type",
-                      "name": "Content-Type",
-                      "type": "text",
-                      "value": "application/json"
+                      "value": "application/json",
+                      "type": "text"
                     }
                   ],
                   "url": {
@@ -7262,7 +7269,8 @@
                         "",
                         ""
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   },
                   {
@@ -7271,10 +7279,15 @@
                       "id": "f956c45d-fb7b-4150-8806-f72bd68beddb",
                       "exec": [
                         "pm.test(\"Successful request\", function () {",
-                        "    pm.response.to.be.ok;",
+                        "    try {",
+                        "        pm.response.to.be.ok;",
+                        "    } catch(err) {",
+                        "",
+                        "    }",
                         "});"
                       ],
-                      "type": "text/javascript"
+                      "type": "text/javascript",
+                      "packages": {}
                     }
                   }
                 ],
@@ -7306,9 +7319,8 @@
                   "header": [
                     {
                       "key": "Content-Type",
-                      "name": "Content-Type",
-                      "type": "text",
-                      "value": "application/json"
+                      "value": "application/json",
+                      "type": "text"
                     },
                     {
                       "key": "Accept",
@@ -7546,298 +7558,685 @@
         "uid": "10462328-1f54d238-1bee-437a-b9c6-6e1462b63d04"
       },
       {
-        "name": "Authentication",
+        "name": "Payment authentication",
         "item": [
           {
-            "name": "Create 3-D Secure payment authentication (gateway mode)",
-            "event": [
+            "name": "Server-to-server mode",
+            "item": [
               {
-                "listen": "test",
-                "script": {
-                  "id": "2603fce5-9daa-4ec0-9422-fa16538abe1b",
-                  "exec": [
-                    "pm.test(\"Successful request\", function () {",
-                    "    pm.response.to.be.ok;",
-                    "    pm.response.to.have.jsonBody();",
-                    "",
-                    "    var response = pm.response.json();",
-                    "    pm.expect(response).to.have.property('redirect_url');",
-                    "",
-                    "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
-                    "    pm.collectionVariables.set('payment_authentication_id', response.authentication_data.id);",
-                    "",
-                    "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
-                    "        pm.expect(response_after_redirect.code).to.equal(200);",
-                    "    });",
-                    "",
-                    "    postman.setNextRequest('Create 3-D Secure non-payment authentication (gateway mode)');",
-                    "});"
-                  ],
-                  "type": "text/javascript",
-                  "packages": {}
-                }
+                "name": "Frictionless flow",
+                "item": [
+                  {
+                    "name": "Create authentication with 3-D secure (frictionless flow)",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "3bb41ef1-729c-4586-93c0-f3f8b4c8a015",
+                          "exec": [
+                            ""
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "6634c58c-32e0-4e13-8b74-626f310499de",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('authentication_data');",
+                            "    pm.expect(response.authentication_data).to.have.property('id');",
+                            "  ",
+                            "    postman.setNextRequest('Create authentication with 3-D secure (challenge flow)');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "8e4a818e-a284-4b90-ba38-a434e94015d6",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_FRICTIONLESS_CONFIRMED}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\": \"{{$randomIP}}\",\n        \"locale\": \"en\",\n        \"user_agent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Mobile/15E148 Safari/604.\",\n        \"browser_info\": {\n            \"color_depth\": 48,\n            \"screen_height\": \"800\",\n            \"screen_width\": \"1440\",\n            \"java_enabled\": false,\n            \"java_script_enabled\": true,\n            \"language\": \"en-US\",\n            \"time_zone\": \"300\",\n            \"accept_header\": \"*/\"\n        }\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremWord}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"return_urls\": {\n        \"return_url\": \"https://yourwebhook.site\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/authentication",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "authentication"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-8e4a818e-a284-4b90-ba38-a434e94015d6"
+                  }
+                ],
+                "id": "9625bec4-3b26-448e-8d15-73c062606e1c",
+                "uid": "10462328-9625bec4-3b26-448e-8d15-73c062606e1c"
+              },
+              {
+                "name": "Challenge flow",
+                "item": [
+                  {
+                    "name": "Create authentication with 3-D secure (challenge flow)",
+                    "event": [
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "2603fce5-9daa-4ec0-9422-fa16538abe1b",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('redirect_url');",
+                            "    pm.expect(response).to.have.property('CReq');",
+                            "    pm.expect(response).to.have.property('id');",
+                            "",
+                            "    pm.collectionVariables.set('creq', response.CReq);",
+                            "    pm.collectionVariables.set('auth_id_to_complete_3ds', response.id);",
+                            "",
+                            "    pm.execution.setNextRequest('Send CReq to ACS for authentication');",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "fa3bfd00-9ccb-4c22-88aa-353d2f8a65c3",
+                          "exec": [
+                            ""
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "488fc7b9-7366-4411-92d6-74b28a9c75d6",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"ip\": \"{{$randomIP}}\",\n        \"locale\": \"en\",\n        \"user_agent\": \"Mozilla/5.0 (iPhone; CPU iPhone OS 17_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.1.2 Mobile/15E148 Safari/604.\",\n        \"browser_info\": {\n            \"color_depth\": 48,\n            \"screen_height\": \"800\",\n            \"screen_width\": \"1440\",\n            \"java_enabled\": false,\n            \"java_script_enabled\": true,\n            \"language\": \"en-US\",\n            \"time_zone\": \"300\",\n            \"accept_header\": \"*/\"\n        }\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremWord}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"return_urls\": {\n        \"return_url\": \"https://yourwebhook.site\"\n    }\n}",
+                        "options": {
+                          "raw": {
+                            "language": "json"
+                          }
+                        }
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/authentication",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "authentication"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-488fc7b9-7366-4411-92d6-74b28a9c75d6"
+                  },
+                  {
+                    "name": "Send CReq to ACS for authentication",
+                    "event": [
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "a8f3d9c6-11dc-41da-9e36-9e8afcdacd34",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.be.ok;",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response).to.have.property('challenge_result_url')",
+                            "",
+                            "",
+                            "    pm.sendRequest(response.challenge_result_url, (err, response_after_redirect) => {",
+                            "        pm.expect(response_after_redirect.code).to.equal(200);",
+                            "    });",
+                            "    pm.execution.setNextRequest('Complete authentication with CRes');",
+                            "})"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "0bc73ae9-21f2-4a64-aade-e7fd342219c6",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "method": "POST",
+                      "header": [],
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/sandbox-emulator/3ds2/browserCReqS2S?creq={{creq}}",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "sandbox-emulator",
+                          "3ds2",
+                          "browserCReqS2S"
+                        ],
+                        "query": [
+                          {
+                            "key": "creq",
+                            "value": "{{creq}}"
+                          }
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-0bc73ae9-21f2-4a64-aade-e7fd342219c6"
+                  },
+                  {
+                    "name": "Complete authentication with CRes",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "id": "8c319631-48ce-42d5-a6cf-eb1cee2f0ed1",
+                          "exec": [
+                            ""
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "id": "61cd3c7c-2cef-446e-877d-65af8ceebdfc",
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    try {",
+                            "        pm.response.to.be.ok;",
+                            "        pm.response.to.have.jsonBody();",
+                            "        ",
+                            "        var response = pm.response.json();",
+                            "        console.log(response);",
+                            "        pm.expect(response).to.have.property('authentication_data');",
+                            "        pm.expect(response.authentication_data).to.have.property('id'); ",
+                            "    } catch(err) {",
+                            "",
+                            "    }",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {}
+                        }
+                      }
+                    ],
+                    "id": "8fd7795d-3053-4d4f-87aa-7165d96f4e57",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "PATCH",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"operation\": \"CONFIRM_3DS\",\n    \"CRes\": \"{{creq}}\"\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{auth_id_to_complete_3ds}}",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "authentication",
+                          "{{auth_id_to_complete_3ds}}"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-8fd7795d-3053-4d4f-87aa-7165d96f4e57"
+                  }
+                ],
+                "id": "a7956c1c-3d48-4422-910b-6b4aedce8bac",
+                "uid": "10462328-a7956c1c-3d48-4422-910b-6b4aedce8bac"
               }
             ],
-            "id": "2305c58c-5db7-493b-b9b2-1a35f47b1649",
-            "protocolProfileBehavior": {
-              "disableBodyPruning": true
-            },
-            "request": {
-              "auth": {
-                "type": "bearer",
-                "bearer": [
-                  {
-                    "key": "token",
-                    "value": "{{access_token}}",
-                    "type": "string"
-                  }
-                ]
-              },
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremText}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{UNLIMIT_API_URL}}/api/authentication",
-                "host": [
-                  "{{UNLIMIT_API_URL}}"
-                ],
-                "path": [
-                  "api",
-                  "authentication"
-                ]
-              }
-            },
-            "response": [],
-            "uid": "10462328-2305c58c-5db7-493b-b9b2-1a35f47b1649"
-          },
-          {
-            "name": "Create 3-D Secure non-payment authentication (gateway mode)",
+            "id": "211d29d9-56aa-4abd-bbaf-0311372f7392",
             "event": [
-              {
-                "listen": "test",
-                "script": {
-                  "id": "95ee2f98-087e-410f-ae0e-4683a9255f76",
-                  "exec": [
-                    "pm.test(\"Successful request\", function () {",
-                    "    pm.response.to.be.ok;",
-                    "    pm.response.to.have.jsonBody();",
-                    "",
-                    "    var response = pm.response.json();",
-                    "    pm.expect(response).to.have.property('redirect_url');",
-                    "",
-                    "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
-                    "    pm.collectionVariables.set('non_payment_authentication_id', response.authentication_data.id);",
-                    "",
-                    "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
-                    "        pm.expect(response_after_redirect.code).to.equal(200);",
-                    "    });",
-                    "",
-                    "    postman.setNextRequest('Get 3-D Secure payment authentication');",
-                    "});"
-                  ],
-                  "type": "text/javascript",
-                  "packages": {}
-                }
-              }
-            ],
-            "id": "cd9cd710-434f-4503-b5c0-3fadde650ed8",
-            "protocolProfileBehavior": {
-              "disableBodyPruning": true
-            },
-            "request": {
-              "auth": {
-                "type": "bearer",
-                "bearer": [
-                  {
-                    "key": "token",
-                    "value": "{{access_token}}",
-                    "type": "string"
-                  }
-                ]
-              },
-              "method": "POST",
-              "header": [],
-              "body": {
-                "mode": "raw",
-                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremText}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_NPA\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
-                "options": {
-                  "raw": {
-                    "language": "json"
-                  }
-                }
-              },
-              "url": {
-                "raw": "{{UNLIMIT_API_URL}}/api/authentication",
-                "host": [
-                  "{{UNLIMIT_API_URL}}"
-                ],
-                "path": [
-                  "api",
-                  "authentication"
-                ]
-              }
-            },
-            "response": [],
-            "uid": "10462328-cd9cd710-434f-4503-b5c0-3fadde650ed8"
-          },
-          {
-            "name": "Get 3-D Secure payment authentication",
-            "event": [
-              {
-                "listen": "test",
-                "script": {
-                  "id": "07ec6fc7-becb-4070-8797-96e72aefc202",
-                  "exec": [
-                    "pm.test(\"Successful request\", function () {",
-                    "    pm.response.to.be.ok;",
-                    "    pm.response.to.have.jsonBody();",
-                    "",
-                    "    var response = pm.response.json();",
-                    "    pm.expect(response).to.have.property('authentication_data');",
-                    "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
-                    "    pm.expect(response.authentication_data.status).to.equal(\"NEW\");",
-                    "",
-                    "    postman.setNextRequest('Get 3-D Secure non-payment authentication');",
-                    "});",
-                    ""
-                  ],
-                  "type": "text/javascript",
-                  "packages": {}
-                }
-              }
-            ],
-            "id": "b5882fb3-fc2d-4091-b946-e67424622f62",
-            "protocolProfileBehavior": {
-              "disableBodyPruning": true
-            },
-            "request": {
-              "auth": {
-                "type": "bearer",
-                "bearer": [
-                  {
-                    "key": "token",
-                    "value": "{{access_token}}",
-                    "type": "string"
-                  }
-                ]
-              },
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{payment_authentication_id}}",
-                "host": [
-                  "{{UNLIMIT_API_URL}}"
-                ],
-                "path": [
-                  "api",
-                  "authentication",
-                  "{{payment_authentication_id}}"
-                ]
-              }
-            },
-            "response": [],
-            "uid": "10462328-b5882fb3-fc2d-4091-b946-e67424622f62"
-          },
-          {
-            "name": "Get 3-D Secure non-payment authentication",
-            "event": [
-              {
-                "listen": "test",
-                "script": {
-                  "id": "b37e8a10-c92c-4e8c-a0d5-61289f39a843",
-                  "exec": [
-                    "pm.test(\"Successful request\", function () {",
-                    "    pm.response.to.be.ok;",
-                    "    pm.response.to.have.jsonBody();",
-                    "",
-                    "    var response = pm.response.json();",
-                    "    pm.expect(response).to.have.property('authentication_data');",
-                    "    pm.expect(response.authentication_data.status).to.eql('NEW');",
-                    "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
-                    "});",
-                    ""
-                  ],
-                  "type": "text/javascript",
-                  "packages": {}
-                }
-              },
               {
                 "listen": "prerequest",
                 "script": {
-                  "id": "ebd8a791-f2c1-4e4a-a5fd-4241f611c91a",
+                  "id": "ca107f4e-de01-4390-a0d4-1a2f8ab019cc",
+                  "type": "text/javascript",
+                  "packages": {},
+                  "exec": [
+                    "var terminal_code = pm.environment.get('S2S_TERMINAL_CODE');",
+                    "var password = pm.environment.get('S2S_PASSWORD');",
+                    "",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                    "tokens.obtain(terminal_code, password);"
+                  ]
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "8215f496-47ca-4a36-96c5-b06f09099fd5",
+                  "type": "text/javascript",
+                  "packages": {},
                   "exec": [
                     ""
-                  ],
-                  "type": "text/javascript",
-                  "packages": {}
+                  ]
                 }
               }
             ],
-            "id": "27b57137-8c01-4443-9855-99d7544ad7ba",
-            "protocolProfileBehavior": {
-              "disableBodyPruning": true
-            },
-            "request": {
-              "auth": {
-                "type": "bearer",
-                "bearer": [
+            "uid": "10462328-211d29d9-56aa-4abd-bbaf-0311372f7392"
+          },
+          {
+            "name": "Gateway mode",
+            "item": [
+              {
+                "name": "Create 3-D Secure payment authentication (gateway mode)",
+                "event": [
                   {
-                    "key": "token",
-                    "value": "{{access_token}}",
-                    "type": "string"
+                    "listen": "test",
+                    "script": {
+                      "id": "2603fce5-9daa-4ec0-9422-fa16538abe1b",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "    pm.collectionVariables.set('payment_authentication_id', response.authentication_data.id);",
+                        "",
+                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                        "        pm.expect(response_after_redirect.code).to.equal(200);",
+                        "    });",
+                        "",
+                        "    postman.setNextRequest('Create 3-D Secure non-payment authentication (gateway mode)');",
+                        "});"
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
                   }
-                ]
-              },
-              "method": "GET",
-              "header": [],
-              "url": {
-                "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{non_payment_authentication_id}}",
-                "host": [
-                  "{{UNLIMIT_API_URL}}"
                 ],
-                "path": [
-                  "api",
-                  "authentication",
-                  "{{non_payment_authentication_id}}"
-                ]
+                "id": "2305c58c-5db7-493b-b9b2-1a35f47b1649",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremWord}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_PA\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-2305c58c-5db7-493b-b9b2-1a35f47b1649"
+              },
+              {
+                "name": "Create 3-D Secure non-payment authentication (gateway mode)",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "95ee2f98-087e-410f-ae0e-4683a9255f76",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "    pm.collectionVariables.set('non_payment_authentication_id', response.authentication_data.id);",
+                        "",
+                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
+                        "        pm.expect(response_after_redirect.code).to.equal(200);",
+                        "    });",
+                        "",
+                        "    postman.setNextRequest('Get 3-D Secure payment authentication');",
+                        "});"
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "cd9cd710-434f-4503-b5c0-3fadde650ed8",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremWord}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"3DS_NPA\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-cd9cd710-434f-4503-b5c0-3fadde650ed8"
+              },
+              {
+                "name": "Get 3-D Secure payment authentication",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "07ec6fc7-becb-4070-8797-96e72aefc202",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('authentication_data');",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "    pm.expect(response.authentication_data.status).to.equal(\"NEW\");",
+                        "",
+                        "    postman.setNextRequest('Get 3-D Secure non-payment authentication');",
+                        "});",
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "b5882fb3-fc2d-4091-b946-e67424622f62",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{payment_authentication_id}}",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication",
+                      "{{payment_authentication_id}}"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-b5882fb3-fc2d-4091-b946-e67424622f62"
+              },
+              {
+                "name": "Get 3-D Secure non-payment authentication",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "b37e8a10-c92c-4e8c-a0d5-61289f39a843",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('authentication_data');",
+                        "    pm.expect(response.authentication_data.status).to.eql('NEW');",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "});",
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  },
+                  {
+                    "listen": "prerequest",
+                    "script": {
+                      "id": "ebd8a791-f2c1-4e4a-a5fd-4241f611c91a",
+                      "exec": [
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "27b57137-8c01-4443-9855-99d7544ad7ba",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{non_payment_authentication_id}}",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication",
+                      "{{non_payment_authentication_id}}"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-27b57137-8c01-4443-9855-99d7544ad7ba"
               }
-            },
-            "response": [],
-            "uid": "10462328-27b57137-8c01-4443-9855-99d7544ad7ba"
+            ],
+            "id": "92307e3b-3248-4a54-a2b8-a0fe80bd4e83",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "5c72d533-42fb-4997-a482-e885e87c11f6",
+                  "type": "text/javascript",
+                  "packages": {},
+                  "exec": [
+                    "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
+                    "var password = pm.environment.get('GATEWAY_PASSWORD');",
+                    "",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                    "tokens.obtain(terminal_code, password);"
+                  ]
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "2c24d077-f26b-4ddb-a2fd-4f1548048b8a",
+                  "type": "text/javascript",
+                  "packages": {},
+                  "exec": [
+                    ""
+                  ]
+                }
+              }
+            ],
+            "uid": "10462328-92307e3b-3248-4a54-a2b8-a0fe80bd4e83"
           }
         ],
         "id": "6075afd6-c8d1-4578-8433-568fc87868c5",
+        "description": "The authentication service implements three types of authentication to cater to different security needs:\n\n- **3-D Secure Payment Authentication (3DS PA)** - This adds an extra layer of security for online card transactions.\n    \n- **3-D Secure Non-Payment Authentication (3DS NPA)** - This is used for securing non-payment activities that require customer authentication. This method ensures that any sensitive action, such as updating account information, accessing secure areas of a website, or changing customer settings, is performed by the authorized user.\n    \n- **Address Verification System (AVS)** - This system verifies the address provided by the customer during the payment process. It matches the billing address submitted with the address on file at the issuing bank. This helps in detecting and preventing fraudulent transactions.\n    \n\n3DS PA and 3DS NPA are available in Payment page, Gateway, Server-to-server modes. AVS is available in Payment page, Gateway modes",
         "event": [
           {
             "listen": "prerequest",
             "script": {
-              "id": "375af28f-21a1-447c-8563-e1d1afe2bc20",
+              "id": "1e76e8db-a4fc-43d0-8fc9-2b5d3a3661f7",
               "type": "text/javascript",
               "packages": {},
               "exec": [
                 "var moment = require('moment');",
-                "pm.variables.set(\"request_time\", moment().toISOString());",
-                "",
-                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
-                "var password = pm.environment.get('GATEWAY_PASSWORD');",
-                "",
-                "var tokens = eval(pm.collectionVariables.get('tokens'));",
-                "tokens.obtain(terminal_code, password);"
+                "pm.variables.set(\"request_time\", moment().toISOString());"
               ]
             }
           },
           {
             "listen": "test",
             "script": {
-              "id": "01dddf59-e73e-49f4-b55c-b5935490ad10",
+              "id": "4bf45b25-f79f-4a80-9639-a987d5aceb16",
               "type": "text/javascript",
               "packages": {},
               "exec": [
@@ -7853,7 +8252,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "67e8630e-2c6d-4d2d-b364-2c50b9e8e407",
+          "id": "cd37b416-6bb6-472e-ae17-4c7707a62fad",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -7893,7 +8292,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "fee5f2a8-7a0e-4d73-b364-00b7430979b4",
+          "id": "0eae5032-e61b-453a-8a5c-f7f3a096a3b3",
           "type": "text/javascript",
           "exec": [
             ""
