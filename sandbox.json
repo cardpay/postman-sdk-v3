@@ -4,7 +4,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2024-06-05T15:26:21.000Z",
+    "updatedAt": "2024-08-02T12:09:45.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -148,6 +148,18 @@
         "value": "Example order",
         "enabled": true,
         "type": "default"
+      },
+      {
+        "key": "timestamp",
+        "value": "",
+        "enabled": true,
+        "type": "any"
+      },
+      {
+        "key": "request.time",
+        "value": "",
+        "enabled": true,
+        "type": "any"
       }
     ],
     "isPublic": false
