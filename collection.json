@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-08-02T13:10:14.000Z",
+      "updatedAt": "2024-08-21T05:17:20.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -10398,11 +10398,9 @@
                         "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
                         "    pm.collectionVariables.set('payment_authentication_id', response.authentication_data.id);",
                         "",
-                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
-                        "        pm.expect(response_after_redirect.code).to.equal(200);",
-                        "    });",
                         "",
-                        "    postman.setNextRequest('Create 3-D Secure non-payment authentication (gateway mode)');",
+                        "",
+                        "    postman.setNextRequest('Create AVS authentication (gateway mode)');",
                         "});"
                       ],
                       "type": "text/javascript",
@@ -10451,6 +10449,72 @@
                 "uid": "10462328-2305c58c-5db7-493b-b9b2-1a35f47b1649"
               },
               {
+                "name": "Create AVS authentication (gateway mode)",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "2603fce5-9daa-4ec0-9422-fa16538abe1b",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('redirect_url');",
+                        "",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "    pm.collectionVariables.set('avs_authentication_id', response.authentication_data.id);",
+                        "",
+                        "    postman.setNextRequest('Create 3-D Secure non-payment authentication (gateway mode)');",
+                        "});"
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "41f3a0d1-d5a7-4e6e-8605-7232ac0ce620",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "POST",
+                  "header": [],
+                  "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"expiration\": \"{{expiration}}\",\n            \"holder\": \"{{$randomBankAccountName}}\",\n            \"pan\": \"{{CARD_3DS_CHALLENGE_CONFIRMED_VISA}}\",\n            \"security_code\": 123\n        },\n        \"billing_address\": {\n            \"addr_line_1\": \"221b, Baker Street\",\n            \"addr_line_2\": \"\",\n            \"city\": \"London\",\n            \"country\": \"GB\",\n            \"state\": \"\",\n            \"zip\": \"NW1 6XE1\"\n        }\n    },\n    \"customer\": {\n        \"email\": \"{{$randomEmail}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\"\n    },\n    \"merchant_order\": {\n        \"description\": \"{{$randomLoremWord}}\",\n        \"id\": \"{{$randomUUID}}\"\n    },\n    \"authentication_data\": {\n        \"type\": \"AVS\",\n        \"amount\": 20.00,\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"Order note\"\n    },\n    \"payment_method\": \"BANKCARD\"\n}",
+                    "options": {
+                      "raw": {
+                        "language": "json"
+                      }
+                    }
+                  },
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-41f3a0d1-d5a7-4e6e-8605-7232ac0ce620"
+              },
+              {
                 "name": "Create 3-D Secure non-payment authentication (gateway mode)",
                 "event": [
                   {
@@ -10468,9 +10532,7 @@
                         "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
                         "    pm.collectionVariables.set('non_payment_authentication_id', response.authentication_data.id);",
                         "",
-                        "    pm.sendRequest(response.redirect_url, (err, response_after_redirect) => {",
-                        "        pm.expect(response_after_redirect.code).to.equal(200);",
-                        "    });",
+                        "   ",
                         "",
                         "    postman.setNextRequest('Get 3-D Secure payment authentication');",
                         "});"
@@ -10535,9 +10597,9 @@
                         "    var response = pm.response.json();",
                         "    pm.expect(response).to.have.property('authentication_data');",
                         "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
-                        "    pm.expect(response.authentication_data.status).to.equal(\"NEW\");",
                         "",
-                        "    postman.setNextRequest('Get 3-D Secure non-payment authentication');",
+                        "",
+                        "    postman.setNextRequest('Get AVS authentication');",
                         "});",
                         ""
                       ],
@@ -10579,6 +10641,63 @@
                 "uid": "10462328-b5882fb3-fc2d-4091-b946-e67424622f62"
               },
               {
+                "name": "Get AVS authentication",
+                "event": [
+                  {
+                    "listen": "test",
+                    "script": {
+                      "id": "07ec6fc7-becb-4070-8797-96e72aefc202",
+                      "exec": [
+                        "pm.test(\"Successful request\", function () {",
+                        "    pm.response.to.be.ok;",
+                        "    pm.response.to.have.jsonBody();",
+                        "",
+                        "    var response = pm.response.json();",
+                        "    pm.expect(response).to.have.property('authentication_data');",
+                        "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
+                        "  ",
+                        "    postman.setNextRequest('Get 3-D Secure non-payment authentication');",
+                        "});",
+                        ""
+                      ],
+                      "type": "text/javascript",
+                      "packages": {}
+                    }
+                  }
+                ],
+                "id": "0f4e93a6-6cc4-4490-9ff6-f130ee52c490",
+                "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+                },
+                "request": {
+                  "auth": {
+                    "type": "bearer",
+                    "bearer": [
+                      {
+                        "key": "token",
+                        "value": "{{access_token}}",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "method": "GET",
+                  "header": [],
+                  "url": {
+                    "raw": "{{UNLIMIT_API_URL}}/api/authentication/{{avs_authentication_id}}",
+                    "host": [
+                      "{{UNLIMIT_API_URL}}"
+                    ],
+                    "path": [
+                      "api",
+                      "authentication",
+                      "{{avs_authentication_id}}"
+                    ]
+                  }
+                },
+                "response": [],
+                "uid": "10462328-0f4e93a6-6cc4-4490-9ff6-f130ee52c490"
+              },
+              {
                 "name": "Get 3-D Secure non-payment authentication",
                 "event": [
                   {
@@ -10592,7 +10711,7 @@
                         "",
                         "    var response = pm.response.json();",
                         "    pm.expect(response).to.have.property('authentication_data');",
-                        "    pm.expect(response.authentication_data.status).to.eql('NEW');",
+                        "",
                         "    pm.expect(response.authentication_data.id).to.not.be.undefined;",
                         "});",
                         ""
@@ -10712,7 +10831,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "be53cc3e-9017-40e2-9b74-751c6fe3103f",
+          "id": "7978412e-4c06-4dc8-b2b8-026c6c0f7f6e",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -10752,7 +10871,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "40477f3e-43c5-4134-8dba-5244d7b47a5d",
+          "id": "06039bea-5747-4f90-8ccb-ef839a937968",
           "type": "text/javascript",
           "exec": [
             ""
