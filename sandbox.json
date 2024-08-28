@@ -4,7 +4,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2024-08-02T12:09:45.000Z",
+    "updatedAt": "2024-08-27T16:04:43.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -160,6 +160,18 @@
         "value": "",
         "enabled": true,
         "type": "any"
+      },
+      {
+        "key": "TERMINAL_CODE_EXT_RESP",
+        "value": "70349",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "TERMINAL_PASSWORD_EXT_RESP",
+        "value": "1vVIC3wa6W0h",
+        "enabled": true,
+        "type": "default"
       }
     ],
     "isPublic": false
