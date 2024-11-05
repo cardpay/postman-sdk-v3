@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-10-11T16:18:54.000Z",
+      "updatedAt": "2024-11-05T11:34:09.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -12898,6 +12898,311 @@
                 ],
                 "id": "fa6b4c43-1b1c-4d1b-9912-80a8981be09c",
                 "uid": "10462328-fa6b4c43-1b1c-4d1b-9912-80a8981be09c"
+              },
+              {
+                "name": "Fidelity VA",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create fidelityva payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "f32e0ba0-c296-40ec-8927-3a6e4d31f09f"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "54e2d3c3-556c-4290-b534-338740836587"
+                            }
+                          }
+                        ],
+                        "id": "8243d200-1ecb-4928-8d75-3969ae50aa3b",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"fidelityva\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n     \"ewallet_account\":\n    {\n        \"id\": \"2341234567890\"\n}\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-8243d200-1ecb-4928-8d75-3969ae50aa3b"
+                      }
+                    ],
+                    "id": "126a0209-92f0-4337-9d7a-9b523954de83",
+                    "uid": "10462328-126a0209-92f0-4337-9d7a-9b523954de83"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create fidelityva payment (payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "215cafa8-b7a2-4a88-9c76-56b147b2e759"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "1891ea15-b56d-4068-b633-bc890b5c6ef2"
+                            }
+                          }
+                        ],
+                        "id": "4f6dc6ed-89f0-415f-8a50-77a0ffc5d8a1",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"fidelityva\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n     \"ewallet_account\":\n    {\n        \"id\": \"2341234567890\"\n}\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-4f6dc6ed-89f0-415f-8a50-77a0ffc5d8a1"
+                      }
+                    ],
+                    "id": "60a58335-f577-4421-932a-767ff31d0169",
+                    "uid": "10462328-60a58335-f577-4421-932a-767ff31d0169"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create fidelityva payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "0d8fe78d-0388-46ed-808a-15073e07c8fb"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "7b92a37a-908c-408a-8423-734c457b52c7"
+                            }
+                          }
+                        ],
+                        "id": "3895a97f-1db8-4a8c-8d1d-894d26e5bd1d",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"fidelityva\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n     \"ewallet_account\":\n    {\n        \"id\": \"2341234567890\"\n}\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-3895a97f-1db8-4a8c-8d1d-894d26e5bd1d"
+                      }
+                    ],
+                    "id": "e8e0166a-8a01-4aa9-8c3d-c1b46af075d3",
+                    "uid": "10462328-e8e0166a-8a01-4aa9-8c3d-c1b46af075d3"
+                  }
+                ],
+                "id": "2bc7a741-cd48-48ac-b511-5b0eae1f6039",
+                "uid": "10462328-2bc7a741-cd48-48ac-b511-5b0eae1f6039"
               }
             ],
             "id": "734abb68-be0b-40bd-914a-e9a03220e32a",
@@ -26270,7 +26575,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "1390fe19-8a9b-44b5-886c-0748141f6766",
+          "id": "781bb404-18f4-403c-b98d-ad031e35fcc7",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -26310,7 +26615,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "a08d8f50-48fa-4f4a-9338-63c68e9bec3e",
+          "id": "5b0211b3-4dcd-4ac3-80ae-2111635219a2",
           "type": "text/javascript",
           "exec": [
             ""
