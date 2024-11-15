@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-11-13T11:57:30.000Z",
+      "updatedAt": "2024-11-14T13:24:52.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -2553,16 +2553,7 @@
                         "script": {
                           "id": "d7108ef8-3109-46b3-9eda-2ff4419dcc8c",
                           "exec": [
-                            "pm.test(\"Successful request\", function () {",
-                            "    pm.response.to.be.ok;",
-                            "    pm.response.to.have.jsonBody();",
-                            "    ",
-                            "    var response = pm.response.json();",
-                            " ",
-                            "    pm.expect(response).to.have.property('payment_data');",
-                            "    pm.expect(response.payment_data).to.have.property('id');",
-                            "    pm.execution.setNextRequest('Create payment without 3-D secure results');",
-                            "});"
+                            ""
                           ],
                           "type": "text/javascript",
                           "packages": {}
@@ -2597,9 +2588,8 @@
                       "header": [
                         {
                           "key": "Content-Type",
-                          "name": "Content-Type",
-                          "type": "text",
-                          "value": "application/json"
+                          "value": "application/json",
+                          "type": "text"
                         }
                       ],
                       "body": {
@@ -19137,21 +19127,48 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "91209288-f502-4c00-8a69-1439f22d5aa9",
                               "exec": [
                                 "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD_IND');\r",
+                                "\r",
+                                "\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "5dd8f559-0aad-4e86-95c4-b90431315963"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "c08430b1-a844-4d5f-a2e5-97408c9c21ef",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19163,8 +19180,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "4dcaf4f6-d896-413c-9248-c1577220f4e7"
+                              "packages": {}
                             }
                           }
                         ],
@@ -19188,7 +19204,7 @@
                               },
                               {
                                 "key": "token",
-                                "value": "{{access_token}}",
+                                "value": "{{access_token_ind}}",
                                 "type": "string"
                               }
                             ]
@@ -19210,9 +19226,9 @@
                             }
                           },
                           "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
                             "host": [
-                              "{{UNLIMIT_API_URL}}"
+                              "{{UNLIMIT_API_URL_IND}}"
                             ],
                             "path": [
                               "api",
@@ -19236,21 +19252,46 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "b2f3c7c4-de45-4ddc-b33e-6632fca2f779",
                               "exec": [
                                 "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "b2f3c7c4-de45-4ddc-b33e-6632fca2f779"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "0d2c2380-e247-4071-8245-586beef46ef4",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19261,8 +19302,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "0d2c2380-e247-4071-8245-586beef46ef4"
+                              "packages": {}
                             }
                           }
                         ],
@@ -19286,7 +19326,7 @@
                               },
                               {
                                 "key": "token",
-                                "value": "{{access_token}}",
+                                "value": "{{access_token_ind}}",
                                 "type": "string"
                               }
                             ]
@@ -19308,9 +19348,9 @@
                             }
                           },
                           "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
                             "host": [
-                              "{{UNLIMIT_API_URL}}"
+                              "{{UNLIMIT_API_URL_IND}}"
                             ],
                             "path": [
                               "api",
@@ -19341,21 +19381,46 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "34e3ef9a-ac61-47be-9cf9-8360aa019c8e",
                               "exec": [
                                 "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "34e3ef9a-ac61-47be-9cf9-8360aa019c8e"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "b33982dd-398f-4c4c-a55c-d27f23ed4ceb",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19367,8 +19432,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "b33982dd-398f-4c4c-a55c-d27f23ed4ceb"
+                              "packages": {}
                             }
                           }
                         ],
@@ -19392,7 +19456,7 @@
                               },
                               {
                                 "key": "token",
-                                "value": "{{access_token}}",
+                                "value": "{{access_token_ind}}",
                                 "type": "string"
                               }
                             ]
@@ -19414,9 +19478,9 @@
                             }
                           },
                           "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
                             "host": [
-                              "{{UNLIMIT_API_URL}}"
+                              "{{UNLIMIT_API_URL_IND}}"
                             ],
                             "path": [
                               "api",
@@ -19440,21 +19504,46 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "2b80c669-37d0-48a3-b676-422e0883faf8",
                               "exec": [
                                 "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "2b80c669-37d0-48a3-b676-422e0883faf8"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "1638e879-dab1-494a-91fa-589f0b9a8c83",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19465,8 +19554,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "1638e879-dab1-494a-91fa-589f0b9a8c83"
+                              "packages": {}
                             }
                           }
                         ],
@@ -19490,7 +19578,7 @@
                               },
                               {
                                 "key": "token",
-                                "value": "{{access_token}}",
+                                "value": "{{access_token_ind}}",
                                 "type": "string"
                               }
                             ]
@@ -19512,9 +19600,9 @@
                             }
                           },
                           "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
                             "host": [
-                              "{{UNLIMIT_API_URL}}"
+                              "{{UNLIMIT_API_URL_IND}}"
                             ],
                             "path": [
                               "api",
@@ -19538,23 +19626,48 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "3bb005cc-d656-415d-addb-54737582c006",
                               "exec": [
                                 "var uuid = require('uuid');\r",
                                 "\r",
-                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
-                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP_IND');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP_IND');\r",
                                 "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "3bb005cc-d656-415d-addb-54737582c006"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "3c17aa2a-8b18-43aa-a15e-1e360395377b",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19567,8 +19680,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "3c17aa2a-8b18-43aa-a15e-1e360395377b"
+                              "packages": {}
                             }
                           }
                         ],
@@ -19592,7 +19704,7 @@
                               },
                               {
                                 "key": "token",
-                                "value": "{{access_token}}",
+                                "value": "{{access_token_ind}}",
                                 "type": "string"
                               }
                             ]
@@ -19614,9 +19726,9 @@
                             }
                           },
                           "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
                             "host": [
-                              "{{UNLIMIT_API_URL}}"
+                              "{{UNLIMIT_API_URL_IND}}"
                             ],
                             "path": [
                               "api",
@@ -27252,7 +27364,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "6424d875-0dd0-4e8a-b45c-08292b4610a1",
+          "id": "46193f1e-a0a2-463a-a600-7bcb6e0bbe45",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -27292,7 +27404,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "f476a77d-d451-4e04-aaeb-24e3e55ec73a",
+          "id": "9f920821-a63d-41e5-966c-7492cc5ca23a",
           "type": "text/javascript",
           "exec": [
             ""

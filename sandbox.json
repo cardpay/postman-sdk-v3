@@ -5,7 +5,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2024-08-27T16:04:43.000Z",
+    "updatedAt": "2024-11-14T08:53:12.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -173,6 +173,60 @@
         "value": "1vVIC3wa6W0h",
         "enabled": true,
         "type": "default"
+      },
+      {
+        "key": "PAYMENTPAGE_TERMINAL_CODE_IND",
+        "value": "129",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "PAYMENTPAGE_PASSWORD_IND",
+        "value": "AVRw6a4t2rQ7",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "GATEWAY_TERMINAL_CODE_IND",
+        "value": "127",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "GATEWAY_PASSWORD_IND",
+        "value": "87Inr3kZvAJ6",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "TERMINAL_CODE_EXT_RESP_IND",
+        "value": "131",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "TERMINAL_PASSWORD_EXT_RESP_IND",
+        "value": "5A8Su1Re3kMj",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "UNLIMIT_API_URL_IND",
+        "value": "https://sandbox.in.unlimit.com",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "access_token_ind",
+        "value": "",
+        "enabled": true,
+        "type": "any"
+      },
+      {
+        "key": "refresh_token_ind",
+        "value": "",
+        "enabled": true,
+        "type": "any"
       }
     ],
     "isPublic": false
