@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-11-14T13:24:52.000Z",
+      "updatedAt": "2024-11-20T00:15:59.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -19127,7 +19127,6 @@
                           {
                             "listen": "prerequest",
                             "script": {
-                              "id": "91209288-f502-4c00-8a69-1439f22d5aa9",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
@@ -19162,13 +19161,13 @@
                                 ""
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "4b7ab152-d7fe-4c3a-968e-496d1dfb1919"
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
-                              "id": "c08430b1-a844-4d5f-a2e5-97408c9c21ef",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19180,11 +19179,12 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "eac24aa2-584d-4a6d-bc90-bcb551a938f0"
                             }
                           }
                         ],
-                        "id": "236d8571-599a-4076-bf55-ef379dff69c3",
+                        "id": "3fc08a85-deb8-4f5a-8231-cdda4fe72ac6",
                         "protocolProfileBehavior": {
                           "strictSSL": false,
                           "disableBodyPruning": true
@@ -19237,11 +19237,11 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-236d8571-599a-4076-bf55-ef379dff69c3"
+                        "uid": "10462328-3fc08a85-deb8-4f5a-8231-cdda4fe72ac6"
                       }
                     ],
-                    "id": "8c5755cb-7cd6-4d13-bfce-6cd2d0f65526",
-                    "uid": "10462328-8c5755cb-7cd6-4d13-bfce-6cd2d0f65526"
+                    "id": "a9300cba-3ec2-4c27-a42e-9061290fc842",
+                    "uid": "10462328-a9300cba-3ec2-4c27-a42e-9061290fc842"
                   },
                   {
                     "name": "Payment page mode",
@@ -19252,7 +19252,6 @@
                           {
                             "listen": "prerequest",
                             "script": {
-                              "id": "b2f3c7c4-de45-4ddc-b33e-6632fca2f779",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
@@ -19285,13 +19284,13 @@
                                 ""
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "70f7695f-6128-4157-8be1-d0357be9e72f"
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
-                              "id": "0d2c2380-e247-4071-8245-586beef46ef4",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19302,11 +19301,12 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "7a570a3c-35a0-4ebf-b5c3-9f01c6344e6e"
                             }
                           }
                         ],
-                        "id": "5cba13d4-9cd4-4532-aaa2-e383d7542a2f",
+                        "id": "593de0d2-72bd-4334-bfba-4cfbc8e6275f",
                         "protocolProfileBehavior": {
                           "strictSSL": false,
                           "disableBodyPruning": true
@@ -19340,7 +19340,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"netbankinginr\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n \"ewallet_account\":\n    {\n        \"bank_code\": \"INB1111\"\n}\n}",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"netbankinginr\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    }\n\n}",
                             "options": {
                               "raw": {
                                 "language": "json"
@@ -19359,15 +19359,15 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-5cba13d4-9cd4-4532-aaa2-e383d7542a2f"
+                        "uid": "10462328-593de0d2-72bd-4334-bfba-4cfbc8e6275f"
                       }
                     ],
-                    "id": "395d3624-9202-4367-acb5-4edf8413d0e4",
-                    "uid": "10462328-395d3624-9202-4367-acb5-4edf8413d0e4"
+                    "id": "942024f3-eae2-4f79-98b1-cc977e2a68db",
+                    "uid": "10462328-942024f3-eae2-4f79-98b1-cc977e2a68db"
                   }
                 ],
-                "id": "7a39bdf3-72ff-4a3c-adf7-18f13f81012c",
-                "uid": "10462328-7a39bdf3-72ff-4a3c-adf7-18f13f81012c"
+                "id": "292b6d99-f7be-41a9-a338-0a84fb0dc21d",
+                "uid": "10462328-292b6d99-f7be-41a9-a338-0a84fb0dc21d"
               },
               {
                 "name": "UPI (Unified Payments Interface)",
@@ -19381,7 +19381,6 @@
                           {
                             "listen": "prerequest",
                             "script": {
-                              "id": "34e3ef9a-ac61-47be-9cf9-8360aa019c8e",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
@@ -19414,13 +19413,13 @@
                                 ""
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "af00a9cc-e143-4208-b7f2-124504bb57d4"
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
-                              "id": "b33982dd-398f-4c4c-a55c-d27f23ed4ceb",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19432,11 +19431,12 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "ec5923ac-f6b8-4699-bdd5-d1e58e8a79f3"
                             }
                           }
                         ],
-                        "id": "091cea28-f7b5-4b35-845b-d62124e8c205",
+                        "id": "f98e122b-ccd5-41ce-98cc-c471856cc9f0",
                         "protocolProfileBehavior": {
                           "strictSSL": false,
                           "disableBodyPruning": true
@@ -19489,11 +19489,11 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-091cea28-f7b5-4b35-845b-d62124e8c205"
+                        "uid": "10462328-f98e122b-ccd5-41ce-98cc-c471856cc9f0"
                       }
                     ],
-                    "id": "630c2cce-5323-47f6-9c79-16af269ee09d",
-                    "uid": "10462328-630c2cce-5323-47f6-9c79-16af269ee09d"
+                    "id": "83788c3b-bb2a-4712-9798-c660506946cd",
+                    "uid": "10462328-83788c3b-bb2a-4712-9798-c660506946cd"
                   },
                   {
                     "name": "Payment page mode",
@@ -19504,7 +19504,6 @@
                           {
                             "listen": "prerequest",
                             "script": {
-                              "id": "2b80c669-37d0-48a3-b676-422e0883faf8",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
@@ -19537,13 +19536,13 @@
                                 ""
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "750e277e-21b0-401b-9742-5acf3685d384"
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
-                              "id": "1638e879-dab1-494a-91fa-589f0b9a8c83",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19554,11 +19553,138 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "e6d8926b-7584-41c5-a9b4-d00b90296d52"
                             }
                           }
                         ],
-                        "id": "18c7e45a-3486-479d-9b03-e48993bfbee1",
+                        "id": "a0c7cc83-53ac-4220-a31c-a54d7c3e6261",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"upi\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-a0c7cc83-53ac-4220-a31c-a54d7c3e6261"
+                      }
+                    ],
+                    "id": "ee5b9ef1-7947-4590-bec1-aebe02e54c12",
+                    "uid": "10462328-ee5b9ef1-7947-4590-bec1-aebe02e54c12"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create upi payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP_IND');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP_IND');\r",
+                                "\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "2ead5a21-7cc4-4719-ba9b-69d52caa7fc8"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "61759a6d-94b0-4ee1-9158-44525d51a548"
+                            }
+                          }
+                        ],
+                        "id": "11df5fcd-9b60-4655-928f-d1168838d1cc",
                         "protocolProfileBehavior": {
                           "strictSSL": false,
                           "disableBodyPruning": true
@@ -19611,22 +19737,273 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-18c7e45a-3486-479d-9b03-e48993bfbee1"
+                        "uid": "10462328-11df5fcd-9b60-4655-928f-d1168838d1cc"
                       }
                     ],
-                    "id": "6b9d91e3-867e-48c0-9663-59b21fb59e21",
-                    "uid": "10462328-6b9d91e3-867e-48c0-9663-59b21fb59e21"
+                    "id": "36a6e029-fbb8-4fee-b162-29993af2fb23",
+                    "uid": "10462328-36a6e029-fbb8-4fee-b162-29993af2fb23"
+                  }
+                ],
+                "id": "c4d2bbf7-c40e-49a4-8c3b-aa14202c550a",
+                "uid": "10462328-c4d2bbf7-c40e-49a4-8c3b-aa14202c550a"
+              },
+              {
+                "name": "VpaUPI",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create vpaupi payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "00974e69-2ddd-4223-b136-8c884742dbb8"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "f1ea369f-bd60-40fc-891d-2f6ba255d5c1"
+                            }
+                          }
+                        ],
+                        "id": "00a83c21-00e6-460c-b444-5072d22f9937",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"vpaupi\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"user123@bank\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-00a83c21-00e6-460c-b444-5072d22f9937"
+                      }
+                    ],
+                    "id": "05de4391-bc91-41bf-b68b-ab6be8c7d4aa",
+                    "uid": "10462328-05de4391-bc91-41bf-b68b-ab6be8c7d4aa"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create vpaupi payment (payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "41b4de93-96d4-47e2-a2a9-a79a04484179"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "64fadd5e-89f0-4708-aacf-2b7e453d1abf"
+                            }
+                          }
+                        ],
+                        "id": "724c5c56-4ee2-44a9-93ef-a28e8906f385",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"vpaupi\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    }\n\n\n    \n\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-724c5c56-4ee2-44a9-93ef-a28e8906f385"
+                      }
+                    ],
+                    "id": "b9dcb060-4a52-458c-b7b9-9b6b2fd14f45",
+                    "uid": "10462328-b9dcb060-4a52-458c-b7b9-9b6b2fd14f45"
                   },
                   {
                     "name": "Extended response",
                     "item": [
                       {
-                        "name": "Create upi payment (ext resp)",
+                        "name": "Create vpaupi payment (ext resp)",
                         "event": [
                           {
                             "listen": "prerequest",
                             "script": {
-                              "id": "3bb005cc-d656-415d-addb-54737582c006",
                               "exec": [
                                 "var uuid = require('uuid');\r",
                                 "\r",
@@ -19661,13 +20038,13 @@
                                 ""
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "86944334-129b-4bab-aa31-874646a5007b"
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
-                              "id": "3c17aa2a-8b18-43aa-a15e-1e360395377b",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -19680,11 +20057,12 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {}
+                              "packages": {},
+                              "id": "bbfc8b60-0f7e-4d16-8c07-9452d1d85ef2"
                             }
                           }
                         ],
-                        "id": "d6903395-d7a0-4727-aa4a-b4edd20d55f1",
+                        "id": "e123a207-fc08-460d-9e35-7d361fc0d66e",
                         "protocolProfileBehavior": {
                           "strictSSL": false,
                           "disableBodyPruning": true
@@ -19718,7 +20096,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"upi\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n\n}",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"vpaupi\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"user123@bank\"\n    }\n}",
                             "options": {
                               "raw": {
                                 "language": "json"
@@ -19737,19 +20115,19 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-d6903395-d7a0-4727-aa4a-b4edd20d55f1"
+                        "uid": "10462328-e123a207-fc08-460d-9e35-7d361fc0d66e"
                       }
                     ],
-                    "id": "8fc4abd4-8c9b-49e6-bc17-4e0fb7287591",
-                    "uid": "10462328-8fc4abd4-8c9b-49e6-bc17-4e0fb7287591"
+                    "id": "8fe8f74d-c7e3-4a20-9b76-37689e4a1a0e",
+                    "uid": "10462328-8fe8f74d-c7e3-4a20-9b76-37689e4a1a0e"
                   }
                 ],
-                "id": "8f025fd1-372e-466d-9c5a-d8ce1d706b26",
-                "uid": "10462328-8f025fd1-372e-466d-9c5a-d8ce1d706b26"
+                "id": "82723a19-6d0a-4b72-b080-e9fcd5d3f75b",
+                "uid": "10462328-82723a19-6d0a-4b72-b080-e9fcd5d3f75b"
               }
             ],
-            "id": "9289f82e-1a2c-479e-ae26-f7fcd5143d1f",
-            "uid": "10462328-9289f82e-1a2c-479e-ae26-f7fcd5143d1f"
+            "id": "f9107b90-316b-486d-9812-2e2d30e1f001",
+            "uid": "10462328-f9107b90-316b-486d-9812-2e2d30e1f001"
           }
         ],
         "id": "c6143109-b538-4019-b678-ab6a893adda5",
@@ -27364,7 +27742,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "46193f1e-a0a2-463a-a600-7bcb6e0bbe45",
+          "id": "a6916e75-7bb2-4098-a8e6-c7532fd5ede0",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -27404,7 +27782,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "9f920821-a63d-41e5-966c-7492cc5ca23a",
+          "id": "26bd20b6-dcd9-44cd-ab59-c769c1224e19",
           "type": "text/javascript",
           "exec": [
             ""
