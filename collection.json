@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2024-11-20T00:15:59.000Z",
+      "updatedAt": "2024-11-29T08:03:54.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -4856,25 +4856,6 @@
                 "uid": "10462328-f15d2b2d-f042-4d77-b576-316720842554"
               },
               {
-                "name": "OPENBANKING",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [],
-                    "id": "30ed5b5a-5a1f-42cb-a02b-7ad674c3797c",
-                    "uid": "10462328-30ed5b5a-5a1f-42cb-a02b-7ad674c3797c"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [],
-                    "id": "ae7bccee-0528-42be-84c7-e3e869c65979",
-                    "uid": "10462328-ae7bccee-0528-42be-84c7-e3e869c65979"
-                  }
-                ],
-                "id": "40cf015e-5254-4f01-b7bd-64067d7c218b",
-                "uid": "10462328-40cf015e-5254-4f01-b7bd-64067d7c218b"
-              },
-              {
                 "name": "Direct Banking Europe",
                 "item": [
                   {
@@ -5072,6 +5053,317 @@
                 ],
                 "id": "0b4cd65d-21a2-4ce0-a861-522d0e978f41",
                 "uid": "10462328-0b4cd65d-21a2-4ce0-a861-522d0e978f41"
+              },
+              {
+                "name": "OPENBANKING",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create OPENBANKING payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "c83375bf-0f1e-4695-a594-214b3c516ff1"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "53eb786e-3bb9-4f73-a642-71dbad713f59"
+                            }
+                          }
+                        ],
+                        "id": "c9a5169b-aad1-4367-90a4-5cded986c2fe",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OPENBANKING\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    },\n    \"ewallet_account\":{\n       \"bank_code\":  \"ksk_euskirchen_oauth_client_de\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-c9a5169b-aad1-4367-90a4-5cded986c2fe"
+                      }
+                    ],
+                    "id": "6485dcd2-5dc3-4f1c-b17c-cd475d85883d",
+                    "uid": "10462328-6485dcd2-5dc3-4f1c-b17c-cd475d85883d"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create OPENBANKING payment (Payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "c5657158-6e39-4e25-a539-2a5f59338e92"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "149a585e-43bd-4c23-a533-fbc4319b206f"
+                            }
+                          }
+                        ],
+                        "id": "8892e1b8-e762-4822-a853-b5c4b6d07588",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OPENBANKING\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    }\n\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-8892e1b8-e762-4822-a853-b5c4b6d07588"
+                      }
+                    ],
+                    "id": "ad70a077-7a31-44e5-971e-51b37812a705",
+                    "uid": "10462328-ad70a077-7a31-44e5-971e-51b37812a705"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create OPENBANKING payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "e10599d1-6cf2-47ce-acac-82b0a0892216"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "3a116623-3f25-4a38-80c4-edbce0c7484c"
+                            }
+                          }
+                        ],
+                        "id": "dfca9d88-2c8f-4248-acfe-c20df53e8cde",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OPENBANKING\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    },\n    \"ewallet_account\":{\n       \"bank_code\":  \"spk_schweinfurt_hassberge_oauth_client_de\",\n       \"id\":\"CY000000000000000000000000771\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-dfca9d88-2c8f-4248-acfe-c20df53e8cde"
+                      }
+                    ],
+                    "id": "dac27910-ed5b-40d6-9558-491c1490425c",
+                    "uid": "10462328-dac27910-ed5b-40d6-9558-491c1490425c"
+                  }
+                ],
+                "id": "7309f3ea-2ff6-470a-a7de-4be538f42794",
+                "uid": "10462328-7309f3ea-2ff6-470a-a7de-4be538f42794"
               }
             ],
             "id": "57b9c9c4-4e8f-40b7-ad4d-38556b0367ec",
@@ -6119,7 +6411,13 @@
                                     "script": {
                                       "id": "b3065cd4-1c45-4f6a-a5b5-f81a8c23d2f1",
                                       "exec": [
-                                        ""
+                                        "pm.test(\"Successful request\", function () {",
+                                        "    pm.response.to.be.ok;",
+                                        "    pm.response.to.have.jsonBody();",
+                                        "    ",
+                                        "    var response = pm.response.json();",
+                                        "     pm.expect(response).to.have.property('redirect_url');",
+                                        "});"
                                       ],
                                       "type": "text/javascript",
                                       "packages": {}
@@ -6209,7 +6507,13 @@
                                     "script": {
                                       "id": "c5faedfa-cfdf-4a0c-8808-87325fb0a97c",
                                       "exec": [
-                                        ""
+                                        "pm.test(\"Successful request\", function () {",
+                                        "    pm.response.to.be.ok;",
+                                        "    pm.response.to.have.jsonBody();",
+                                        "    ",
+                                        "    var response = pm.response.json();",
+                                        "     pm.expect(response).to.have.property('redirect_url');",
+                                        "});"
                                       ],
                                       "type": "text/javascript",
                                       "packages": {}
@@ -15336,6 +15640,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "c0049911-6443-4c61-acd2-7c69c9f3df25",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
@@ -15344,13 +15649,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "c0049911-6443-4c61-acd2-7c69c9f3df25"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "2f341dfa-6785-49f2-a7d6-73cdf64d1979",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -15361,8 +15666,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "2f341dfa-6785-49f2-a7d6-73cdf64d1979"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -15400,7 +15704,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"IDR\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"621234567890\"\n    },\n    \"customer\": {\n        \n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OVO\",\n    \"payment_data\": {\n        \"amount\": \"101\",\n        \"currency\": \"IDR\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"621234567890\"\n    },\n    \"customer\": {\n        \n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -15434,6 +15738,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "09ffac26-b358-49cb-aafe-978156a3b861",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
@@ -15442,13 +15747,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "09ffac26-b358-49cb-aafe-978156a3b861"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "a5beab6a-45e0-4401-8b13-fa63b0394703",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -15459,8 +15764,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "a5beab6a-45e0-4401-8b13-fa63b0394703"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -15498,7 +15802,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"IDR\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"621234567890\"\n    },\n    \"customer\": {\n        \n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"OVO\",\n    \"payment_data\": {\n        \"amount\": \"101\",\n        \"currency\": \"IDR\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"621234567890\"\n    },\n    \"customer\": {\n        \n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -18282,6 +18586,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "3fba7f12-3106-4cf4-ba56-d7ba6c0af78e",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
@@ -18290,13 +18595,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "3fba7f12-3106-4cf4-ba56-d7ba6c0af78e"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "ec2786a0-db60-4b62-905e-8520e1d50563",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -18307,8 +18612,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "ec2786a0-db60-4b62-905e-8520e1d50563"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -18346,7 +18650,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"promptpayqr\",\n    \"payment_data\": {\n        \"amount\": \"1009\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"promptpayqr\",\n    \"payment_data\": {\n        \"amount\": \"2001\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -18380,6 +18684,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "2cd0b497-dcea-4fcb-b32d-335b8eaf67b5",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
@@ -18388,13 +18693,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "2cd0b497-dcea-4fcb-b32d-335b8eaf67b5"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "c3ea9efb-11ef-4399-85d7-8cc9e5555e4d",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -18405,8 +18710,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "c3ea9efb-11ef-4399-85d7-8cc9e5555e4d"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -18444,7 +18748,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"promptpayqr\",\n    \"payment_data\": {\n        \"amount\": \"1009\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"promptpayqr\",\n    \"payment_data\": {\n        \"amount\": \"2001\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -18485,6 +18789,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "eb49363c-238c-4111-a16e-a36629bc5d37",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
@@ -18493,13 +18798,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "eb49363c-238c-4111-a16e-a36629bc5d37"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "ab31eb15-3527-4412-828e-975105875a80",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -18510,8 +18815,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "ab31eb15-3527-4412-828e-975105875a80"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -18549,7 +18853,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"truemoney\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\",\n        \"phone\":\"0123456789\"\n\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"truemoney\",\n    \"payment_data\": {\n        \"amount\": \"2000\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\",\n        \"phone\":\"0123456789\"\n\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -18583,6 +18887,7 @@
                               {
                                 "listen": "prerequest",
                                 "script": {
+                                  "id": "3d6d1ec6-d9c0-4cca-b30c-d1fb05eadfae",
                                   "exec": [
                                     "\r",
                                     "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
@@ -18591,13 +18896,13 @@
                                     "tokens.obtain(terminal_code, password);"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "3d6d1ec6-d9c0-4cca-b30c-d1fb05eadfae"
+                                  "packages": {}
                                 }
                               },
                               {
                                 "listen": "test",
                                 "script": {
+                                  "id": "24a941f1-456b-423c-b47a-ba1575bb195d",
                                   "exec": [
                                     "pm.test(\"Successful request\", function () {",
                                     "    pm.response.to.be.ok;",
@@ -18608,8 +18913,7 @@
                                     "});"
                                   ],
                                   "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "24a941f1-456b-423c-b47a-ba1575bb195d"
+                                  "packages": {}
                                 }
                               }
                             ],
@@ -18647,7 +18951,7 @@
                               ],
                               "body": {
                                 "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"truemoney\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\",\n        \"phone\":\"0123456789\"\n\n    }\n}",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"truemoney\",\n    \"payment_data\": {\n        \"amount\": \"2000\",\n        \"currency\": \"THB\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\",\n        \"phone\":\"0123456789\"\n\n    }\n}",
                                 "options": {
                                   "raw": {
                                     "language": "json"
@@ -27742,7 +28046,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "a6916e75-7bb2-4098-a8e6-c7532fd5ede0",
+          "id": "29228839-fce3-4927-8420-a9f735d8caf3",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -27782,7 +28086,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "26bd20b6-dcd9-44cd-ab59-c769c1224e19",
+          "id": "f0431e0e-393e-4154-8a27-141625c4fe40",
           "type": "text/javascript",
           "exec": [
             ""
