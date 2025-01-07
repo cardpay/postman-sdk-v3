@@ -5,7 +5,7 @@
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2024-11-19T17:43:47.000Z",
+    "updatedAt": "2025-01-07T09:36:25.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -227,6 +227,30 @@
         "value": "",
         "enabled": true,
         "type": "any"
+      },
+      {
+        "key": "DPAN",
+        "value": "2400000000000077",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "DPAN_AUTH",
+        "value": "5100000000000065",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "GATEWAY_TERMINAL_CODE_T",
+        "value": "79513",
+        "enabled": true,
+        "type": "default"
+      },
+      {
+        "key": "GATEWAY_PASSWORD_T",
+        "value": "8jDRlz1Se72I",
+        "enabled": true,
+        "type": "default"
       }
     ],
     "isPublic": false
