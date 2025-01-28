@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-01-28T12:46:19.000Z",
+      "updatedAt": "2025-01-28T13:07:02.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -12701,6 +12701,7 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "82dc2311-1d6e-48e4-a21a-71a34448a802",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
@@ -12709,13 +12710,13 @@
                                 "tokens.obtain(terminal_code, password);"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "82dc2311-1d6e-48e4-a21a-71a34448a802"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "012c31b5-fe35-401b-ad04-a22ef7142063",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -12726,8 +12727,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "012c31b5-fe35-401b-ad04-a22ef7142063"
+                              "packages": {}
                             }
                           }
                         ],
@@ -12765,7 +12765,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman_Collection_Order\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
                             "options": {
                               "raw": {
                                 "language": "json"
@@ -12799,6 +12799,7 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "51b49a9c-efc6-46bf-894e-480816857db1",
                               "exec": [
                                 "\r",
                                 "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
@@ -12807,13 +12808,13 @@
                                 "tokens.obtain(terminal_code, password);"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "51b49a9c-efc6-46bf-894e-480816857db1"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "8e35aea7-213a-49f8-903e-fa224a6695b6",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
                                 "    pm.response.to.be.ok;",
@@ -12824,8 +12825,7 @@
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "8e35aea7-213a-49f8-903e-fa224a6695b6"
+                              "packages": {}
                             }
                           }
                         ],
@@ -12863,7 +12863,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman_Collection_Order\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
                             "options": {
                               "raw": {
                                 "language": "json"
@@ -28762,7 +28762,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "d9648930-993c-4ba8-b06e-e3ae01b0331d",
+          "id": "35133319-e7d4-4cfd-b49b-38f0d49f6d37",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -28802,7 +28802,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "bacdad0b-08bd-4970-aeb9-822650f0ca58",
+          "id": "dc55ef69-699f-480b-96dc-0af6dbd785e8",
           "type": "text/javascript",
           "exec": [
             ""
