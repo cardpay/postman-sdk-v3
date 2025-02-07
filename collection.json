@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-01-28T13:07:02.000Z",
+      "updatedAt": "2025-02-07T10:10:40.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -5378,205 +5378,6 @@
                 ],
                 "id": "f15d2b2d-f042-4d77-b576-316720842554",
                 "uid": "10462328-f15d2b2d-f042-4d77-b576-316720842554"
-              },
-              {
-                "name": "Direct Banking Europe",
-                "item": [
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create DIRECTBANKINGEU payment(Payment page)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "var uuid = require('uuid');\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "7fa148da-94e4-432e-a6cd-7a85acd5a632"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "8eec1db5-19cc-4ea5-8f36-494da9d17d1f"
-                            }
-                          }
-                        ],
-                        "id": "d995342b-c1c7-4cbf-a12c-500a7d7b9823",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json",
-                              "type": "text"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"DIRECTBANKINGEU\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}"
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-d995342b-c1c7-4cbf-a12c-500a7d7b9823"
-                      }
-                    ],
-                    "id": "36141385-a9a2-483c-9f9c-896eb22ac682",
-                    "uid": "10462328-36141385-a9a2-483c-9f9c-896eb22ac682"
-                  },
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create DIRECTBANKINGEU payment(Gateway mode)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "var uuid = require('uuid');\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "2d124df1-f735-49cd-be33-5ec8b83af37a"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "     pm.expect(response).to.have.property('payment_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "77c8ef4f-fc61-47a4-87ca-4d8ce38b82b6"
-                            }
-                          }
-                        ],
-                        "id": "b372e554-31da-4f53-9239-e3f73f836359",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json",
-                              "type": "text"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"DIRECTBANKINGEU\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}"
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-b372e554-31da-4f53-9239-e3f73f836359"
-                      }
-                    ],
-                    "id": "21ba9a43-cdac-4d3b-a460-70a4ac04cff2",
-                    "uid": "10462328-21ba9a43-cdac-4d3b-a460-70a4ac04cff2"
-                  }
-                ],
-                "id": "0b4cd65d-21a2-4ce0-a861-522d0e978f41",
-                "uid": "10462328-0b4cd65d-21a2-4ce0-a861-522d0e978f41"
               },
               {
                 "name": "OPENBANKING",
@@ -28762,7 +28563,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "35133319-e7d4-4cfd-b49b-38f0d49f6d37",
+          "id": "5a41aa85-ca46-4620-82fc-a405bd465718",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -28802,7 +28603,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "dc55ef69-699f-480b-96dc-0af6dbd785e8",
+          "id": "e4cfd32e-8a09-466b-8f44-ba8dc8959875",
           "type": "text/javascript",
           "exec": [
             ""
