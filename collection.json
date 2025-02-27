@@ -4,8 +4,8 @@
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
-      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-02-14T05:47:57.000Z",
+      "schema": "https://schema.postman.com/json/collection/v2.1.0/collection.json",
+      "updatedAt": "2025-02-27T06:44:07.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -4854,6 +4854,108 @@
                     ],
                     "id": "e77fee23-65bd-4e0c-9c0d-794933ad4f95",
                     "uid": "10462328-e77fee23-65bd-4e0c-9c0d-794933ad4f95"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create WECHAT payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "36daeaa8-1225-4deb-bf54-a9a38ea84261"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "d34b0a2f-a7c6-45ea-8763-f5939ee143a1"
+                            }
+                          }
+                        ],
+                        "id": "be5be6bc-7576-42c3-b891-85d49bb4326b",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"WECHAT\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-be5be6bc-7576-42c3-b891-85d49bb4326b"
+                      }
+                    ],
+                    "id": "e9a3dbe0-0244-4aba-ac77-c2e65c58af34",
+                    "uid": "10462328-e9a3dbe0-0244-4aba-ac77-c2e65c58af34"
                   }
                 ],
                 "id": "3a2cdaf3-aafa-4db6-ab0e-200bc4591dc2",
@@ -19830,6 +19932,105 @@
                         ],
                         "id": "4a0516c2-95da-427c-8f45-deee18c8df28",
                         "uid": "10462328-4a0516c2-95da-427c-8f45-deee18c8df28"
+                      },
+                      {
+                        "name": "Extended response",
+                        "item": [
+                          {
+                            "name": "Create naverpay payment (ext resp)",
+                            "event": [
+                              {
+                                "listen": "prerequest",
+                                "script": {
+                                  "exec": [
+                                    "\r",
+                                    "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                    "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                    "tokens.obtain(terminal_code, password);"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "701e1f48-57db-4c72-90fc-00a32861d805"
+                                }
+                              },
+                              {
+                                "listen": "test",
+                                "script": {
+                                  "exec": [
+                                    "pm.test(\"Successful request\", function () {",
+                                    "    pm.response.to.be.ok;",
+                                    "    pm.response.to.have.jsonBody();",
+                                    "    ",
+                                    "    var response = pm.response.json();",
+                                    "    pm.expect(response).to.have.property('payment_data');",
+                                    "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                    "});"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "6061cec8-0e22-4756-8344-78d907f151f5"
+                                }
+                              }
+                            ],
+                            "id": "786f1756-1ffe-4b7e-8816-7c82c369d302",
+                            "protocolProfileBehavior": {
+                              "strictSSL": false,
+                              "disableBodyPruning": true
+                            },
+                            "request": {
+                              "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                  {
+                                    "key": "0",
+                                    "value": {
+                                      "key": "token",
+                                      "value": "{{access_token}}",
+                                      "type": "string"
+                                    },
+                                    "type": "any"
+                                  },
+                                  {
+                                    "key": "token",
+                                    "value": "{{access_token}}",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "method": "POST",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": {
+                                "mode": "raw",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\",\n        \"items\":[\n            {\n                \"name\": \"Apple\",\n                \"count\": \"10\",\n                \"price\": 10\n            }\n        ]\n    },\n    \"payment_method\": \"NAVERPAY\",\n    \"payment_data\": {\n        \"amount\": \"100\",\n        \"currency\": \"KRW\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                                "options": {
+                                  "raw": {
+                                    "language": "json"
+                                  }
+                                }
+                              },
+                              "url": {
+                                "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                                "host": [
+                                  "{{UNLIMIT_API_URL}}"
+                                ],
+                                "path": [
+                                  "api",
+                                  "payments"
+                                ]
+                              }
+                            },
+                            "response": [],
+                            "uid": "10462328-786f1756-1ffe-4b7e-8816-7c82c369d302"
+                          }
+                        ],
+                        "id": "f4c778aa-d30f-40da-b76e-200812d39c47",
+                        "uid": "10462328-f4c778aa-d30f-40da-b76e-200812d39c47"
                       }
                     ],
                     "id": "3f9c29ee-ccc6-44a9-89db-c5840e682e45",
@@ -28974,7 +29175,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "a293d798-10c5-41cb-ba5c-9fb097bd5adb",
+          "id": "ad6eb29e-8ff0-444d-add6-85346d3be875",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -29014,7 +29215,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "692eb3f9-3fea-4364-aea2-f8adfe4d92f3",
+          "id": "eea25b05-14b7-4144-8986-d80edb6b9282",
           "type": "text/javascript",
           "exec": [
             ""
