@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.postman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-02-27T06:44:07.000Z",
+      "updatedAt": "2025-03-05T09:20:33.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -18892,6 +18892,308 @@
                     ],
                     "id": "202f7276-62d6-4735-8185-3802fdc68d15",
                     "uid": "10462328-202f7276-62d6-4735-8185-3802fdc68d15"
+                  },
+                  {
+                    "name": "QR Philippines",
+                    "item": [
+                      {
+                        "name": "Payment page mode",
+                        "item": [
+                          {
+                            "name": "Create QR Philippines payment (payment page)",
+                            "event": [
+                              {
+                                "listen": "prerequest",
+                                "script": {
+                                  "exec": [
+                                    "\r",
+                                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                    "tokens.obtain(terminal_code, password);"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "aa0bf836-a3f4-44d1-ab74-cc8b09b67eaf"
+                                }
+                              },
+                              {
+                                "listen": "test",
+                                "script": {
+                                  "exec": [
+                                    "pm.test(\"Successful request\", function () {",
+                                    "    pm.response.to.be.ok;",
+                                    "    pm.response.to.have.jsonBody();",
+                                    "    ",
+                                    "    var response = pm.response.json();",
+                                    "    pm.expect(response).to.have.property('redirect_url');",
+                                    "});"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "3f034809-1add-4907-b6fb-5cbcbaa69fd3"
+                                }
+                              }
+                            ],
+                            "id": "6d40e7be-aeaa-438c-8a02-d40c08a3ac02",
+                            "protocolProfileBehavior": {
+                              "strictSSL": false,
+                              "disableBodyPruning": true
+                            },
+                            "request": {
+                              "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                  {
+                                    "key": "0",
+                                    "value": {
+                                      "key": "token",
+                                      "value": "{{access_token}}",
+                                      "type": "string"
+                                    },
+                                    "type": "any"
+                                  },
+                                  {
+                                    "key": "token",
+                                    "value": "{{access_token}}",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "method": "POST",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": {
+                                "mode": "raw",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"qrph\",\n    \"payment_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
+                                "options": {
+                                  "raw": {
+                                    "language": "json"
+                                  }
+                                }
+                              },
+                              "url": {
+                                "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                                "host": [
+                                  "{{UNLIMIT_API_URL}}"
+                                ],
+                                "path": [
+                                  "api",
+                                  "payments"
+                                ]
+                              }
+                            },
+                            "response": [],
+                            "uid": "10462328-6d40e7be-aeaa-438c-8a02-d40c08a3ac02"
+                          }
+                        ],
+                        "id": "a4b236b3-2319-4f34-9502-22ba092ebba2",
+                        "uid": "10462328-a4b236b3-2319-4f34-9502-22ba092ebba2"
+                      },
+                      {
+                        "name": "Gateway mode",
+                        "item": [
+                          {
+                            "name": "Create QR Philippines payment (gateway mode)",
+                            "event": [
+                              {
+                                "listen": "prerequest",
+                                "script": {
+                                  "exec": [
+                                    "\r",
+                                    "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                    "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                    "tokens.obtain(terminal_code, password);"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "2bce2738-2497-45a4-8ad7-fe7b5e2ee745"
+                                }
+                              },
+                              {
+                                "listen": "test",
+                                "script": {
+                                  "exec": [
+                                    "pm.test(\"Successful request\", function () {",
+                                    "    pm.response.to.be.ok;",
+                                    "    pm.response.to.have.jsonBody();",
+                                    "    ",
+                                    "    var response = pm.response.json();",
+                                    "    pm.expect(response).to.have.property('payment_data');",
+                                    "});"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "45a176b3-ee53-42ba-92f5-8f16df643e58"
+                                }
+                              }
+                            ],
+                            "id": "ed3a183a-e467-4921-8a5a-1bd871ae035e",
+                            "protocolProfileBehavior": {
+                              "strictSSL": false,
+                              "disableBodyPruning": true
+                            },
+                            "request": {
+                              "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                  {
+                                    "key": "0",
+                                    "value": {
+                                      "key": "token",
+                                      "value": "{{access_token}}",
+                                      "type": "string"
+                                    },
+                                    "type": "any"
+                                  },
+                                  {
+                                    "key": "token",
+                                    "value": "{{access_token}}",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "method": "POST",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": {
+                                "mode": "raw",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"qrph\",\n    \"payment_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n\n    }\n}",
+                                "options": {
+                                  "raw": {
+                                    "language": "json"
+                                  }
+                                }
+                              },
+                              "url": {
+                                "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                                "host": [
+                                  "{{UNLIMIT_API_URL}}"
+                                ],
+                                "path": [
+                                  "api",
+                                  "payments"
+                                ]
+                              }
+                            },
+                            "response": [],
+                            "uid": "10462328-ed3a183a-e467-4921-8a5a-1bd871ae035e"
+                          }
+                        ],
+                        "id": "188b0c43-eec5-49b6-8664-e9865a84131f",
+                        "uid": "10462328-188b0c43-eec5-49b6-8664-e9865a84131f"
+                      },
+                      {
+                        "name": "Extended response",
+                        "item": [
+                          {
+                            "name": "Create QR Philippines payment (ext resp)",
+                            "event": [
+                              {
+                                "listen": "prerequest",
+                                "script": {
+                                  "exec": [
+                                    "\r",
+                                    "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                    "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                    "tokens.obtain(terminal_code, password);"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "a408d8c4-f439-4e6d-825e-4ee2456aafd2"
+                                }
+                              },
+                              {
+                                "listen": "test",
+                                "script": {
+                                  "exec": [
+                                    "pm.test(\"Successful request\", function () {",
+                                    "    pm.response.to.be.ok;",
+                                    "    pm.response.to.have.jsonBody();",
+                                    "    ",
+                                    "    var response = pm.response.json();",
+                                    "    pm.expect(response).to.have.property('payment_data');",
+                                    "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                    "});"
+                                  ],
+                                  "type": "text/javascript",
+                                  "packages": {},
+                                  "id": "ac6a15cc-08fc-4709-93c7-5e2a70dd1d99"
+                                }
+                              }
+                            ],
+                            "id": "52dc1db7-7521-4db5-bdbe-23fbd18e2ca1",
+                            "protocolProfileBehavior": {
+                              "strictSSL": false,
+                              "disableBodyPruning": true
+                            },
+                            "request": {
+                              "auth": {
+                                "type": "bearer",
+                                "bearer": [
+                                  {
+                                    "key": "0",
+                                    "value": {
+                                      "key": "token",
+                                      "value": "{{access_token}}",
+                                      "type": "string"
+                                    },
+                                    "type": "any"
+                                  },
+                                  {
+                                    "key": "token",
+                                    "value": "{{access_token}}",
+                                    "type": "string"
+                                  }
+                                ]
+                              },
+                              "method": "POST",
+                              "header": [
+                                {
+                                  "key": "Content-Type",
+                                  "value": "application/json"
+                                }
+                              ],
+                              "body": {
+                                "mode": "raw",
+                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"qrph\",\n    \"payment_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                                "options": {
+                                  "raw": {
+                                    "language": "json"
+                                  }
+                                }
+                              },
+                              "url": {
+                                "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                                "host": [
+                                  "{{UNLIMIT_API_URL}}"
+                                ],
+                                "path": [
+                                  "api",
+                                  "payments"
+                                ]
+                              }
+                            },
+                            "response": [],
+                            "uid": "10462328-52dc1db7-7521-4db5-bdbe-23fbd18e2ca1"
+                          }
+                        ],
+                        "id": "4af86478-7d72-415c-a485-b06cfaace4d0",
+                        "uid": "10462328-4af86478-7d72-415c-a485-b06cfaace4d0"
+                      }
+                    ],
+                    "id": "4ead3321-1a92-4bec-bcb6-7bd1690e4fcb",
+                    "uid": "10462328-4ead3321-1a92-4bec-bcb6-7bd1690e4fcb"
                   }
                 ],
                 "id": "9ba2e222-5d1f-4d52-a61f-d34d9dbcdc4b",
@@ -23246,6 +23548,109 @@
                 ],
                 "id": "4012a0f5-2348-49f0-88aa-f2da913edf58",
                 "uid": "10462328-4012a0f5-2348-49f0-88aa-f2da913edf58"
+              },
+              {
+                "name": "Republic of the Philippines",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "InstaPay payout",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "737942f9-e91d-4cc2-ad41-cb4396445eb4"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "db73b565-27c3-4160-ae10-2f30c6071041"
+                            }
+                          }
+                        ],
+                        "id": "5c9e1c81-d069-44c1-9012-8762dddff066",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Test ('{{request_name}}')\"\n    },\n    \"payment_method\": \"qrph\",\n    \"payout_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"full_name\": \"Test Test\",\n        \"email\": \"test@unlimit.com\",\n        \"living_address\": {\n\n            \"city\": \"Washington\",\n            \"country\": \"US\"\n \n        },\n        \"phone\": \"628996647676\"\n    },\n        \"ewallet_account\": {\n            \"id\": \"09458318180\",\n            \"bank_code\": \"002\",\n            \"name\": \"Test\"\n        }\n    }\n"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-5c9e1c81-d069-44c1-9012-8762dddff066"
+                      }
+                    ],
+                    "id": "bed3ae4c-8c73-4dd3-b65e-99ea1f8a6e24",
+                    "uid": "10462328-bed3ae4c-8c73-4dd3-b65e-99ea1f8a6e24"
+                  }
+                ],
+                "id": "b0445bcb-ae7f-441d-aef6-dd957deb7a6d",
+                "uid": "10462328-b0445bcb-ae7f-441d-aef6-dd957deb7a6d"
               }
             ],
             "id": "34911e50-15e6-4f16-98c9-8f06ded3ed7d",
@@ -29175,7 +29580,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "ad6eb29e-8ff0-444d-add6-85346d3be875",
+          "id": "925a5b5e-b595-4d28-9f7c-0e46c865fa37",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -29215,7 +29620,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "eea25b05-14b7-4144-8986-d80edb6b9282",
+          "id": "af9cbd14-010d-4210-9705-dc855dbe60a2",
           "type": "text/javascript",
           "exec": [
             ""
