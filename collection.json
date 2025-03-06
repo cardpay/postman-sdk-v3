@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.postman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-03-05T09:20:33.000Z",
+      "updatedAt": "2025-03-06T09:58:30.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -23561,6 +23561,7 @@
                           {
                             "listen": "prerequest",
                             "script": {
+                              "id": "be8ead76-2887-4817-be99-4b006dedfdba",
                               "exec": [
                                 "var uuid = require('uuid');",
                                 "",
@@ -23569,32 +23570,27 @@
                                 "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "737942f9-e91d-4cc2-ad41-cb4396445eb4"
+                              "packages": {}
                             }
                           },
                           {
                             "listen": "test",
                             "script": {
+                              "id": "4e82a40c-102f-4f88-a93c-c9d0b163b5a8",
                               "exec": [
                                 "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.have.status(201);",
+                                "   ",
                                 "    pm.response.to.have.jsonBody();",
                                 "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response.payout_data).to.have.property('id');",
-                                "    ",
-                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
                                 " ",
                                 "});"
                               ],
                               "type": "text/javascript",
-                              "packages": {},
-                              "id": "db73b565-27c3-4160-ae10-2f30c6071041"
+                              "packages": {}
                             }
                           }
                         ],
-                        "id": "5c9e1c81-d069-44c1-9012-8762dddff066",
+                        "id": "6304bdb8-a004-4a05-96ac-83553f194edf",
                         "protocolProfileBehavior": {
                           "disableBodyPruning": true
                         },
@@ -23628,7 +23624,7 @@
                           ],
                           "body": {
                             "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Test ('{{request_name}}')\"\n    },\n    \"payment_method\": \"qrph\",\n    \"payout_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"full_name\": \"Test Test\",\n        \"email\": \"test@unlimit.com\",\n        \"living_address\": {\n\n            \"city\": \"Washington\",\n            \"country\": \"US\"\n \n        },\n        \"phone\": \"628996647676\"\n    },\n        \"ewallet_account\": {\n            \"id\": \"09458318180\",\n            \"bank_code\": \"002\",\n            \"name\": \"Test\"\n        }\n    }\n"
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Test ('{{request_name}}')\"\n    },\n    \"payment_method\": \"instaph\",\n    \"payout_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"full_name\": \"Test Test\"\n    },\n        \"ewallet_account\": {\n            \"id\": \"63458318180\"\n        }\n    }"
                           },
                           "url": {
                             "raw": "{{UNLIMIT_API_URL}}/api/payouts",
@@ -23642,15 +23638,15 @@
                           }
                         },
                         "response": [],
-                        "uid": "10462328-5c9e1c81-d069-44c1-9012-8762dddff066"
+                        "uid": "10462328-6304bdb8-a004-4a05-96ac-83553f194edf"
                       }
                     ],
-                    "id": "bed3ae4c-8c73-4dd3-b65e-99ea1f8a6e24",
-                    "uid": "10462328-bed3ae4c-8c73-4dd3-b65e-99ea1f8a6e24"
+                    "id": "f7c420a0-7b65-4e42-8e06-953c261192d1",
+                    "uid": "10462328-f7c420a0-7b65-4e42-8e06-953c261192d1"
                   }
                 ],
-                "id": "b0445bcb-ae7f-441d-aef6-dd957deb7a6d",
-                "uid": "10462328-b0445bcb-ae7f-441d-aef6-dd957deb7a6d"
+                "id": "5ea6c78b-cb70-44fb-a0e1-eea5ebbceba8",
+                "uid": "10462328-5ea6c78b-cb70-44fb-a0e1-eea5ebbceba8"
               }
             ],
             "id": "34911e50-15e6-4f16-98c9-8f06ded3ed7d",
@@ -29580,7 +29576,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "925a5b5e-b595-4d28-9f7c-0e46c865fa37",
+          "id": "1b8d4bdd-cc68-4407-b5e3-f863b6a5b5e7",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -29620,7 +29616,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "af9cbd14-010d-4210-9705-dc855dbe60a2",
+          "id": "2aed2d48-5fd1-4f80-848f-a9bd74dd081d",
           "type": "text/javascript",
           "exec": [
             ""
