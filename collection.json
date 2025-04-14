@@ -3,9 +3,9 @@
     "info": {
       "_postman_id": "9dacc77f-6ab0-4094-82b5-d6b2db8b4045",
       "name": "Unlimit REST API (3.0)",
-      "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
+      "description": "## Installation\n\n1. Install Postman 8.5+\n    \n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n    \n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n    \n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n        \n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n        \n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n        \n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-04-03T05:25:10.000Z",
+      "updatedAt": "2025-04-14T07:33:21.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -3601,6 +3601,221 @@
           }
         ],
         "uid": "10462328-cb952acc-0a49-4299-b770-b07f602f5d26"
+      },
+      {
+        "name": "Payments (ACT/OFT)",
+        "item": [
+          {
+            "name": "Create Account Funding Transaction",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "41c3ce79-dc99-489b-95f2-89dc27bc4af8",
+                  "exec": [
+                    "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');",
+                    "var password = pm.environment.get('GATEWAY_PASSWORD');",
+                    "",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {}
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "a41f6cd9-163d-4ea6-a565-f7d70e57c4cb",
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "",
+                    "    var response = pm.response.json();",
+                    "    pm.expect(response).to.have.property('redirect_url');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {}
+                }
+              }
+            ],
+            "id": "4ef4aebf-1af6-404e-ab57-923199dfb1a6",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "type": "string",
+                      "value": "{{access_token}}"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payment_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"note\": \"{{$randomCatchPhrase}}\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\",\n        \"full_name\": \"MR SENDER\",\n        \"birth_date\": \"2000-04-22\",\n        \"living_address\": {\n            \"country\": \"USA\",\n            \"state\": \"NE\",\n            \"city\": \"Dallas\",\n            \"address\": \"Black Road 112, 3\"\n        }\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"holder\": \"MR SENDRER\",\n            \"expiration\": \"{{expiration}}\",\n            \"security_code\": \"100\"\n        },\n        \"recipient_info\": \"MR RECIPIENT\"\n    }\n}"
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "payments"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-4ef4aebf-1af6-404e-ab57-923199dfb1a6"
+          },
+          {
+            "name": "Create Original Credit Transaction",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "id": "0e121e80-1189-44b3-b403-a64500548ab7",
+                  "exec": [
+                    "var uuid = require('uuid');",
+                    "",
+                    "var merchant_order_id = uuid.v4();",
+                    "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                    "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {}
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "id": "d1565a53-2dd4-4176-b464-fa049952b4e7",
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.have.status(201);",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    pm.expect(response.payout_data).to.have.property('id');",
+                    "    ",
+                    "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                    "    ",
+                    "    postman.setNextRequest('Get payout by merchant order id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {}
+                }
+              }
+            ],
+            "id": "76981098-0d0f-4552-a566-14954e1f5e96",
+            "protocolProfileBehavior": {
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "type": "string",
+                      "value": "{{access_token}}"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "type": "text"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{merchant_order_id}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"BANKCARD\",\n    \"payout_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"funding_source\": \"02\",\n        \"network_trans_id\": \"305086217313972\"\n    },\n    \"card_account\": {\n        \"card\": {\n            \"pan\": \"{{CARD_NON3DS_CONFIRMED}}\",\n            \"expiration\": \"{{expiration}}\"\n        },\n        \"recipient_info\": \"MR RECIPIENT\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"phone\": \"{{$randomPhoneNumber}}\",\n        \"full_name\": \"MR SENDER\",\n        \"birth_date\": \"2000-04-22\",\n        \"living_address\": {\n            \"country\": \"USA\",\n            \"state\": \"NE\",\n            \"city\": \"Dallas\",\n            \"address\": \"Black Road 112, 3\"\n        }\n    }\n}"
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "payouts"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-76981098-0d0f-4552-a566-14954e1f5e96"
+          }
+        ],
+        "id": "07fe4960-a107-4a6a-bc59-60633314ee84",
+        "description": "**AFTs (Account Funding Transactions)** are special types of card operations supported by Visa Direct and MasterСard MoneySend, where funds are pulled from a card without a traditional purchase being involved.\n\nThis is used when a Customer wants to move money from their card into another account, e.g. funding a digital wallet (PayPal), transferring funds to an investment or crypto account.\n\n**OCTs (Original Credit Transactions)** are special types of card operations supported by Visa Direct and MasterСard MoneySend, where funds are _pushed_ to a card.\n\nThis is used for disbursing funds to a customer’s card in real-time or near real-time, for example:\n\n- Salary or freelancer payouts\n    \n- Cashback, insurance, or loans\n    \n- Peer-to-peer (P2P) money transfers",
+        "event": [
+          {
+            "listen": "prerequest",
+            "script": {
+              "id": "c0898f20-6f8b-42b1-b7be-0074a80c8658",
+              "type": "text/javascript",
+              "packages": {},
+              "exec": [
+                "var moment = require('moment');",
+                "pm.variables.set(\"request_time\", moment().toISOString());",
+                "",
+                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');",
+                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');",
+                "",
+                "var tokens = eval(pm.collectionVariables.get('tokens'));",
+                "tokens.obtain(terminal_code, password);"
+              ]
+            }
+          },
+          {
+            "listen": "test",
+            "script": {
+              "id": "0ac73dde-83d3-481a-bf81-91414772b1b7",
+              "type": "text/javascript",
+              "packages": {},
+              "exec": [
+                ""
+              ]
+            }
+          }
+        ],
+        "uid": "10462328-07fe4960-a107-4a6a-bc59-60633314ee84"
       },
       {
         "name": "Payments (APMs)",
@@ -30920,7 +31135,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "ad7dcfd6-4098-42d4-a8cc-62651a6176fc",
+          "id": "4a387552-beb1-41e0-b591-f3a5d58f2103",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -30960,7 +31175,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "7f42d037-8937-486c-a1c0-29fc9ca4883e",
+          "id": "5e9fd2d0-dfe7-46cf-b721-e9fceff0a7a3",
           "type": "text/javascript",
           "exec": [
             ""
