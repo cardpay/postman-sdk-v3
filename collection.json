@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n    \n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n    \n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n    \n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n        \n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n        \n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n        \n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-04-22T16:53:39.000Z",
+      "updatedAt": "2025-04-23T13:47:25.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -27289,6 +27289,102 @@
                 ],
                 "id": "4bc755f4-eea1-41e9-b7aa-e810248bdf85",
                 "uid": "10462328-4bc755f4-eea1-41e9-b7aa-e810248bdf85"
+              },
+              {
+                "name": "M-Pesa Tanzania",
+                "item": [
+                  {
+                    "name": "Create M-Pesa Tanzania payout",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "exec": [
+                            "var uuid = require('uuid');",
+                            "",
+                            "var merchant_order_id = uuid.v4();",
+                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "05f543e1-7c49-46fb-8349-a9120668ca3b"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response.payout_data).to.have.property('id');",
+                            "    ",
+                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                            " ",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "f8016811-f076-4879-af42-66212ed7077d"
+                        }
+                      }
+                    ],
+                    "id": "25e55aec-dbbe-4866-b520-62e00271e3ac",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"MPESATZS\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payout_data\": {\n        \"amount\": 200,\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"+255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payouts"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-25e55aec-dbbe-4866-b520-62e00271e3ac"
+                  }
+                ],
+                "id": "edad09f4-df6a-489d-b44a-6423d2aa263f",
+                "uid": "10462328-edad09f4-df6a-489d-b44a-6423d2aa263f"
               }
             ],
             "id": "5917e73e-36d4-4595-9d3f-bf5c381aa2fe",
@@ -31860,7 +31956,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "1df68a19-cce5-487c-afde-27647b67a013",
+          "id": "96385e32-c5d9-4860-ab88-de406c2de974",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -31900,7 +31996,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "6f963112-441b-4ff7-8075-39bddab6bebb",
+          "id": "84a52f5f-c5d4-49da-9675-90f4bf39b387",
           "type": "text/javascript",
           "exec": [
             ""
