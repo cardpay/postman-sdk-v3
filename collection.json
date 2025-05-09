@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n    \n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n    \n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n    \n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n        \n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n        \n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n        \n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-04-23T13:47:25.000Z",
+      "updatedAt": "2025-05-09T06:28:07.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -23546,6 +23546,386 @@
                 ],
                 "id": "82723a19-6d0a-4b72-b080-e9fcd5d3f75b",
                 "uid": "10462328-82723a19-6d0a-4b72-b080-e9fcd5d3f75b"
+              },
+              {
+                "name": "Indian wallets",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create walletsinr payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD_IND');\r",
+                                "\r",
+                                "\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "e0824a2b-16ca-4855-ac7e-e7a169e480bb"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "75d5d6c6-d6ff-43ae-bb33-837433c0bb6c"
+                            }
+                          }
+                        ],
+                        "id": "11bd0778-8821-4106-9f26-c3c363df9bb2",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"walletsinr\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"ewallet_account\":\n    {\n        \"bank_code\": \"PHONEPE\",\n        \"id\":\"+911234567890\"\n    }\n\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-11bd0778-8821-4106-9f26-c3c363df9bb2"
+                      }
+                    ],
+                    "id": "dc350f62-1792-4b50-814c-ccaad9fb2249",
+                    "uid": "10462328-dc350f62-1792-4b50-814c-ccaad9fb2249"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create walletsinr payment (payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE_IND');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD_IND');\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "9005e3d9-73fc-41a9-ab09-6cf580695157"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "44fc03e6-0638-4e45-9827-128b335b4cd1"
+                            }
+                          }
+                        ],
+                        "id": "b38622bc-5398-4d15-9ad7-01066aa6c163",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"walletsinr\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    }\n\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-b38622bc-5398-4d15-9ad7-01066aa6c163"
+                      }
+                    ],
+                    "id": "0d52ae0c-5969-4320-b04b-7833da155227",
+                    "uid": "10462328-0d52ae0c-5969-4320-b04b-7833da155227"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create walletsinr payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP_IND');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP_IND');\r",
+                                "\r",
+                                "pm.environment.unset(\"access_token\");\r",
+                                "pm.environment.unset(\"refresh_token\");\r",
+                                "\r",
+                                "pm.sendRequest({\r",
+                                "    url: `https://sandbox.in.unlimit.com/api/auth/token`,\r",
+                                "    method: 'POST',\r",
+                                "    header: 'Content-Type:application/x-www-form-urlencoded',\r",
+                                "    body: {\r",
+                                "        mode: 'raw',\r",
+                                "        raw: `grant_type=password&terminal_code=${terminal_code}&password=${password}`\r",
+                                "    }\r",
+                                "}, function (err, res) {\r",
+                                "    \r",
+                                "    if(err){ \r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    if(res.code !== 200){\r",
+                                "        throw new Error(\"Authentication Error\");\r",
+                                "    }\r",
+                                "    \r",
+                                "    var response = res.json();\r",
+                                "    pm.environment.set(\"access_token_ind\", response.access_token);\r",
+                                "    pm.environment.set(\"refresh_token_ind\", response.refresh_token);\r",
+                                "});\r",
+                                ""
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "46584907-b822-4b6a-92c9-93ca42d1e405"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "2830b7fe-bece-468b-a5a9-33b5d9b6d65f"
+                            }
+                          }
+                        ],
+                        "id": "e26ebc92-32d2-41ee-b724-ab3640e0e542",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token_ind}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"walletsinr\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"INR\"\n    },\n    \"ewallet_account\":\n    {\n        \"bank_code\": \"PHONEPE\",\n        \"id\":\"+911234567890\"\n    }\n\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL_IND}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL_IND}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-e26ebc92-32d2-41ee-b724-ab3640e0e542"
+                      }
+                    ],
+                    "id": "0c7d9cd0-499e-4b4d-b516-c64560f28534",
+                    "uid": "10462328-0c7d9cd0-499e-4b4d-b516-c64560f28534"
+                  }
+                ],
+                "id": "47f3e631-9539-4fe9-a569-55ad98fe45a3",
+                "uid": "10462328-47f3e631-9539-4fe9-a569-55ad98fe45a3"
               }
             ],
             "id": "f9107b90-316b-486d-9812-2e2d30e1f001",
@@ -31956,7 +32336,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "96385e32-c5d9-4860-ab88-de406c2de974",
+          "id": "9abc700f-0e4f-4539-a636-69c14d4fc4a3",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -31996,7 +32376,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "84a52f5f-c5d4-49da-9675-90f4bf39b387",
+          "id": "8b22eed8-1615-4cef-be91-9d26e0c0deca",
           "type": "text/javascript",
           "exec": [
             ""
