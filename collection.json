@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n    \n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n    \n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n    \n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n        \n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n        \n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n        \n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-05-30T14:22:29.000Z",
+      "updatedAt": "2025-05-31T11:16:27.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -26012,105 +26012,6 @@
                     ],
                     "id": "e7271e19-fd7f-4d2e-ae1a-6f79c364f38b",
                     "uid": "10462328-e7271e19-fd7f-4d2e-ae1a-6f79c364f38b"
-                  },
-                  {
-                    "name": "Bank Transfer Philippines",
-                    "item": [
-                      {
-                        "name": "Gateway mode",
-                        "item": [
-                          {
-                            "name": "Bank Transfer Philippines  payout",
-                            "event": [
-                              {
-                                "listen": "prerequest",
-                                "script": {
-                                  "exec": [
-                                    "var uuid = require('uuid');",
-                                    "",
-                                    "var merchant_order_id = uuid.v4();",
-                                    "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
-                                    "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
-                                  ],
-                                  "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "99eb97df-9ba3-4d9d-9ba2-691b17b6aaa6"
-                                }
-                              },
-                              {
-                                "listen": "test",
-                                "script": {
-                                  "exec": [
-                                    "pm.test(\"Successful request\", function () {",
-                                    "   ",
-                                    "    pm.response.to.have.jsonBody();",
-                                    "    ",
-                                    " ",
-                                    "});"
-                                  ],
-                                  "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "283ad0b9-cb93-43ff-9fcd-42a9e92d3677"
-                                }
-                              }
-                            ],
-                            "id": "2cdb5ea8-dee9-4e04-8d21-39b10d0dbcee",
-                            "protocolProfileBehavior": {
-                              "disableBodyPruning": true
-                            },
-                            "request": {
-                              "auth": {
-                                "type": "bearer",
-                                "bearer": [
-                                  {
-                                    "key": "0",
-                                    "value": {
-                                      "key": "token",
-                                      "type": "string",
-                                      "value": "{{access_token}}"
-                                    },
-                                    "type": "any"
-                                  },
-                                  {
-                                    "key": "token",
-                                    "value": "{{access_token}}",
-                                    "type": "string"
-                                  }
-                                ]
-                              },
-                              "method": "POST",
-                              "header": [
-                                {
-                                  "key": "Content-Type",
-                                  "value": "application/json",
-                                  "type": "text"
-                                }
-                              ],
-                              "body": {
-                                "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Test ('{{request_name}}')\"\n    },\n    \"payment_method\": \"banktransfersphp\",\n    \"payout_data\": {\n        \"amount\": \"200\",\n        \"currency\": \"PHP\"\n    },\n    \"customer\": {\n        \"full_name\": \"Test Test\"\n    },\n        \"ewallet_account\": {\n            \"bank_code\":\"guinobatan\",\n            \"id\": \"0123456789\"\n        }\n    }"
-                              },
-                              "url": {
-                                "raw": "{{UNLIMIT_API_URL}}/api/payouts",
-                                "host": [
-                                  "{{UNLIMIT_API_URL}}"
-                                ],
-                                "path": [
-                                  "api",
-                                  "payouts"
-                                ]
-                              }
-                            },
-                            "response": [],
-                            "uid": "10462328-2cdb5ea8-dee9-4e04-8d21-39b10d0dbcee"
-                          }
-                        ],
-                        "id": "297ce5ce-ca26-4b6c-843f-5afe5a7c5407",
-                        "uid": "10462328-297ce5ce-ca26-4b6c-843f-5afe5a7c5407"
-                      }
-                    ],
-                    "id": "eec90908-086e-4e65-aedf-5f24fe7f0b01",
-                    "uid": "10462328-eec90908-086e-4e65-aedf-5f24fe7f0b01"
                   }
                 ],
                 "id": "677845fd-81ed-4646-a0b7-0d5fe326dd58",
@@ -31757,7 +31658,7 @@
                   ],
                   "type": "text/javascript",
                   "packages": {},
-                  "id": "99083080-ba25-4c7f-a1a8-6b56775ac753"
+                  "id": "e1e835bb-5d91-4b7e-8eef-f41642b95a91"
                 }
               },
               {
@@ -31776,11 +31677,11 @@
                   ],
                   "type": "text/javascript",
                   "packages": {},
-                  "id": "cdf4505e-e09d-4ab8-ba66-910d7c3f335e"
+                  "id": "82302b69-ea40-49d6-9ca5-23ff2cb71000"
                 }
               }
             ],
-            "id": "110a117e-271f-4f36-9ba1-e1d9675712ba",
+            "id": "72704f1b-2291-441c-95fc-ab9bc5ade6a7",
             "protocolProfileBehavior": {
               "strictSSL": false,
               "disableBodyPruning": true
@@ -31834,7 +31735,7 @@
               }
             },
             "response": [],
-            "uid": "10462328-110a117e-271f-4f36-9ba1-e1d9675712ba"
+            "uid": "10462328-72704f1b-2291-441c-95fc-ab9bc5ade6a7"
           },
           {
             "name": "Get Account details Dimo",
@@ -31853,7 +31754,7 @@
                   ],
                   "type": "text/javascript",
                   "packages": {},
-                  "id": "f692218c-da4b-40a3-8a92-44dd576e87cd"
+                  "id": "83f92d40-9686-4d05-a9f3-848c16d0d158"
                 }
               },
               {
@@ -31872,11 +31773,11 @@
                   ],
                   "type": "text/javascript",
                   "packages": {},
-                  "id": "a46bede2-c91d-46bf-919c-03a0e4c048aa"
+                  "id": "0c5344a5-0d78-44f3-819d-38390cc5e9e4"
                 }
               }
             ],
-            "id": "f06bd271-215a-476a-a16c-546895e4d62e",
+            "id": "e6fef8b0-4ded-42fc-8ddf-7bd15a2fcd09",
             "protocolProfileBehavior": {
               "strictSSL": false,
               "disableBodyPruning": true
@@ -31930,11 +31831,971 @@
               }
             },
             "response": [],
-            "uid": "10462328-f06bd271-215a-476a-a16c-546895e4d62e"
+            "uid": "10462328-e6fef8b0-4ded-42fc-8ddf-7bd15a2fcd09"
+          },
+          {
+            "name": "Get Account details banktransfersidr",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "ab3b60b9-39b5-4cc8-b417-bfc03c2079b2"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "5ea88cb3-e8e3-4b88-b9ab-37cc45a89254"
+                }
+              }
+            ],
+            "id": "dd207551-9812-494e-8ae7-7bd362bb38e4",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/banktransfersidr",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "banktransfersidr"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-dd207551-9812-494e-8ae7-7bd362bb38e4"
+          },
+          {
+            "name": "Get Account details danawallet",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "918825b1-6782-4016-8005-17f215c4343d"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "b64f2a4c-dfd4-44a4-a6a4-8cbc0f380f25"
+                }
+              }
+            ],
+            "id": "754397b0-057b-4a06-ba7a-cd5bf778eb96",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/danawallet",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "danawallet"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-754397b0-057b-4a06-ba7a-cd5bf778eb96"
+          },
+          {
+            "name": "Get Account details ovo",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "a9fff9e6-ad8d-4498-b8dc-38390eb57faf"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "b25ed5d9-fe0b-47bf-8777-ca76bb36d777"
+                }
+              }
+            ],
+            "id": "ad6b77e4-2a9a-4ccd-9e42-472b6bbb864c",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/ovo",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "ovo"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-ad6b77e4-2a9a-4ccd-9e42-472b6bbb864c"
+          },
+          {
+            "name": "Get Account details linkaja",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "f300c7cd-86fa-4969-867d-104661f4321e"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "c68bf5b1-04c6-4f18-a378-68af77369de9"
+                }
+              }
+            ],
+            "id": "362c1599-9fb2-4f7e-98df-09d657011903",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/linkaja",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "linkaja"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-362c1599-9fb2-4f7e-98df-09d657011903"
+          },
+          {
+            "name": "Get Account details shopeepay",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "01bc5986-d980-4ad8-a298-4bb78a933847"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "babb65aa-7697-44eb-ae61-63c9c6de1bd6"
+                }
+              }
+            ],
+            "id": "74ea8bc5-04ae-4feb-8102-676f622a496c",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/shopeepay",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "shopeepay"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-74ea8bc5-04ae-4feb-8102-676f622a496c"
+          },
+          {
+            "name": "Get Account details banktransfersidr",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "fa823707-cb88-42ce-bc11-cfc4f0520b1d"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "6f8178cc-7120-4fb6-879f-fdf460b8c395"
+                }
+              }
+            ],
+            "id": "b2181c46-749e-42c2-a069-77a5ae8ddbb2",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/banktransfersidr",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "banktransfersidr"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-b2181c46-749e-42c2-a069-77a5ae8ddbb2"
+          },
+          {
+            "name": "Get Account details danawallet",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "11592d27-22ed-43da-99f9-a530237f9283"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "44ae45d1-02cd-4454-860f-10b96134488d"
+                }
+              }
+            ],
+            "id": "3c271046-3f9b-4ffe-8442-eb12e7b78754",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/danawallet",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "danawallet"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-3c271046-3f9b-4ffe-8442-eb12e7b78754"
+          },
+          {
+            "name": "Get Account details ovo",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "ecdce2f8-ac64-4da4-ab2f-e36bfead6a0c"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "30ee804e-d4ae-4417-acaa-1949102c6fd1"
+                }
+              }
+            ],
+            "id": "1e4b365b-39e8-407c-a0e7-1af83e4d09dc",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/ovo",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "ovo"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-1e4b365b-39e8-407c-a0e7-1af83e4d09dc"
+          },
+          {
+            "name": "Get Account details linkaja",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "cab60c1f-c986-4658-8292-b0cdb7926e33"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "c4e95e0e-4a16-4ce4-96e8-6ea0faa9b6a7"
+                }
+              }
+            ],
+            "id": "62d45dec-8325-4c7e-982b-0a1f01379bf0",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/linkaja",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "linkaja"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-62d45dec-8325-4c7e-982b-0a1f01379bf0"
+          },
+          {
+            "name": "Get Account details shopeepay",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "4c18397a-ddcc-48ef-8e53-1e4ec1809d2f"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('ewallet_account');",
+                    "            pm.expect(response.ewallet_account).to.have.property('id');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "8e90bc52-2f51-4a99-aab0-4c372ae2f34f"
+                }
+              }
+            ],
+            "id": "ad308a37-bdd7-4c72-965d-7deeb654ce7d",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"account_info\": [\n        {\n            \"id\": \"087783146495\",\n            \"bank_code\": \"008\"\n        }\n    ]\n}",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/account_details/shopeepay",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "account_details",
+                  "shopeepay"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-ad308a37-bdd7-4c72-965d-7deeb654ce7d"
           }
         ],
-        "id": "a553ed17-fa24-464a-84cf-17629336ff11",
-        "uid": "10462328-a553ed17-fa24-464a-84cf-17629336ff11"
+        "id": "4f8bb3ec-34d3-42ad-9217-856f5b053ef6",
+        "uid": "10462328-4f8bb3ec-34d3-42ad-9217-856f5b053ef6"
       },
       {
         "name": "Get banks (APMs)",
@@ -32818,7 +33679,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "e13c7bae-68c4-4933-84dc-671b96a9a4f6",
+          "id": "986ab67b-5492-4d42-9fd0-3f85d64ed2f9",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -32858,7 +33719,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "edeaa0fe-48a1-459f-adf3-d88f90ada55e",
+          "id": "901435cc-0040-4d0e-92be-28593effc5e6",
           "type": "text/javascript",
           "exec": [
             ""
