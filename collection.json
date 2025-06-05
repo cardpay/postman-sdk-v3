@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n    \n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n    \n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n    \n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n        \n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n        \n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n        \n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-06-05T08:53:56.000Z",
+      "updatedAt": "2025-06-05T10:31:51.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -4659,215 +4659,6 @@
                 "uid": "10462328-ddb6225b-30aa-4b45-8282-b1479e6ba403"
               },
               {
-                "name": "SEPA Instant",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create SEPATRANSFER payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "f162b0a9-4340-49ac-a709-46d745546ecf"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    ",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "6a891078-37eb-4263-874e-b54344f2b069"
-                            }
-                          }
-                        ],
-                        "id": "e62b52f4-d717-4fd4-8514-763fae3554d5",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"SEPATRANSFER\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-e62b52f4-d717-4fd4-8514-763fae3554d5"
-                      }
-                    ],
-                    "id": "9fa196ea-57f5-4e4c-a45e-bfbd384256d9",
-                    "uid": "10462328-9fa196ea-57f5-4e4c-a45e-bfbd384256d9"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create SEPATRANSFER payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "8fc0dcc9-eb5c-4182-b6b8-c7cc7d141b3e"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    ",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "5145fec0-77eb-450b-bc22-0f203f37a4b5"
-                            }
-                          }
-                        ],
-                        "id": "5d6a0272-7a6a-4a8b-bbc0-0f29d904ef27",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"SEPATRANSFER\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-5d6a0272-7a6a-4a8b-bbc0-0f29d904ef27"
-                      }
-                    ],
-                    "id": "c05f9ed9-1718-4b37-9d25-a74a04126113",
-                    "uid": "10462328-c05f9ed9-1718-4b37-9d25-a74a04126113"
-                  }
-                ],
-                "id": "1f9e3256-564b-46bf-b5a7-7a527814a25e",
-                "uid": "10462328-1f9e3256-564b-46bf-b5a7-7a527814a25e"
-              },
-              {
                 "name": "WeChat",
                 "item": [
                   {
@@ -7356,6 +7147,317 @@
                 ],
                 "id": "1ae06794-a358-4da9-af42-0cd8fc470d28",
                 "uid": "10462328-1ae06794-a358-4da9-af42-0cd8fc470d28"
+              },
+              {
+                "name": "SEPA Instant",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create SEPATRANSFER payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "7aa10a4d-55d2-42a7-9f76-2c6df4b2b8a3"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "c3546515-a2f2-499d-b185-403b99012c1f"
+                            }
+                          }
+                        ],
+                        "id": "8d50819c-0d0e-41e1-980b-b96255080a30",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"SEPATRANSFER\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-8d50819c-0d0e-41e1-980b-b96255080a30"
+                      }
+                    ],
+                    "id": "bad4de8c-ec96-49dd-9f2b-fe2c84d008b4",
+                    "uid": "10462328-bad4de8c-ec96-49dd-9f2b-fe2c84d008b4"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create SEPATRANSFER payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "9912a371-bafb-49bf-93a4-6db4b7a525b8"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "4f35d7a3-26c9-4fbe-bd42-bc055223ac1b"
+                            }
+                          }
+                        ],
+                        "id": "9f6f2794-cacc-4402-8fb1-73ddd9c449d5",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"SEPATRANSFER\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-9f6f2794-cacc-4402-8fb1-73ddd9c449d5"
+                      }
+                    ],
+                    "id": "088de785-c8d0-4279-865b-405babe800e7",
+                    "uid": "10462328-088de785-c8d0-4279-865b-405babe800e7"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create SEPATRANSFER payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "2f32f54b-c108-43b9-942c-1c38b4343a6b"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "ee0921b6-d682-45d8-8097-6e7c57c07deb"
+                            }
+                          }
+                        ],
+                        "id": "2d3fa5c9-ad6f-44b0-93bf-78d53b7babcd",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"SEPATRANSFER\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"EUR\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-2d3fa5c9-ad6f-44b0-93bf-78d53b7babcd"
+                      }
+                    ],
+                    "id": "88fc3243-f1f2-4afc-b8d9-26e006dc07f1",
+                    "uid": "10462328-88fc3243-f1f2-4afc-b8d9-26e006dc07f1"
+                  }
+                ],
+                "id": "e1728714-a246-4662-a806-099c227d0220",
+                "uid": "10462328-e1728714-a246-4662-a806-099c227d0220"
               }
             ],
             "id": "57b9c9c4-4e8f-40b7-ad4d-38556b0367ec",
@@ -12007,202 +12109,6 @@
                 "uid": "10462328-d0ce66e3-f019-4820-80bf-d8293de07952"
               },
               {
-                "name": "Pago Efectivo",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create PAGOEFECTIVO payment (Gateway mode)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "id": "abe024fc-bb2f-497c-aec3-222d5c4d18c4",
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {}
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "id": "18cfde9d-7cd3-45b7-a907-07564d0ce6e4",
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {}
-                            }
-                          }
-                        ],
-                        "id": "7015aaa1-0fb7-42e8-a347-2e1be2792cda",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json",
-                              "type": "text"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"PAGOEFECTIVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"COP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"document_type\": \"DNI\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"phone\":\"123456789\",\n        \"identity\": \"12345678\"\n    }\n}"
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-7015aaa1-0fb7-42e8-a347-2e1be2792cda"
-                      }
-                    ],
-                    "id": "85725ee5-d984-4283-9cbf-9ddf36c6322a",
-                    "uid": "10462328-85725ee5-d984-4283-9cbf-9ddf36c6322a"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create PAGOEFECTIVO payment (Payment page)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "f6d7d6e8-b2cb-4299-9783-3a332bd3582a"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "69bc64af-08f0-434d-9d67-346e96c649b4"
-                            }
-                          }
-                        ],
-                        "id": "4e680665-637a-46e0-bdc6-8959f520110c",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json",
-                              "type": "text"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"PAGOEFECTIVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"COP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-4e680665-637a-46e0-bdc6-8959f520110c"
-                      }
-                    ],
-                    "id": "3f44e908-56cc-4398-bd2b-97b38a2892cd",
-                    "uid": "10462328-3f44e908-56cc-4398-bd2b-97b38a2892cd"
-                  }
-                ],
-                "id": "9a1628a0-dc0a-474b-a533-7df7b53237bf",
-                "uid": "10462328-9a1628a0-dc0a-474b-a533-7df7b53237bf"
-              },
-              {
                 "name": "PIX",
                 "item": [
                   {
@@ -13318,25 +13224,6 @@
                 "uid": "10462328-c63c505f-38e0-445d-822e-d24fa7fdc6e8"
               },
               {
-                "name": "Mercado Pago",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [],
-                    "id": "f9fc9e59-be93-47cb-b53e-b13cfdacd67e",
-                    "uid": "10462328-f9fc9e59-be93-47cb-b53e-b13cfdacd67e"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [],
-                    "id": "27679d1d-f57e-4442-b94e-f0b609982542",
-                    "uid": "10462328-27679d1d-f57e-4442-b94e-f0b609982542"
-                  }
-                ],
-                "id": "47ad651b-831f-4c01-8959-c83040472ce9",
-                "uid": "10462328-47ad651b-831f-4c01-8959-c83040472ce9"
-              },
-              {
                 "name": "NuPay",
                 "item": [
                   {
@@ -13539,6 +13426,606 @@
                 ],
                 "id": "b5576c9f-759f-448a-9b49-6acd0a05e7d3",
                 "uid": "10462328-b5576c9f-759f-448a-9b49-6acd0a05e7d3"
+              },
+              {
+                "name": "Pago Efectivo",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create PAGOEFECTIVO payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "dad57680-26a5-4798-ba36-ebd5073868b4"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "669d38c1-f7ff-4ac0-bb58-5d65fb5666b6"
+                            }
+                          }
+                        ],
+                        "id": "8813f438-9dbe-41f9-8d29-0c148a9cb283",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"PAGOEFECTIVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"COP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"document_type\": \"DNI\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"phone\":\"123456789\",\n        \"identity\": \"12345678\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-8813f438-9dbe-41f9-8d29-0c148a9cb283"
+                      }
+                    ],
+                    "id": "6bddf46c-6f33-4777-b248-1c2d6c577fff",
+                    "uid": "10462328-6bddf46c-6f33-4777-b248-1c2d6c577fff"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create PAGOEFECTIVO payment (Payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "0331b4e4-b112-4a3e-9b45-ffc8d69b28bb"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "5944ec4c-bca1-4955-885e-94657216e4af"
+                            }
+                          }
+                        ],
+                        "id": "87a720cc-2acd-4112-9922-c1a75f210282",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"PAGOEFECTIVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"COP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-87a720cc-2acd-4112-9922-c1a75f210282"
+                      }
+                    ],
+                    "id": "27581dc0-d129-4e7e-a0a0-1eb2014737b8",
+                    "uid": "10462328-27581dc0-d129-4e7e-a0a0-1eb2014737b8"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create PAGOEFECTIVO payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "7b3bf589-00b3-4930-a34d-a0189d4bcbed"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "5a617c9d-8644-4330-95f1-d37cdfdfe275"
+                            }
+                          }
+                        ],
+                        "id": "a726ae45-69af-4b5d-b6cc-c7f33cbb0fee",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"PAGOEFECTIVO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"COP\"\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\",\n        \"document_type\": \"DNI\",\n        \"first_name\": \"John\",\n        \"last_name\": \"Smith\",\n        \"phone\":\"123456789\",\n        \"identity\": \"12345678\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-a726ae45-69af-4b5d-b6cc-c7f33cbb0fee"
+                      }
+                    ],
+                    "id": "9028909a-9bcd-44f3-a02c-892e6a877d82",
+                    "uid": "10462328-9028909a-9bcd-44f3-a02c-892e6a877d82"
+                  }
+                ],
+                "id": "67e23c96-7509-4d8a-b591-47d64e69b80e",
+                "uid": "10462328-67e23c96-7509-4d8a-b591-47d64e69b80e"
+              },
+              {
+                "name": "Mercado Pago",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create Mercado Pago payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "75e37a19-1881-4655-9a8b-4430155f8912"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "da96a669-0c2f-46e3-9aeb-981c85ee13e7"
+                            }
+                          }
+                        ],
+                        "id": "db8d6aa1-8a60-4cb0-b973-16e91bfe14b8",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\",\n        \"items\": [\n            {\n                \"id\": \"123456789\",\n                \"name\": \"Apple\",\n                \"description\": \"Testing apple\"\n            }\n        ]\n    },\n    \"payment_method\": \"MERCADOPAGO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"BRL\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-db8d6aa1-8a60-4cb0-b973-16e91bfe14b8"
+                      }
+                    ],
+                    "id": "55962c5e-3804-40d0-88ec-ee41923f36fc",
+                    "uid": "10462328-55962c5e-3804-40d0-88ec-ee41923f36fc"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create Mercado Pago payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "29104e32-e71a-4869-8dd1-dfdaa4bc6f6d"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "27c472ef-4465-483b-bad2-f3a4b9993e70"
+                            }
+                          }
+                        ],
+                        "id": "bc438bdf-70d7-42ec-8ab8-ded9d0f2950e",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\",\n        \"items\": [\n            {\n                \"id\": \"123456789\",\n                \"name\": \"Apple\",\n                \"description\": \"Testing apple\"\n            }\n        ]\n    },\n    \"payment_method\": \"MERCADOPAGO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"BRL\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-bc438bdf-70d7-42ec-8ab8-ded9d0f2950e"
+                      }
+                    ],
+                    "id": "31dba6fd-4264-44a9-84b8-b5ce6929c154",
+                    "uid": "10462328-31dba6fd-4264-44a9-84b8-b5ce6929c154"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create Mercado Pago payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "d88a38a4-adfa-4dff-95cd-e0a698a204d3"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "344abd74-7ddd-417b-a93b-1db2e81a0cfe"
+                            }
+                          }
+                        ],
+                        "id": "7d326061-3276-47e3-b279-a3aa489cc594",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\",\n        \"items\": [\n            {\n                \"id\": \"123456789\",\n                \"name\": \"Apple\",\n                \"description\": \"Testing apple\"\n            }\n        ]\n    },\n    \"payment_method\": \"MERCADOPAGO\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"BRL\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-7d326061-3276-47e3-b279-a3aa489cc594"
+                      }
+                    ],
+                    "id": "8688eeaa-9a1c-4ffc-a693-80e12c0b0c8b",
+                    "uid": "10462328-8688eeaa-9a1c-4ffc-a693-80e12c0b0c8b"
+                  }
+                ],
+                "id": "8baf92d6-e5c5-47cb-84ae-04886c0419f1",
+                "uid": "10462328-8baf92d6-e5c5-47cb-84ae-04886c0419f1"
               }
             ],
             "id": "bdceb792-8285-4199-8dbf-9f1adff9c19b",
@@ -14565,209 +15052,6 @@
                 "uid": "10462328-c9c95fb7-9360-4b3c-bea2-e6614f8d9712"
               },
               {
-                "name": "FCMB Virtual Account",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create FCMBVA payment (Gateway mode)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "87dfd249-8ec3-423a-8e54-057aa0d9db8a"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "39b8b588-8fc7-4271-8f44-3dc27deda52b"
-                            }
-                          }
-                        ],
-                        "id": "64ad5f10-4b43-4be1-af1a-3bd0796d9125",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"FCMBVA\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-64ad5f10-4b43-4be1-af1a-3bd0796d9125"
-                      }
-                    ],
-                    "id": "8b0daba8-cf25-4bc3-9f9e-ae60ec74649b",
-                    "uid": "10462328-8b0daba8-cf25-4bc3-9f9e-ae60ec74649b"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create FCMBVA payment (payment page)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "55077c91-26ef-4e74-b098-bf0017653cf9"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "42e8ed9f-8888-460b-ae36-b98220f46a75"
-                            }
-                          }
-                        ],
-                        "id": "0935fdd2-9b07-45f2-a879-d30f661ae9ab",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"FCMBVA\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-0935fdd2-9b07-45f2-a879-d30f661ae9ab"
-                      }
-                    ],
-                    "id": "d8024a37-fe7e-4a33-9b5b-eb80491a39bd",
-                    "uid": "10462328-d8024a37-fe7e-4a33-9b5b-eb80491a39bd"
-                  }
-                ],
-                "id": "fa6b4c43-1b1c-4d1b-9912-80a8981be09c",
-                "uid": "10462328-fa6b4c43-1b1c-4d1b-9912-80a8981be09c"
-              },
-              {
                 "name": "M-Pesa Tanzania",
                 "item": [
                   {
@@ -15783,6 +16067,311 @@
                 ],
                 "id": "8ecfda3b-7868-4dc1-ac94-92c56a09ccfd",
                 "uid": "10462328-8ecfda3b-7868-4dc1-ac94-92c56a09ccfd"
+              },
+              {
+                "name": "NGN Virtual Account",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create NGNVA payment (Gateway mode)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "30a4e1cc-b078-41cf-8d98-638348a5e125"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "115e7095-c8b4-4c81-8927-bc2aae3af619"
+                            }
+                          }
+                        ],
+                        "id": "4d028d61-e6e3-42d8-b6c2-e42f8b78098f",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"NGNVA\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-4d028d61-e6e3-42d8-b6c2-e42f8b78098f"
+                      }
+                    ],
+                    "id": "164c1604-59f7-47c1-bb59-b621772857f9",
+                    "uid": "10462328-164c1604-59f7-47c1-bb59-b621772857f9"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create NGNVA payment (payment page)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "aecb2073-5f4a-4f23-8f1c-e19b420465cb"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "761e5013-63cb-4083-a97b-6d7169d0a263"
+                            }
+                          }
+                        ],
+                        "id": "129a1c9c-037d-4289-8c9c-01387a40ed7c",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"NGNVA\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-129a1c9c-037d-4289-8c9c-01387a40ed7c"
+                      }
+                    ],
+                    "id": "d52011a9-9bfb-4871-bd31-437e0b72e913",
+                    "uid": "10462328-d52011a9-9bfb-4871-bd31-437e0b72e913"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create NGNVA payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "24d4001b-a554-4341-a34b-d5ad2fb1b84a"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "3a004c23-2980-4955-aff6-d0a5981eb50a"
+                            }
+                          }
+                        ],
+                        "id": "9f48851a-ea9d-4d35-9726-0a6b742f19fd",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"NGNVA\",\n    \"payment_data\": {\n        \"amount\": \"1\",\n        \"currency\": \"NGN\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\",\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-9f48851a-ea9d-4d35-9726-0a6b742f19fd"
+                      }
+                    ],
+                    "id": "3c0cd510-cb4c-46ca-bc2d-f1e0fb1063f2",
+                    "uid": "10462328-3c0cd510-cb4c-46ca-bc2d-f1e0fb1063f2"
+                  }
+                ],
+                "id": "1bf4b822-09cb-40ce-a68a-1b2d23238339",
+                "uid": "10462328-1bf4b822-09cb-40ce-a68a-1b2d23238339"
               }
             ],
             "id": "734abb68-be0b-40bd-914a-e9a03220e32a",
@@ -33985,7 +34574,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "cb08b946-29e7-44f6-8a76-193d475c8e72",
+          "id": "a9c69532-3e6e-4304-8d83-38b26c7da3bf",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -34025,7 +34614,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "09c57472-88c8-42a4-a041-57c583edb02a",
+          "id": "e6578b14-a0b9-4c19-861c-f2e5a44bc372",
           "type": "text/javascript",
           "exec": [
             ""
