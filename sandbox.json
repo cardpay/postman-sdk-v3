@@ -1,11 +1,10 @@
 {
   "environment": {
-    "uid": "10462328-5f48449f-786b-41f8-9cf1-530516923060",
     "id": "5f48449f-786b-41f8-9cf1-530516923060",
     "name": "sandbox",
     "owner": "10462328",
     "createdAt": "2020-02-20T08:17:25.000Z",
-    "updatedAt": "2025-06-02T08:54:03.000Z",
+    "updatedAt": "2025-06-17T07:50:45.000Z",
     "values": [
       {
         "key": "UNLIMIT_API_URL",
@@ -253,6 +252,7 @@
         "type": "default"
       }
     ],
+    "uid": "10462328-5f48449f-786b-41f8-9cf1-530516923060",
     "isPublic": false
   }
 }
