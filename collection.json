@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-07-02T08:08:22.000Z",
+      "updatedAt": "2025-07-07T11:54:49.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -5669,616 +5669,6 @@
                 "uid": "10462328-94491d3c-559e-4656-953f-58c796407ba2"
               },
               {
-                "name": "Airtel",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create Airtel payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "3bd41cbe-5108-4f05-afb5-7185a3050f6c"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "d9e7d908-eecc-4765-b30b-aa91cd367ce9"
-                            }
-                          }
-                        ],
-                        "id": "2d398461-f2c6-4f0a-b6c2-bda756d27a00",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-2d398461-f2c6-4f0a-b6c2-bda756d27a00"
-                      }
-                    ],
-                    "id": "2cf1e374-cc12-446f-9320-c235132bb947",
-                    "uid": "10462328-2cf1e374-cc12-446f-9320-c235132bb947"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create Airtel payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "66f62178-7aee-43d7-b629-027a1a5f11cf"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "fea4876e-43e3-497a-8102-6e5c7696ba50"
-                            }
-                          }
-                        ],
-                        "id": "4334e257-dd0c-48a7-aac8-0668ccdee8ed",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-4334e257-dd0c-48a7-aac8-0668ccdee8ed"
-                      }
-                    ],
-                    "id": "a6250c90-3e0e-49c1-87e9-222c0f862809",
-                    "uid": "10462328-a6250c90-3e0e-49c1-87e9-222c0f862809"
-                  },
-                  {
-                    "name": "Extended response",
-                    "item": [
-                      {
-                        "name": "Create Airtel payment (ext resp)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "var uuid = require('uuid');\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
-                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "103a927a-df92-43d4-b84d-03cb97d17254"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    ",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "38eb5277-b84c-49c8-8a69-0422f96bae70"
-                            }
-                          }
-                        ],
-                        "id": "027d2db1-e88f-4903-bd4f-4523ca4c153d",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-027d2db1-e88f-4903-bd4f-4523ca4c153d"
-                      }
-                    ],
-                    "id": "c21a4da8-e652-4ac8-a93b-f222b4361008",
-                    "uid": "10462328-c21a4da8-e652-4ac8-a93b-f222b4361008"
-                  }
-                ],
-                "id": "f91418a6-7969-4ad8-a612-6fe487cdff7b",
-                "uid": "10462328-f91418a6-7969-4ad8-a612-6fe487cdff7b"
-              },
-              {
-                "name": "Airtel Tanzania",
-                "item": [
-                  {
-                    "name": "Gateway mode",
-                    "item": [
-                      {
-                        "name": "Create Airtel Tanzania payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "f15706bb-2297-46e9-8daf-adcfa28b17e3"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "579682cd-0460-4e73-8747-33940eff00ab"
-                            }
-                          }
-                        ],
-                        "id": "6dde79bf-8185-46d2-8465-f1bb199d46ce",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-6dde79bf-8185-46d2-8465-f1bb199d46ce"
-                      }
-                    ],
-                    "id": "4b66f971-6047-44fb-9acb-bde16ee680ae",
-                    "uid": "10462328-4b66f971-6047-44fb-9acb-bde16ee680ae"
-                  },
-                  {
-                    "name": "Payment page mode",
-                    "item": [
-                      {
-                        "name": "Create Airtel Tanzania payment",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "\r",
-                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
-                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "48ccdd93-7b79-462b-af93-e9d7ca8c9fe1"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    pm.expect(response).to.have.property('redirect_url');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "e09f520b-96aa-441c-b188-603e6c6ff73f"
-                            }
-                          }
-                        ],
-                        "id": "f9439653-b66c-467c-bed7-e767e4ac325f",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-f9439653-b66c-467c-bed7-e767e4ac325f"
-                      }
-                    ],
-                    "id": "bfaa048c-21dd-42d9-9394-54ddeb5969e9",
-                    "uid": "10462328-bfaa048c-21dd-42d9-9394-54ddeb5969e9"
-                  },
-                  {
-                    "name": "Extended response",
-                    "item": [
-                      {
-                        "name": "Create Airtel Tanzania payment (ext resp)",
-                        "event": [
-                          {
-                            "listen": "prerequest",
-                            "script": {
-                              "exec": [
-                                "var uuid = require('uuid');\r",
-                                "\r",
-                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
-                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
-                                "\r",
-                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                "tokens.obtain(terminal_code, password);"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "48d7c2aa-7a76-43b5-8e76-a07c61fe152d"
-                            }
-                          },
-                          {
-                            "listen": "test",
-                            "script": {
-                              "exec": [
-                                "pm.test(\"Successful request\", function () {",
-                                "    pm.response.to.be.ok;",
-                                "    pm.response.to.have.jsonBody();",
-                                "    ",
-                                "    var response = pm.response.json();",
-                                "    ",
-                                "    pm.expect(response).to.have.property('payment_data');",
-                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
-                                "});"
-                              ],
-                              "type": "text/javascript",
-                              "packages": {},
-                              "id": "b6cdb06b-87d3-4011-a044-03023e4ee258"
-                            }
-                          }
-                        ],
-                        "id": "b5f74c6e-5a5e-4319-ae28-b0844fdc5f30",
-                        "protocolProfileBehavior": {
-                          "strictSSL": false,
-                          "disableBodyPruning": true
-                        },
-                        "request": {
-                          "auth": {
-                            "type": "bearer",
-                            "bearer": [
-                              {
-                                "key": "0",
-                                "value": {
-                                  "key": "token",
-                                  "value": "{{access_token}}",
-                                  "type": "string"
-                                },
-                                "type": "any"
-                              },
-                              {
-                                "key": "token",
-                                "value": "{{access_token}}",
-                                "type": "string"
-                              }
-                            ]
-                          },
-                          "method": "POST",
-                          "header": [
-                            {
-                              "key": "Content-Type",
-                              "value": "application/json"
-                            }
-                          ],
-                          "body": {
-                            "mode": "raw",
-                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                            "options": {
-                              "raw": {
-                                "language": "json"
-                              }
-                            }
-                          },
-                          "url": {
-                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                            "host": [
-                              "{{UNLIMIT_API_URL}}"
-                            ],
-                            "path": [
-                              "api",
-                              "payments"
-                            ]
-                          }
-                        },
-                        "response": [],
-                        "uid": "10462328-b5f74c6e-5a5e-4319-ae28-b0844fdc5f30"
-                      }
-                    ],
-                    "id": "8d32191f-7bbd-497f-a6fe-73bb11bf3ed2",
-                    "uid": "10462328-8d32191f-7bbd-497f-a6fe-73bb11bf3ed2"
-                  }
-                ],
-                "id": "425c7f1d-fc11-43e7-9196-ff3a3e9aeb20",
-                "uid": "10462328-425c7f1d-fc11-43e7-9196-ff3a3e9aeb20"
-              },
-              {
                 "name": "NGN Virtual Account",
                 "item": [
                   {
@@ -6887,6 +6277,616 @@
                 ],
                 "id": "a14876a0-d93a-48dd-82fe-d39d7eb03663",
                 "uid": "10462328-a14876a0-d93a-48dd-82fe-d39d7eb03663"
+              },
+              {
+                "name": "Airtel",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create Airtel payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "8c48dbf4-0893-4191-b81e-462e0687638c"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "25f816da-d505-4c84-a664-e9d95b2f91eb"
+                            }
+                          }
+                        ],
+                        "id": "757e510a-2a93-4c32-9f1e-8ca95ef2a7e4",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254100123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-757e510a-2a93-4c32-9f1e-8ca95ef2a7e4"
+                      }
+                    ],
+                    "id": "8506c560-2961-43bb-bc4f-d9b07cec5058",
+                    "uid": "10462328-8506c560-2961-43bb-bc4f-d9b07cec5058"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create Airtel payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "a926371c-9d45-438f-8458-2995f51e3bcf"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "f774a273-ea5e-4106-864e-45ec3a262ccf"
+                            }
+                          }
+                        ],
+                        "id": "c35b617e-e47a-4433-a970-a92d5c6dab5d",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254100123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-c35b617e-e47a-4433-a970-a92d5c6dab5d"
+                      }
+                    ],
+                    "id": "e2bff59e-20f9-4e8b-8e56-c92a82e722f0",
+                    "uid": "10462328-e2bff59e-20f9-4e8b-8e56-c92a82e722f0"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create Airtel payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "fd323e48-20a3-478d-80b3-ee02f62c6092"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "df6ac005-1eb5-48b0-bbdb-ac05ff220a68"
+                            }
+                          }
+                        ],
+                        "id": "63d93761-7c99-4be7-84dc-bc27b37a0401",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254100123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-63d93761-7c99-4be7-84dc-bc27b37a0401"
+                      }
+                    ],
+                    "id": "a0d0761d-cd31-4141-a02a-48469282fe8c",
+                    "uid": "10462328-a0d0761d-cd31-4141-a02a-48469282fe8c"
+                  }
+                ],
+                "id": "4973833b-e3d9-4d44-a285-775123ebbebc",
+                "uid": "10462328-4973833b-e3d9-4d44-a285-775123ebbebc"
+              },
+              {
+                "name": "Airtel Tanzania",
+                "item": [
+                  {
+                    "name": "Gateway mode",
+                    "item": [
+                      {
+                        "name": "Create Airtel Tanzania payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('GATEWAY_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('GATEWAY_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "e3121a58-eca8-42ff-9d0f-4c33f0ea1f27"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "be5869b3-83cd-4853-ac5e-c54e61441cbb"
+                            }
+                          }
+                        ],
+                        "id": "1543802b-cfea-4d14-b3a0-a3bba076cd63",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255780123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-1543802b-cfea-4d14-b3a0-a3bba076cd63"
+                      }
+                    ],
+                    "id": "f0e3ba6a-fc39-4fc7-ab7d-e1178909d3d0",
+                    "uid": "10462328-f0e3ba6a-fc39-4fc7-ab7d-e1178909d3d0"
+                  },
+                  {
+                    "name": "Payment page mode",
+                    "item": [
+                      {
+                        "name": "Create Airtel Tanzania payment",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "\r",
+                                "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                                "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "f5994c66-005d-45d3-a0b1-7b56ab27a70c"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response).to.have.property('redirect_url');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "5fbf4518-3cd7-47a0-b525-cb0b4728757f"
+                            }
+                          }
+                        ],
+                        "id": "2bc85732-9484-4705-a49c-15a225404e4e",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255780123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-2bc85732-9484-4705-a49c-15a225404e4e"
+                      }
+                    ],
+                    "id": "3ef6c92c-6e48-4eb1-b693-7461d40c137c",
+                    "uid": "10462328-3ef6c92c-6e48-4eb1-b693-7461d40c137c"
+                  },
+                  {
+                    "name": "Extended response",
+                    "item": [
+                      {
+                        "name": "Create Airtel Tanzania payment (ext resp)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');\r",
+                                "\r",
+                                "var terminal_code = pm.environment.get('TERMINAL_CODE_EXT_RESP');\r",
+                                "var password = pm.environment.get('TERMINAL_PASSWORD_EXT_RESP');\r",
+                                "\r",
+                                "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                                "tokens.obtain(terminal_code, password);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "09ba6d24-f59f-4d25-b1cb-cf3c9b4ccbf2"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.be.ok;",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    ",
+                                "    pm.expect(response).to.have.property('payment_data');",
+                                "    pm.expect(response.payment_data).to.have.property('extended_data');",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "2bd662fa-b0a1-46f6-8fe4-348477125774"
+                            }
+                          }
+                        ],
+                        "id": "3edee631-bd4f-4c3d-abee-d75f413074dd",
+                        "protocolProfileBehavior": {
+                          "strictSSL": false,
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "value": "{{access_token}}",
+                                  "type": "string"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order ('{{request_name}}')\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"payment_data\": {\n        \"amount\": \"1000\",\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255780123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
+                            "options": {
+                              "raw": {
+                                "language": "json"
+                              }
+                            }
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payments",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payments"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-3edee631-bd4f-4c3d-abee-d75f413074dd"
+                      }
+                    ],
+                    "id": "e84e541c-3acc-4e8f-b207-4c7928f91958",
+                    "uid": "10462328-e84e541c-3acc-4e8f-b207-4c7928f91958"
+                  }
+                ],
+                "id": "b24f3cae-b53e-419d-9e6b-d2af0911cd67",
+                "uid": "10462328-b24f3cae-b53e-419d-9e6b-d2af0911cd67"
               }
             ],
             "id": "6deb3e27-693b-4925-ad82-6312fb840104",
@@ -27810,198 +27810,6 @@
                 "uid": "10462328-361c19db-49ad-4782-8caa-3f6920228ef5"
               },
               {
-                "name": "Airtel Tanzania",
-                "item": [
-                  {
-                    "name": "Create Airtel Tanzania payout",
-                    "event": [
-                      {
-                        "listen": "prerequest",
-                        "script": {
-                          "exec": [
-                            "var uuid = require('uuid');",
-                            "",
-                            "var merchant_order_id = uuid.v4();",
-                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
-                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "7347d577-0ec3-4662-92a1-6973443b4da9"
-                        }
-                      },
-                      {
-                        "listen": "test",
-                        "script": {
-                          "exec": [
-                            "pm.test(\"Successful request\", function () {",
-                            "    pm.response.to.have.status(201);",
-                            "    pm.response.to.have.jsonBody();",
-                            "    ",
-                            "    var response = pm.response.json();",
-                            "    pm.expect(response.payout_data).to.have.property('id');",
-                            "    ",
-                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
-                            " ",
-                            "});"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "2732fd94-bd19-471b-bb4b-62069042a858"
-                        }
-                      }
-                    ],
-                    "id": "1d6f7f09-854c-41c7-968d-f29036f73250",
-                    "protocolProfileBehavior": {
-                      "disableBodyPruning": true
-                    },
-                    "request": {
-                      "auth": {
-                        "type": "bearer",
-                        "bearer": [
-                          {
-                            "key": "0",
-                            "value": {
-                              "key": "token",
-                              "type": "string",
-                              "value": "{{access_token}}"
-                            },
-                            "type": "any"
-                          },
-                          {
-                            "key": "token",
-                            "value": "{{access_token}}",
-                            "type": "string"
-                          }
-                        ]
-                      },
-                      "method": "POST",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "application/json",
-                          "type": "text"
-                        }
-                      ],
-                      "body": {
-                        "mode": "raw",
-                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payout_data\": {\n        \"amount\": 1,\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
-                      },
-                      "url": {
-                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
-                        "host": [
-                          "{{UNLIMIT_API_URL}}"
-                        ],
-                        "path": [
-                          "api",
-                          "payouts"
-                        ]
-                      }
-                    },
-                    "response": [],
-                    "uid": "10462328-1d6f7f09-854c-41c7-968d-f29036f73250"
-                  }
-                ],
-                "id": "80a80aa9-82b6-404e-8199-61032afa5f83",
-                "uid": "10462328-80a80aa9-82b6-404e-8199-61032afa5f83"
-              },
-              {
-                "name": "Airtel",
-                "item": [
-                  {
-                    "name": "Create Airtel payout",
-                    "event": [
-                      {
-                        "listen": "prerequest",
-                        "script": {
-                          "exec": [
-                            "var uuid = require('uuid');",
-                            "",
-                            "var merchant_order_id = uuid.v4();",
-                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
-                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "cd26338b-3487-427e-826f-f5c644912d63"
-                        }
-                      },
-                      {
-                        "listen": "test",
-                        "script": {
-                          "exec": [
-                            "pm.test(\"Successful request\", function () {",
-                            "    pm.response.to.have.status(201);",
-                            "    pm.response.to.have.jsonBody();",
-                            "    ",
-                            "    var response = pm.response.json();",
-                            "    pm.expect(response.payout_data).to.have.property('id');",
-                            "    ",
-                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
-                            " ",
-                            "});"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "8813ae7f-cdba-4b55-9130-fd97d0eace8c"
-                        }
-                      }
-                    ],
-                    "id": "dce58580-7494-411d-9f2e-67c8965b5e2a",
-                    "protocolProfileBehavior": {
-                      "disableBodyPruning": true
-                    },
-                    "request": {
-                      "auth": {
-                        "type": "bearer",
-                        "bearer": [
-                          {
-                            "key": "0",
-                            "value": {
-                              "key": "token",
-                              "type": "string",
-                              "value": "{{access_token}}"
-                            },
-                            "type": "any"
-                          },
-                          {
-                            "key": "token",
-                            "value": "{{access_token}}",
-                            "type": "string"
-                          }
-                        ]
-                      },
-                      "method": "POST",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "application/json",
-                          "type": "text"
-                        }
-                      ],
-                      "body": {
-                        "mode": "raw",
-                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payout_data\": {\n        \"amount\": 1,\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254123456789\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
-                      },
-                      "url": {
-                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
-                        "host": [
-                          "{{UNLIMIT_API_URL}}"
-                        ],
-                        "path": [
-                          "api",
-                          "payouts"
-                        ]
-                      }
-                    },
-                    "response": [],
-                    "uid": "10462328-dce58580-7494-411d-9f2e-67c8965b5e2a"
-                  }
-                ],
-                "id": "304b98e4-0f11-400e-a4fc-409c184ca773",
-                "uid": "10462328-304b98e4-0f11-400e-a4fc-409c184ca773"
-              },
-              {
                 "name": "Direct Banking Nigeria",
                 "item": [
                   {
@@ -28768,6 +28576,198 @@
                 ],
                 "id": "4fc6dc0d-acf8-48f5-bb25-f469ebac935f",
                 "uid": "10462328-4fc6dc0d-acf8-48f5-bb25-f469ebac935f"
+              },
+              {
+                "name": "Airtel Tanzania",
+                "item": [
+                  {
+                    "name": "Create Airtel Tanzania payout",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "exec": [
+                            "var uuid = require('uuid');",
+                            "",
+                            "var merchant_order_id = uuid.v4();",
+                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "2b8fde2e-2286-4439-a0da-1ba86f482643"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response.payout_data).to.have.property('id');",
+                            "    ",
+                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                            " ",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "e66fd854-7063-448e-bede-39d09ada92e9"
+                        }
+                      }
+                    ],
+                    "id": "de8b5d84-1b05-4f56-bff6-88870de2db10",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"AIRTELTZS\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payout_data\": {\n        \"amount\": 1,\n        \"currency\": \"TZS\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"255740123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payouts"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-de8b5d84-1b05-4f56-bff6-88870de2db10"
+                  }
+                ],
+                "id": "43975d6c-7126-4dd5-9256-ffcc4ddcd7bc",
+                "uid": "10462328-43975d6c-7126-4dd5-9256-ffcc4ddcd7bc"
+              },
+              {
+                "name": "Airtel",
+                "item": [
+                  {
+                    "name": "Create Airtel payout",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "exec": [
+                            "var uuid = require('uuid');",
+                            "",
+                            "var merchant_order_id = uuid.v4();",
+                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "85fb2290-051a-4574-af97-8ca966791a1e"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response.payout_data).to.have.property('id');",
+                            "    ",
+                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                            " ",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "56c73265-d441-49bd-8006-38ed0c1d8c09"
+                        }
+                      }
+                    ],
+                    "id": "f922d3f3-ed7d-4c76-b9d4-4f94e8e0b154",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"AIRTEL\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order\"\n    },\n    \"payout_data\": {\n        \"amount\": 1,\n        \"currency\": \"KES\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"254100123456\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payouts"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-f922d3f3-ed7d-4c76-b9d4-4f94e8e0b154"
+                  }
+                ],
+                "id": "6caae3c6-6713-41eb-a782-d192a62b8c97",
+                "uid": "10462328-6caae3c6-6713-41eb-a782-d192a62b8c97"
               }
             ],
             "id": "6d6d12be-3a89-4e5b-b695-7b4b1471b3be",
@@ -35464,7 +35464,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "962f05f5-03a6-40b5-9609-8437182bb083",
+          "id": "d0debad4-8df5-4923-92a3-5e843a26f596",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -35504,7 +35504,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "0b3b8a99-754f-45bb-aa13-f309679d40f1",
+          "id": "f789f9ab-fdf9-4bdb-9a5a-5734482b769c",
           "type": "text/javascript",
           "exec": [
             ""
