@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-07-10T08:20:35.000Z",
+      "updatedAt": "2025-07-18T13:05:49.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -10019,25 +10019,6 @@
                 "name": "Vietnam",
                 "item": [
                   {
-                    "name": "Direct Banking Vietnam",
-                    "item": [
-                      {
-                        "name": "Gateway mode",
-                        "item": [],
-                        "id": "fa3fd6d7-2d61-4986-983f-ba124a1c2c7c",
-                        "uid": "10462328-fa3fd6d7-2d61-4986-983f-ba124a1c2c7c"
-                      },
-                      {
-                        "name": "Payment page mode",
-                        "item": [],
-                        "id": "6b90da41-ebcc-469e-84ce-5fb334dc8855",
-                        "uid": "10462328-6b90da41-ebcc-469e-84ce-5fb334dc8855"
-                      }
-                    ],
-                    "id": "07d31ccf-5ed7-4893-b9fb-b7d4ddf12702",
-                    "uid": "10462328-07d31ccf-5ed7-4893-b9fb-b7d4ddf12702"
-                  },
-                  {
                     "name": "QR Vietnam",
                     "item": [
                       {
@@ -10341,147 +10322,10 @@
                         ],
                         "id": "98c115c4-716c-4a9e-be67-a99374103f31",
                         "uid": "10462328-98c115c4-716c-4a9e-be67-a99374103f31"
-                      },
-                      {
-                        "name": "Extended response",
-                        "item": [
-                          {
-                            "name": "Create Payme payment (ext resp)",
-                            "event": [
-                              {
-                                "listen": "prerequest",
-                                "script": {
-                                  "exec": [
-                                    "\r",
-                                    "var terminal_code = pm.environment.get('ExtendedResponse_TERMINAL_CODE');\r",
-                                    "var password = pm.environment.get('ExtendedResponse_TERMINAL_PASSWORD');\r",
-                                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
-                                    "tokens.obtain(terminal_code, password);"
-                                  ],
-                                  "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "29489cb7-5487-4577-a920-eade898c539b"
-                                }
-                              },
-                              {
-                                "listen": "test",
-                                "script": {
-                                  "exec": [
-                                    "pm.test(\"Successful request\", function () {",
-                                    "    pm.response.to.be.ok;",
-                                    "    pm.response.to.have.jsonBody();",
-                                    "    ",
-                                    "    var response = pm.response.json();",
-                                    "    pm.expect(response).to.have.property('payment_data');",
-                                    "    pm.expect(response.payment_data).to.have.property('extended_data');",
-                                    "});"
-                                  ],
-                                  "type": "text/javascript",
-                                  "packages": {},
-                                  "id": "b91ce23d-9568-439a-8532-bd210c2d5502"
-                                }
-                              }
-                            ],
-                            "id": "33a152e8-5aed-4800-aa48-63f219ec5ece",
-                            "protocolProfileBehavior": {
-                              "strictSSL": false,
-                              "disableBodyPruning": true
-                            },
-                            "request": {
-                              "auth": {
-                                "type": "bearer",
-                                "bearer": [
-                                  {
-                                    "key": "0",
-                                    "value": {
-                                      "key": "token",
-                                      "value": "{{access_token}}",
-                                      "type": "string"
-                                    },
-                                    "type": "any"
-                                  },
-                                  {
-                                    "key": "token",
-                                    "value": "{{access_token}}",
-                                    "type": "string"
-                                  }
-                                ]
-                              },
-                              "method": "POST",
-                              "header": [
-                                {
-                                  "key": "Content-Type",
-                                  "value": "application/json"
-                                }
-                              ],
-                              "body": {
-                                "mode": "raw",
-                                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payment_method\": \"VietQR\",\n    \"payment_data\": {\n        \"amount\": \"10000\",\n        \"currency\": \"VND\"\n    },\n    \"customer\": {\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}",
-                                "options": {
-                                  "raw": {
-                                    "language": "json"
-                                  }
-                                }
-                              },
-                              "url": {
-                                "raw": "{{UNLIMIT_API_URL}}/api/payments",
-                                "host": [
-                                  "{{UNLIMIT_API_URL}}"
-                                ],
-                                "path": [
-                                  "api",
-                                  "payments"
-                                ]
-                              }
-                            },
-                            "response": [],
-                            "uid": "10462328-33a152e8-5aed-4800-aa48-63f219ec5ece"
-                          }
-                        ],
-                        "id": "5e74e528-6421-4066-b253-93699e18dd0a",
-                        "uid": "10462328-5e74e528-6421-4066-b253-93699e18dd0a"
                       }
                     ],
                     "id": "abd6b96f-99f8-4826-8665-81e9921901ab",
                     "uid": "10462328-abd6b96f-99f8-4826-8665-81e9921901ab"
-                  },
-                  {
-                    "name": "Payment by wire transfer by QR code",
-                    "item": [
-                      {
-                        "name": "Gateway mode",
-                        "item": [],
-                        "id": "3d75b5ad-a991-4097-8eaf-5e0197dcceaf",
-                        "uid": "10462328-3d75b5ad-a991-4097-8eaf-5e0197dcceaf"
-                      },
-                      {
-                        "name": "Payment page mode",
-                        "item": [],
-                        "id": "42bcd48a-3256-4728-95b3-fc09d2372458",
-                        "uid": "10462328-42bcd48a-3256-4728-95b3-fc09d2372458"
-                      }
-                    ],
-                    "id": "f95b12bb-901a-4f72-be0c-258d2908d943",
-                    "uid": "10462328-f95b12bb-901a-4f72-be0c-258d2908d943"
-                  },
-                  {
-                    "name": "Bank QRCode",
-                    "item": [
-                      {
-                        "name": "Gateway mode",
-                        "item": [],
-                        "id": "7d743615-8d4a-4ec0-89cc-fe2b075f4839",
-                        "uid": "10462328-7d743615-8d4a-4ec0-89cc-fe2b075f4839"
-                      },
-                      {
-                        "name": "Payment page mode",
-                        "item": [],
-                        "id": "35ad196f-5499-43fc-9df5-9893aa82144c",
-                        "uid": "10462328-35ad196f-5499-43fc-9df5-9893aa82144c"
-                      }
-                    ],
-                    "id": "7a75f4b1-af36-44b4-b8be-7a69d5c7708e",
-                    "uid": "10462328-7a75f4b1-af36-44b4-b8be-7a69d5c7708e"
                   }
                 ],
                 "id": "17314adc-3e63-47c4-911e-599c0c0c69b4",
@@ -29963,102 +29807,6 @@
             "name": "Latin America",
             "item": [
               {
-                "name": "Pix",
-                "item": [
-                  {
-                    "name": "Create PIX payout",
-                    "event": [
-                      {
-                        "listen": "prerequest",
-                        "script": {
-                          "exec": [
-                            "var uuid = require('uuid');",
-                            "",
-                            "var merchant_order_id = uuid.v4();",
-                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
-                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "467482eb-d592-407e-8d72-eab1496ddc84"
-                        }
-                      },
-                      {
-                        "listen": "test",
-                        "script": {
-                          "exec": [
-                            "pm.test(\"Successful request\", function () {",
-                            "    pm.response.to.have.status(201);",
-                            "    pm.response.to.have.jsonBody();",
-                            "    ",
-                            "    var response = pm.response.json();",
-                            "    pm.expect(response.payout_data).to.have.property('id');",
-                            "    ",
-                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
-                            " ",
-                            "});"
-                          ],
-                          "type": "text/javascript",
-                          "packages": {},
-                          "id": "552f4874-6cc5-4a28-8acf-8dcf319b2b42"
-                        }
-                      }
-                    ],
-                    "id": "316a5fa8-2f0a-462f-9d8f-4a18860f688c",
-                    "protocolProfileBehavior": {
-                      "disableBodyPruning": true
-                    },
-                    "request": {
-                      "auth": {
-                        "type": "bearer",
-                        "bearer": [
-                          {
-                            "key": "0",
-                            "value": {
-                              "key": "token",
-                              "type": "string",
-                              "value": "{{access_token}}"
-                            },
-                            "type": "any"
-                          },
-                          {
-                            "key": "token",
-                            "value": "{{access_token}}",
-                            "type": "string"
-                          }
-                        ]
-                      },
-                      "method": "POST",
-                      "header": [
-                        {
-                          "key": "Content-Type",
-                          "value": "application/json",
-                          "type": "text"
-                        }
-                      ],
-                      "body": {
-                        "mode": "raw",
-                        "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"1859642039681735\",\n        \"bank_code\": \"001\",\n        \"bank_branch\": \"1234\",\n        \"type\": \"SVGS\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\",\n        \"full_name\": \"{{$randomFullName}}\"\n    }\n}"
-                      },
-                      "url": {
-                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
-                        "host": [
-                          "{{UNLIMIT_API_URL}}"
-                        ],
-                        "path": [
-                          "api",
-                          "payouts"
-                        ]
-                      }
-                    },
-                    "response": [],
-                    "uid": "10462328-316a5fa8-2f0a-462f-9d8f-4a18860f688c"
-                  }
-                ],
-                "id": "eea9f344-bd8c-4674-b8d0-bdbbe99619a0",
-                "uid": "10462328-eea9f344-bd8c-4674-b8d0-bdbbe99619a0"
-              },
-              {
                 "name": "Davivienda",
                 "item": [
                   {
@@ -30537,6 +30285,493 @@
                 ],
                 "id": "abbcf66d-b184-4285-97c5-0ee7926291a5",
                 "uid": "10462328-abbcf66d-b184-4285-97c5-0ee7926291a5"
+              },
+              {
+                "name": "Pix",
+                "item": [
+                  {
+                    "name": "Regular Payout",
+                    "item": [
+                      {
+                        "name": "Create PIX regular payout",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "e630523e-bfb0-4459-a4d6-5757f0109e29"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "2037c4cc-cdd1-412f-99e7-2145c715c02c"
+                            }
+                          }
+                        ],
+                        "id": "bdfed6f5-fe9b-486e-a6f6-a126e820d6ab",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"1859642039681735\",\n        \"bank_code\": \"001\",\n        \"bank_branch\": \"1234\",\n        \"type\": \"SVGS\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-bdfed6f5-fe9b-486e-a6f6-a126e820d6ab"
+                      }
+                    ],
+                    "id": "fdf82005-69a0-4be9-93ac-0d96626319ac",
+                    "uid": "10462328-fdf82005-69a0-4be9-93ac-0d96626319ac"
+                  },
+                  {
+                    "name": "Payout by CPF",
+                    "item": [
+                      {
+                        "name": "Create PIX payout by CPF",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "846ca829-2bbf-4ac8-a823-efdc49437978"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "57a6665d-aba8-4001-9c66-a95143c2eb5b"
+                            }
+                          }
+                        ],
+                        "id": "47dc3d14-b3af-486b-8f1b-35d0cde47fca",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"401.162.304-01\",\n        \"type\": \"CPF\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-47dc3d14-b3af-486b-8f1b-35d0cde47fca"
+                      }
+                    ],
+                    "id": "60a966df-f1b0-4a51-b618-782e05991742",
+                    "uid": "10462328-60a966df-f1b0-4a51-b618-782e05991742"
+                  },
+                  {
+                    "name": "Payout by Phone",
+                    "item": [
+                      {
+                        "name": "Create PIX payout by Phone",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "ea060a7b-b31e-4229-acc8-97b309ad021f"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "8fdebdb7-9ebd-4812-a004-1aac6793835d"
+                            }
+                          }
+                        ],
+                        "id": "70cf1397-0ae2-4793-9b22-4b0e29b31a58",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"+550012345678\",\n        \"type\": \"PHONE\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-70cf1397-0ae2-4793-9b22-4b0e29b31a58"
+                      }
+                    ],
+                    "id": "a5f65c9b-a9b9-498f-9886-38688a84f965",
+                    "uid": "10462328-a5f65c9b-a9b9-498f-9886-38688a84f965"
+                  },
+                  {
+                    "name": "Payout by Email",
+                    "item": [
+                      {
+                        "name": "Create PIX payout by Email",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "02c16e58-8f27-4101-99f2-bce7c082576f"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "31637e46-c79d-4448-b4e6-51d29b1167eb"
+                            }
+                          }
+                        ],
+                        "id": "53a314be-e69b-4860-bb04-7758069de0f0",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"{{CUSTOMER_EMAIL}}\",\n        \"type\": \"EMAIL\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-53a314be-e69b-4860-bb04-7758069de0f0"
+                      }
+                    ],
+                    "id": "19250ed6-0268-4a22-a40f-75ca846b7268",
+                    "uid": "10462328-19250ed6-0268-4a22-a40f-75ca846b7268"
+                  },
+                  {
+                    "name": "Payout by EVP (random key)",
+                    "item": [
+                      {
+                        "name": "Create PIX payout by EVP (random key)",
+                        "event": [
+                          {
+                            "listen": "prerequest",
+                            "script": {
+                              "exec": [
+                                "var uuid = require('uuid');",
+                                "",
+                                "var merchant_order_id = uuid.v4();",
+                                "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                                "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "b958a5d1-162b-4fcd-b7c9-803f61b8dbcb"
+                            }
+                          },
+                          {
+                            "listen": "test",
+                            "script": {
+                              "exec": [
+                                "pm.test(\"Successful request\", function () {",
+                                "    pm.response.to.have.status(201);",
+                                "    pm.response.to.have.jsonBody();",
+                                "    ",
+                                "    var response = pm.response.json();",
+                                "    pm.expect(response.payout_data).to.have.property('id');",
+                                "    ",
+                                "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                                " ",
+                                "});"
+                              ],
+                              "type": "text/javascript",
+                              "packages": {},
+                              "id": "ec2a5d8c-86c2-48ec-9f38-a5a31c1d4b9f"
+                            }
+                          }
+                        ],
+                        "id": "231bf988-2549-4e91-bdd8-1427dbef1fd3",
+                        "protocolProfileBehavior": {
+                          "disableBodyPruning": true
+                        },
+                        "request": {
+                          "auth": {
+                            "type": "bearer",
+                            "bearer": [
+                              {
+                                "key": "0",
+                                "value": {
+                                  "key": "token",
+                                  "type": "string",
+                                  "value": "{{access_token}}"
+                                },
+                                "type": "any"
+                              },
+                              {
+                                "key": "token",
+                                "value": "{{access_token}}",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "method": "POST",
+                          "header": [
+                            {
+                              "key": "Content-Type",
+                              "value": "application/json",
+                              "type": "text"
+                            }
+                          ],
+                          "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"request\": {\n       \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"PIX\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 15,\n        \"currency\": \"BRL\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"f4n7kC2a-9Jp1-5sVb-8rT3-xZ1mN2pQ3rY9\",\n        \"type\": \"EVP\"\n    },\n    \"customer\": {\n        \"identity\": \"401.162.304-01\"\n    }\n}"
+                          },
+                          "url": {
+                            "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                            "host": [
+                              "{{UNLIMIT_API_URL}}"
+                            ],
+                            "path": [
+                              "api",
+                              "payouts"
+                            ]
+                          }
+                        },
+                        "response": [],
+                        "uid": "10462328-231bf988-2549-4e91-bdd8-1427dbef1fd3"
+                      }
+                    ],
+                    "id": "59db12e3-d11f-499c-9fad-21627c6f5386",
+                    "uid": "10462328-59db12e3-d11f-499c-9fad-21627c6f5386"
+                  }
+                ],
+                "id": "6e0d09b6-6d8a-4f7f-bced-10a2d36c1bed",
+                "uid": "10462328-6e0d09b6-6d8a-4f7f-bced-10a2d36c1bed"
               }
             ],
             "id": "a9f6f5a9-391b-4306-b2b2-52e92504ca77",
@@ -36547,7 +36782,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "ee8e6d85-c3a3-459e-a52a-3bfcde6e1312",
+          "id": "c433971c-9851-43e0-9c95-a42b374d516f",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -36587,7 +36822,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "a94d35f5-5899-452b-ac13-8a1984b90b38",
+          "id": "cd03e3cb-8686-4073-88e6-2a818cebfbab",
           "type": "text/javascript",
           "exec": [
             ""
