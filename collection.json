@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-08-01T14:05:30.000Z",
+      "updatedAt": "2025-09-19T11:26:01.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -30772,6 +30772,102 @@
                 ],
                 "id": "6e0d09b6-6d8a-4f7f-bced-10a2d36c1bed",
                 "uid": "10462328-6e0d09b6-6d8a-4f7f-bced-10a2d36c1bed"
+              },
+              {
+                "name": "Bank transfer Chile",
+                "item": [
+                  {
+                    "name": "Create Bank transfer Chile payout",
+                    "event": [
+                      {
+                        "listen": "prerequest",
+                        "script": {
+                          "exec": [
+                            "var uuid = require('uuid');",
+                            "",
+                            "var merchant_order_id = uuid.v4();",
+                            "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
+                            "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "bc868d65-0045-4b4c-9be2-137f1b059dd8"
+                        }
+                      },
+                      {
+                        "listen": "test",
+                        "script": {
+                          "exec": [
+                            "pm.test(\"Successful request\", function () {",
+                            "    pm.response.to.have.status(201);",
+                            "    pm.response.to.have.jsonBody();",
+                            "    ",
+                            "    var response = pm.response.json();",
+                            "    pm.expect(response.payout_data).to.have.property('id');",
+                            "    ",
+                            "    pm.collectionVariables.set('last_payout_id', response.payout_data.id);",
+                            " ",
+                            "});"
+                          ],
+                          "type": "text/javascript",
+                          "packages": {},
+                          "id": "d5ebce42-c7a0-4dd9-a513-d06efcac1ff8"
+                        }
+                      }
+                    ],
+                    "id": "df8b3540-bb76-4443-abe5-821bf7bcea68",
+                    "protocolProfileBehavior": {
+                      "disableBodyPruning": true
+                    },
+                    "request": {
+                      "auth": {
+                        "type": "bearer",
+                        "bearer": [
+                          {
+                            "key": "0",
+                            "value": {
+                              "key": "token",
+                              "type": "string",
+                              "value": "{{access_token}}"
+                            },
+                            "type": "any"
+                          },
+                          {
+                            "key": "token",
+                            "value": "{{access_token}}",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "method": "POST",
+                      "header": [
+                        {
+                          "key": "Content-Type",
+                          "value": "application/json",
+                          "type": "text"
+                        }
+                      ],
+                      "body": {
+                        "mode": "raw",
+                        "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"payment_method\": \"banktransfersclp\",\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"description\": \"Postman Collection Order('{{request_name}}')\"\n    },\n    \"payout_data\": {\n        \"amount\": 1000,\n        \"currency\": \"CLP\"\n    },\n    \"ewallet_account\": {\n        \"id\": \"123465789\",\n        \"type\": \"checking_account\",\n        \"bank_code\": \"cl_banco_ripley\"\n    },\n    \"customer\":{\n        \"full_name\":\"{{$randomFullName}}\",\n        \"identity\":\"12345678K\"\n    }\n}"
+                      },
+                      "url": {
+                        "raw": "{{UNLIMIT_API_URL}}/api/payouts",
+                        "host": [
+                          "{{UNLIMIT_API_URL}}"
+                        ],
+                        "path": [
+                          "api",
+                          "payouts"
+                        ]
+                      }
+                    },
+                    "response": [],
+                    "uid": "10462328-df8b3540-bb76-4443-abe5-821bf7bcea68"
+                  }
+                ],
+                "id": "602d9b8d-e93a-46ee-8bdf-ec9021c5d050",
+                "uid": "10462328-602d9b8d-e93a-46ee-8bdf-ec9021c5d050"
               }
             ],
             "id": "a9f6f5a9-391b-4306-b2b2-52e92504ca77",
@@ -30831,7 +30927,8 @@
                           "exec": [
                             ""
                           ],
-                          "type": "text/javascript"
+                          "type": "text/javascript",
+                          "packages": {}
                         }
                       },
                       {
@@ -30856,7 +30953,8 @@
                             "    postman.setNextRequest('Get recurring by first recurring id');",
                             "});"
                           ],
-                          "type": "text/javascript"
+                          "type": "text/javascript",
+                          "packages": {}
                         }
                       }
                     ],
@@ -30888,9 +30986,8 @@
                       "header": [
                         {
                           "key": "Content-Type",
-                          "name": "Content-Type",
-                          "type": "text",
-                          "value": "application/json"
+                          "value": "application/json",
+                          "type": "text"
                         }
                       ],
                       "body": {
@@ -33008,7 +33105,8 @@
                             "pm.collectionVariables.set('merchant_order_id', merchant_order_id);",
                             "pm.collectionVariables.set('last_merchant_order_id', merchant_order_id);"
                           ],
-                          "type": "text/javascript"
+                          "type": "text/javascript",
+                          "packages": {}
                         }
                       },
                       {
@@ -33037,7 +33135,8 @@
                             "    postman.setNextRequest('Get limits for refunds and payouts');",
                             "});"
                           ],
-                          "type": "text/javascript"
+                          "type": "text/javascript",
+                          "packages": {}
                         }
                       }
                     ],
@@ -33069,9 +33168,8 @@
                       "header": [
                         {
                           "key": "Content-Type",
-                          "name": "Content-Type",
-                          "type": "text",
-                          "value": "application/json"
+                          "value": "application/json",
+                          "type": "text"
                         }
                       ],
                       "body": {
@@ -33808,7 +33906,7 @@
               ],
               "body": {
                 "mode": "raw",
-                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"invoice_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"expire_at\": \"{{invoice_end_date}}\",\n        \"reusable\": true,\n        \"reuse_count\": \"5\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"items\": [\n            {\n                \"name\": \"{{$randomNoun}}\",\n                \"price\": \"10\",\n                \"count\": 1\n            },\n            {\n                \"name\": \"{{$randomNoun}}\",\n                \"price\": \"2.34\",\n                \"count\": 1\n            }\n        ]\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"payment_methods\": [\n        \"BANKCARD\"\n    ]\n}"
+                "raw": "{\n    \"request\": {\n        \"id\": \"{{$guid}}\",\n        \"time\": \"{{request_time}}\"\n    },\n    \"invoice_data\": {\n        \"amount\": \"12.34\",\n        \"currency\": \"{{TERMINAL_CURRENCY}}\",\n        \"expire_at\": \"{{invoice_end_date}}\",\n        \"reusable\": true,\n        \"reuse_count\": \"5\"\n    },\n    \"merchant_order\": {\n        \"id\": \"{{$randomUUID}}\",\n        \"items\": [\n            {\n                \"name\": \"{{$randomNoun}}\",\n                \"price\": \"10\",\n                \"count\": 1\n            },\n            {\n                \"name\": \"{{$randomNoun}}\",\n                \"price\": \"2.34\",\n                \"count\": 1\n            }\n        ]\n    },\n    \"customer\": {\n        \"email\": \"{{CUSTOMER_EMAIL}}\"\n    },\n    \"payment_methods\": [\n        \"BANKCARD\", \"BOLETO\", \"AIRTELTZ\",\"MPESA\", \"IDEAL\", \"SPEI\"\n    ]\n}"
               },
               "url": {
                 "raw": "{{UNLIMIT_API_URL}}/api/invoices",
@@ -37156,6 +37254,102 @@
             },
             "response": [],
             "uid": "10462328-ed228cd7-3257-4244-b46f-dad8803b28d7"
+          },
+          {
+            "name": "Banks list. Bank transfer Chile. CLP",
+            "event": [
+              {
+                "listen": "prerequest",
+                "script": {
+                  "exec": [
+                    "var uuid = require('uuid');\r",
+                    "\r",
+                    "var terminal_code = pm.environment.get('PAYMENTPAGE_TERMINAL_CODE');\r",
+                    "var password = pm.environment.get('PAYMENTPAGE_PASSWORD');\r",
+                    "\r",
+                    "var tokens = eval(pm.collectionVariables.get('tokens'));\r",
+                    "tokens.obtain(terminal_code, password);"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "3bd32a80-e5bf-4ee2-a8bc-86e78b40f727"
+                }
+              },
+              {
+                "listen": "test",
+                "script": {
+                  "exec": [
+                    "pm.test(\"Successful request\", function () {",
+                    "    pm.response.to.be.ok;",
+                    "    pm.response.to.have.jsonBody();",
+                    "    ",
+                    "    var response = pm.response.json();",
+                    "    ",
+                    "    pm.expect(response).to.have.property('bank_list');",
+                    "});"
+                  ],
+                  "type": "text/javascript",
+                  "packages": {},
+                  "id": "70096230-d071-4d40-98fc-f45600ae112e"
+                }
+              }
+            ],
+            "id": "4529c6b8-813a-4b19-b05f-aaeb7c4530ff",
+            "protocolProfileBehavior": {
+              "strictSSL": false,
+              "disableBodyPruning": true
+            },
+            "request": {
+              "auth": {
+                "type": "bearer",
+                "bearer": [
+                  {
+                    "key": "0",
+                    "value": {
+                      "key": "token",
+                      "value": "{{access_token}}",
+                      "type": "string"
+                    },
+                    "type": "any"
+                  },
+                  {
+                    "key": "token",
+                    "value": "{{access_token}}",
+                    "type": "string"
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "",
+                "options": {
+                  "raw": {
+                    "language": "json"
+                  }
+                }
+              },
+              "url": {
+                "raw": "{{UNLIMIT_API_URL}}/api/banks/banktransfersclp/CLP",
+                "host": [
+                  "{{UNLIMIT_API_URL}}"
+                ],
+                "path": [
+                  "api",
+                  "banks",
+                  "banktransfersclp",
+                  "CLP"
+                ]
+              }
+            },
+            "response": [],
+            "uid": "10462328-4529c6b8-813a-4b19-b05f-aaeb7c4530ff"
           }
         ],
         "id": "4743f096-b3b2-48d6-8e0d-4c8f12e73dfd",
@@ -37166,7 +37360,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "f4f3277e-225c-4b26-91f5-8b8a67a8f3b0",
+          "id": "17b1d8f4-be75-4e8b-bf84-1eb00bbd0e9a",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -37206,7 +37400,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "1b2be5a6-2475-400f-bc2f-e3fe6ac72f44",
+          "id": "be56bc81-868c-4fef-82be-365222fba380",
           "type": "text/javascript",
           "exec": [
             ""
