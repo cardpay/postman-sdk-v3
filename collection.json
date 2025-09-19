@@ -5,7 +5,7 @@
       "name": "Unlimit REST API (3.0)",
       "description": "## Installation\n\n1. Install Postman 8.5+\n2. Download and import [collection file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/collection.json)\n3. Download and import [environment file](https://raw.githubusercontent.com/cardpay/postman-sdk-v3/master/sandbox.json)\n    \n\n## API usage\n\nExecute any section from Postman collection  \nFor more information about API v3 please visit [documentation web-site](https://integration.unlimit.com).\n\n## Notes\n\n- constants ('UNLIMIT_API_URL', 'PAYMENTPAGE_TERMINAL_CODE' and so on) are [Postman environment variables](https://learning.postman.com/docs/postman/variables-and-environments/variables/), defined for 'sandbox' environment.\n- following variables are defined for collection scope _(click 'Edit' button on 'unlimit-api' collection and see 'Pre-request Script' section)_:\n    - request_name — name of the test that is being executed, using for 'merchant_order.description' field value, in request's 'Body' section\n    - expiration — customer's card expiration date, using for 'card_account.card.expiration' field value, in gateway request 'Body' section. Format: mm/yyyy\n    - tokens — variable with 'obtain' function which is calling in order to get API authorization tokens\n- other variables ('', '', etc) are defined in 'Pre-request Script' and 'Tests' sections for particular request.",
       "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-      "updatedAt": "2025-09-19T11:26:01.000Z",
+      "updatedAt": "2025-09-19T12:01:51.000Z",
       "createdAt": "2020-02-20T08:17:14.000Z",
       "lastUpdatedBy": "10462328",
       "uid": "10462328-9dacc77f-6ab0-4094-82b5-d6b2db8b4045"
@@ -37360,7 +37360,7 @@
       {
         "listen": "prerequest",
         "script": {
-          "id": "17b1d8f4-be75-4e8b-bf84-1eb00bbd0e9a",
+          "id": "d5b6bb76-1aef-4153-89f8-4f2149ec3001",
           "type": "text/javascript",
           "exec": [
             "var moment = require('moment');",
@@ -37400,7 +37400,7 @@
       {
         "listen": "test",
         "script": {
-          "id": "be56bc81-868c-4fef-82be-365222fba380",
+          "id": "aefb306b-ec9d-4f86-b1a1-0b8b3b063762",
           "type": "text/javascript",
           "exec": [
             ""
